@@ -848,15 +848,15 @@ h5.left-nav-title {
 ---------------------------------*/
 .defaultLeft {
     float: left;
-    width: 20%;
-    height: 680px;
+    width: 19%;
+    height: 766px;
     background: #424f63;
 }
 
 .defaultBody {
     float: left;
     margin: 10px 0;
-    width: 75%;
+    width: 80%;
 }
 
 .defaultFoot {

@@ -13,7 +13,7 @@
     <script type="text/javascript">
         $(function () {
 //            $("#maniForm").bind("click", function () {
-            $("#maniForm").submit(function () {
+            $("#myForm").submit(function () {
                 var userName = $("#name").val();
                 $.ajax({
                     url: "webchat/" + userName,
@@ -31,7 +31,7 @@
 <h1>
     This is a index page!
 </h1>
-<form method="get">
+<form method="get" id="myForm">
     <p>昵称： <input type="text" id="name" name="username">&nbsp;<input id="maniForm" type="submit" value="登陆"></p>
 </form>
 </body>

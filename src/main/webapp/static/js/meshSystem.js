@@ -15,17 +15,20 @@ $('#button').click(function () {
     var mName = $("#mName").val();
     msehData(mName);
 });
+
 function checkPlace(id) {
-    $.ajax({
-        type: 'post',
-        url: "/meshSystem/place",
-        data: {mid: id},
-        success: function (data) {
-            console.log('bb', data);
-            place.content = data;
-        }
-    });
+    console.log("id=" + id);
+    // $.ajax({
+    //     type: 'post',
+    //     url: "/meshSystem/place",
+    //     data: {mid: id},
+    //     success: function (data) {
+    //         console.log('bb', data);
+    //         place.content = data;
+    //     }
+    // });
 }
+
 function checkGroup(id) {
     $.ajax({
         type: 'post',
@@ -52,7 +55,7 @@ function connect() {
         console.log(event.data);
     };
     ws.onclose = function (event) {
-        console.log('Info: 断开连接.');
+        console.log('Info: 断开连接.' + event.data);
     };
 }
 
@@ -75,10 +78,6 @@ function switchLights() {
     ws.send(switchFlag.toString());
 }
 
-//监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
-window.onbeforeunload = function () {
-    closeConnection();
-}
 
 /**
  * 关闭连接
@@ -89,6 +88,15 @@ function closeConnection() {
         ws = null;
     }
 }
+//监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+window.onbeforeunload = function () {
+    closeConnection();
+}
+// (function () {
+//
+//
+// })(jQuery);
+
 // function switchLights() {
 //     var code = document.getElementById("switch").value;
 //     var fd = code.indexOf("关灯");
@@ -100,9 +108,6 @@ function closeConnection() {
 //         document.getElementById("switch").value = "关灯";
 //         switchFlag = 1;
 //     }
-//
-//     ws.send(switchFlag);
-
 // $.ajax({
 //     type: 'post',
 //     url: "http://ctc-hq.tpadsz.com/blt_light/switch",

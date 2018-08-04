@@ -21,9 +21,10 @@
     <!--</mapping>-->
 
     <!-- 满足该匹配路径将不被装饰 -->
-    <mapping path="*/login.jsp" exclue="true"/>
+    <mapping path="**/login.jsp" exclue="true"/>
     <mapping path="**/websocket.jsp" exclue="true"/>
     <mapping path="**/loginOut" exclue="true"/>
+    <mapping path="**/toChat" exclue="true"/>
     <mapping path="**/nav.jsp" exclue="true"/>
     <mapping path="**/index.jsp" exclue="true"/>
 
