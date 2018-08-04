@@ -49,8 +49,7 @@
                         </table>
                     </div>
                     <div>
-                        <ul class="pagination" id="pagination">
-                        </ul>
+                        <ul class="pagination" id="pagination"></ul>
                     </div>
                 </div>
             </section>
