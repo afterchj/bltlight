@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,7 +45,7 @@
 <%--</ul>--%>
 <%--</div>--%>
 <div class="page-heading">
-    <div style="margin-left:20px;float: left">
+    <div style="float: left">
         <input type="text" id="uName" placeholder="用户名称：">
         <input type="text" id="coName" placeholder="公司名称：">
         <input type="text" id="pNum" placeholder="联系方式：">
@@ -53,7 +54,7 @@
 </div>
 
 <div class="wrapper">
-    <div>
+    <div class="row">
         <div class="col-sm-12">
             <section class="panel">
                 <header class="panel-heading">
@@ -70,6 +71,13 @@
                             </tr>
                             </thead>
                             <tbody>
+                            <c:forEach var="user" items="${users}">
+                                <tr>
+                                    <td>${user.userName}</td>
+                                    <td>${user.company}</td>
+                                    <td>${user.telephone}</td>
+                                </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
                     </div>
@@ -82,7 +90,6 @@
         </div>
     </div>
 </div>
-<%--</div>--%>
 
 </body>
 </html>

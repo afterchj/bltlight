@@ -22,7 +22,7 @@
 <body>
 
 <div class="page-heading">
-    <div style="margin-left:20px;float: left">
+    <div style="float: left">
         <input type="text" id="uName" placeholder="用户名称：">
         <input type="text" id="lName" placeholder="灯名称：">
         <input type="text" id="mName" placeholder="网络名称：">
@@ -32,7 +32,7 @@
     </div>
 </div>
 <div class="wrapper">
-    <div >
+    <div class="row">
         <div class="col-sm-12">
             <section class="panel">
                 <header class="panel-heading">

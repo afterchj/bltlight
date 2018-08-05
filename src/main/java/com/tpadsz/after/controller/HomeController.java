@@ -1,6 +1,8 @@
 package com.tpadsz.after.controller;
 
 
+import com.tpadsz.after.entity.User;
+import com.tpadsz.after.service.UserService;
 import com.tpadsz.after.util.Constants;
 import com.tpadsz.after.util.WSClientUtil;
 import org.apache.log4j.Logger;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,12 +25,12 @@ import java.util.Map;
 @Controller
 public class HomeController {
 
+    @Resource
+    private UserService userService;
     private Logger log = Logger.getLogger(HomeController.class);
 
     @RequestMapping(value = "/webchat/{username}")
-    @ResponseBody
     public void webchat(@PathVariable String username, HttpSession session) {
-        System.out.println("username=" + username);
         session.setAttribute(Constants.SESSION_USERNAME.value(), username);
     }
 
@@ -69,7 +72,8 @@ public class HomeController {
 
     @RequestMapping(value = "/login")
     public String login(HttpSession session) {
-        session.setAttribute(Constants.SESSION_USERNAME.value(), "systemUser");
+        List<User> users = userService.getAll();
+        session.setAttribute("users", users);
         return "userInfo";
     }
 
