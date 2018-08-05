@@ -4774,3 +4774,28 @@ ol.comment-list {
     margin-left: 10%;
     color: #ffffff;
 }
+.panel-body {
+    padding-top: 5%;
+    padding-bottom: 5%
+}
+
+.panel-box {
+    float: left;
+    width: 15%;
+    margin-left: 10%
+}
+
+.panel-box-child {
+    height: 400px;
+    overflow-x: auto;
+    border: 1px solid
+}
+
+.panel-box-child ul {
+    padding: 3%;
+}
+
+.panel-box-child li {
+    list-style: none;
+    margin-bottom: 1%;
+}

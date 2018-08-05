@@ -19,31 +19,10 @@
     <script src="${ctx}/static/js/page.js"></script>
     <script src="${ctx}/static/js/loadData.js"></script>
     <script src="${ctx}/static/js/userInfo.js"></script>
-    <style type="text/css">
-        li {
-            float: left;
-            list-style: none;
-            margin-left: 10px;
-        }
-
-    </style>
 </head>
 
 <body>
 
-<%--<div style="background:#424f63;width: auto;height: 100%;float: left">--%>
-<%--<%@ include file="../../nav.jsp" %>--%>
-<%--</div>--%>
-<%--<div style="float: left;width: 980px;margin: 0 auto">--%>
-
-<%--<div style="margin-top: 80px;margin-bottom: 30px">--%>
-<%--<ul>--%>
-<%--<li><input type="text" id="uName" placeholder="用户名称："></li>--%>
-<%--<li><input type="text" id="coName" placeholder="公司名称："></li>--%>
-<%--<li><input type="text" id="pNum" placeholder="联系方式："></li>--%>
-<%--<li><input type="button" value="搜索" id="button" class="btn btn-default"></li>--%>
-<%--</ul>--%>
-<%--</div>--%>
 <div class="page-heading">
     <div style="float: left">
         <input type="text" id="uName" placeholder="用户名称：">

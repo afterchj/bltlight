@@ -1,11 +1,4 @@
 <%@ page import="com.tpadsz.after.util.Constants" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: zhm
-  Date: 2015/7/14
-  Time: 10:35
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -44,7 +37,7 @@
         }
     </style>
 
-    <script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
+    <%--<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>--%>
 
     <script type="text/javascript">
         var url = null;
@@ -58,15 +51,9 @@
         }
 
         function connect(urlPath) {
-//            if (!url) {
-//                alert('请选择使用W3C的websocket还是SockJS');
-//                return;
-//            }
-
-            url = 'ws://' + window.location.host + "/blt_light" + urlPath;
+            url = 'ws://' + window.location.host + "${ctx}" + urlPath;
 //            url = 'ws://' + window.location.host + "/web_ssm" + urlPath;
             ws = new WebSocket(url);
-            // (url.indexOf('sockjs') != -1) ?new SockJS(url, undefined, {protocols_whitelist: transports}) : new WebSocket(url);
 
             ws.onopen = function () {
                 setConnected(true);
@@ -93,7 +80,6 @@
         function echo() {
             if (ws != null) {
                 var message = document.getElementById('message').value;
-                log('<%=session.getAttribute(Constants.SESSION_USERNAME.value())%>：' + message);
                 ws.send(message);
             } else {
                 alert('没有建立连接，请连接服务！');

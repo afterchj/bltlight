@@ -20,9 +20,9 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
             ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
             HttpSession session = servletRequest.getServletRequest().getSession(false);
             if (session != null) {
-                //使用userName区分WebSocketHandler，以便定向发送消息
+                //使用userName区分WebSocketHandler，以便定向发送消息+
                 String userName = (String) session.getAttribute(Constants.SESSION_USERNAME.value());
-                attributes.put(Constants.SESSION_USERNAME.value(),userName);
+                attributes.put(Constants.SESSION_USERNAME.value(), userName);
             }
         }
         return super.beforeHandshake(request, response, wsHandler, attributes);

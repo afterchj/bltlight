@@ -64,9 +64,7 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/toChat")
-    public String toChat(HttpSession session) {
-        System.out.println("url=" + "/toChat");
-        session.setAttribute(Constants.SESSION_USERNAME.value(), "systemUser");
+    public String toChat() {
         return "websocket";
     }
 

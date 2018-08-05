@@ -47,7 +47,7 @@ var ws = null;
 function connect() {
     url = 'ws://' + window.location.host + '/blt_light/websocket';
     ws = new WebSocket(url);
-
+    console.log('url', url);
     ws.onopen = function () {
         console.log('Info: 连接成功.');
     };
@@ -59,7 +59,6 @@ function connect() {
     };
 }
 
-connect();
 
 function switchLights() {
     if (ws == null) {
@@ -88,14 +87,16 @@ function closeConnection() {
         ws = null;
     }
 }
+
+(function () {
+    connect();
+})(jQuery);
+
 //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
 window.onbeforeunload = function () {
     closeConnection();
 }
-// (function () {
-//
-//
-// })(jQuery);
+
 
 // function switchLights() {
 //     var code = document.getElementById("switch").value;
