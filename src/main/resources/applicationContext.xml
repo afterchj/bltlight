@@ -39,8 +39,6 @@
     <!-- 开启注解模式 -->
     <context:component-scan base-package="com.tpadsz.after"/>
 
-    <mvc:annotation-driven/>
-
     <!-- 阿里 druid数据库连接池 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
         <!-- 数据库基本信息配置 -->
