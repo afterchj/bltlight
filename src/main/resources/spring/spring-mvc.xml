@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:websocket="http://www.springframework.org/schema/websocket"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+       http://www.springframework.org/schema/websocket
+       http://www.springframework.org/schema/websocket/spring-websocket.xsd">
+
+    <mvc:annotation-driven/>
+    <!-- 开启注解模式 -->
+    <context:component-scan base-package="com.tpadsz.after"/>
+
+    <!-- 静态资源映射 -->
+    <mvc:resources mapping="/static/**" location="/static/"/>
+    <!-- 开启注解模式 -->
+
+    <!--<bean id="socketClient" class="com.tpadsz.after.util.WSClientUtil"></bean>-->
+    <!--  websocket消息接收与处理类 -->
+    <bean id="websocket" class="com.tpadsz.after.websocket.WebSocketEndPoint"/>
+    <!--<bean id="fileupload" class="com.tpadsz.after.websocket.FileUploadEndPoint"/>-->
+    <bean id="binarymessage" class="com.tpadsz.after.websocket.BinaryEndPoint"/>
+    <bean class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean">
+        <property name="maxTextMessageBufferSize" value="8192"/>
+        <property name="maxBinaryMessageBufferSize" value="20000000"/>
+    </bean>
+
+    <!-- 定义客户端与服务器握手的拦截器，可以做一些预处理 -->
+    <!-- 该拦截器专门为SockJS客户端服务的 -->
+    <websocket:handlers>
+        <websocket:mapping path="/sockjs/websocket" handler="websocket"/>
+        <websocket:handshake-interceptors>
+            <bean class="com.tpadsz.after.websocket.HandshakeInterceptor"/>
+        </websocket:handshake-interceptors>
+        <!-- 开启sockjs支持 -->
+        <websocket:sockjs/>
+    </websocket:handlers>
+
+    <!-- 定义客户端与服务器握手的拦截器，可以做一些预处理 -->
+    <!-- 该拦截器专门为WebSocket客户端服务的 -->
+    <websocket:handlers>
+        <websocket:mapping path="/websocket" handler="websocket"/>
+        <!--<websocket:handshake-interceptors>-->
+        <!--<bean class="com.tpadsz.after.websocket.HandshakeInterceptor"/>-->
+        <!--</websocket:handshake-interceptors>-->
+    </websocket:handlers>
+
+
+    <!-- 二进制消息处理 -->
+    <websocket:handlers>
+        <websocket:mapping path="/binarymessage" handler="binarymessage"/>
+    </websocket:handlers>
+
+    <!--定义跳转的文件的前后缀 ，视图模式配置 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/view/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+</beans>
