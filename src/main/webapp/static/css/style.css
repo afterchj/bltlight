@@ -8,12 +8,12 @@ Author: ThemeBucket
 @import url('../fonts/css/font-awesome.min.css');
 
 /*body {*/
-/*/*background: #424f63;*/
-/*font-family: 'Open Sans', sans-serif;*/
-/*/*color: #7a7676;*/
-/*line-height: 20px;*/
-/*overflow-x: hidden;*/
-/*font-size: 14px;*/
+    /*background: #424f63;*/
+    /*font-family: 'Open Sans', sans-serif;*/
+    /*color: #7a7676;*/
+    /*line-height: 20px;*/
+    /*overflow-x: hidden;*/
+    /*font-size: 14px;*/
 /*}*/
 
 input, select, textarea {
@@ -309,10 +309,10 @@ hr {
     background: transparent no-repeat 93% center;
 }
 
-/*.custom-nav > li.menu-list > a:hover {*/
-    /*background-color: #353f4f;*/
-    /*!*background-image: url(../images/plus.png);*!*/
-/*}*/
+.custom-nav > li.menu-list > a:hover {
+    background-color: #353f4f;
+    /*background-image: url(../images/plus.png);*/
+}
 
 .custom-nav > li.nav-active > a {
     background-color: #353f4f;
@@ -329,7 +329,7 @@ hr {
 }
 
 .custom-nav > li.active > a,
-/*.custom-nav > li.active > a:hover,*/
+    /*.custom-nav > li.active > a:hover,*/
 .custom-nav > li.active > a:focus {
     background-color: #353f4f;
     color: #65cea7;
@@ -848,8 +848,8 @@ h5.left-nav-title {
 ---------------------------------*/
 .defaultLeft {
     float: left;
-    width: 19%;
-    height: 766px;
+    width: 12%;
+    height: 1080px;
     background: #424f63;
 }
 
@@ -4774,6 +4774,7 @@ ol.comment-list {
     margin-left: 10%;
     color: #ffffff;
 }
+
 .panel-body {
     padding-top: 5%;
     padding-bottom: 5%

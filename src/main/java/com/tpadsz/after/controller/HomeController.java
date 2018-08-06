@@ -8,7 +8,10 @@ import com.tpadsz.after.util.WSClientUtil;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -29,9 +32,12 @@ public class HomeController {
     private UserService userService;
     private Logger log = Logger.getLogger(HomeController.class);
 
+    @ResponseBody
     @RequestMapping(value = "/webchat/{username}")
-    public void webchat(@PathVariable String username, HttpSession session) {
+    public String webchat(@PathVariable String username, HttpSession session) {
         session.setAttribute(Constants.SESSION_USERNAME.value(), username);
+        String msg = "{\"result\":\"000\",\"msg\":\"成功\"}";
+        return msg;
     }
 
     @ResponseBody
@@ -51,16 +57,14 @@ public class HomeController {
             }
         }).start();
         log.info("show-->" + params);
-        System.out.println("params=" + params);
         return msg;
     }
 
     @ResponseBody
     @RequestMapping(value = "/test", produces = "application/json; charset=utf-8")
-    public String test(HttpServletRequest request) {
-        String uid = request.getParameter("uid");
-        System.out.println("uid=" + uid);
-        return "{\"uid\":" + "\"" + uid + "\"}";
+    public String test(HttpServletResponse response, @RequestBody String params) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        return params;
     }
 
     @RequestMapping(value = "/toChat")
