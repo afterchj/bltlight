@@ -1,13 +1,10 @@
 <%@ page import="com.tpadsz.after.util.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Spring4 websocket实例</title>
     <meta charset="utf-8">
-    <script type="text/javascript" src="${ctx}/static/js/jquery.min.js"></script>
     <style type="text/css">
         #connect-container {
             float: left;
@@ -128,20 +125,6 @@
             }
             console.scrollTop = console.scrollHeight;
         }
-
-        function testAjax(flag) {
-
-            $.ajax({
-                type: "POST",
-                url: "test",
-                dataType: "json",
-                contentType: "application/json",
-                data: JSON.stringify({"switchFlag": '' + flag + ''}),
-                success: function (data) {
-                    console.log('result', data);
-                }
-            });
-        }
     </script>
 </head>
 <body>
@@ -154,10 +137,6 @@
 </noscript>
 <div>
     <div id="connect-container">
-        <input id="radio1" type="radio" name="group1" onclick="testAjax('0');">
-        <label for="radio1">开</label>
-        <input id="radio2" type="radio" name="group1" onclick="testAjax('1');">
-        <label for="radio2">开</label>
         <%--<input id="radio1" type="radio" name="group1" onclick="updateUrl('/websocket');">--%>
         <%--<label for="radio1">W3C WebSocket</label>--%>
         <%--<br>--%>

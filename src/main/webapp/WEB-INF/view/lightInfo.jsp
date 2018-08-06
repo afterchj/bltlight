@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,15 +8,15 @@
     <meta name="description" content="">
     <meta name="author" content="ThemeBucket">
     <link rel="shortcut icon" href="#" type="image/png">
+
+    <title>灯具信息</title>
+
     <link rel="stylesheet" href="${ctx}/static/css/style.css">
     <link rel="stylesheet" href="${ctx}/static/css/jquery-ui.css">
-    <script src="${ctx}/static/js/jquery.min.js"></script>
     <script src="${ctx}/static/js/publicAjax.js"></script>
     <script src="${ctx}/static/js/page.js"></script>
     <script src="${ctx}/static/js/loadData.js"></script>
     <script src="${ctx}/static/js/lightInfo.js"></script>
-    <title>灯具信息</title>
-
 </head>
 
 <body>

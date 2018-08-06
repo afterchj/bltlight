@@ -26,7 +26,7 @@ public class WSClientUtil {
     public static void initClient() {
 
         try {
-            client = new WebSocketClient(new URI(Constants.TEST_URL.value()), new Draft_17()) {
+            client = new WebSocketClient(new URI(Constants.BLT_LIGHT.value()), new Draft_17()) {
                 @Override
                 public void onOpen(ServerHandshake arg0) {
 //                    System.out.println("打开链接");

@@ -13,10 +13,10 @@
     <link rel="stylesheet" href="${ctx}/static/css/style.css">
     <link rel="stylesheet" href="${ctx}/static/css/jquery-ui.css">
     <script src="${ctx}/static/js/jquery.min.js"></script>
-    <script type="text/javascript" src="${ctx}/static/js/meshSystem.js"></script>
     <title>网络系统</title>
 </head>
 <body>
+<script type="text/javascript" src="${ctx}/static/js/meshSystem.js"></script>
 
 <div class="page-heading">
     <div style="float: left">
