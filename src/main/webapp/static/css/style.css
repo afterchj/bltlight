@@ -849,7 +849,6 @@ h5.left-nav-title {
 .defaultLeft {
     float: left;
     width: 12%;
-    height: 1080px;
     background: #424f63;
 }
 
@@ -862,7 +861,7 @@ h5.left-nav-title {
 .defaultFoot {
     clear: both;
     text-align: center;
-    margin-b: 10px 0;
+    margin: 10px 0;
 }
 
 .sticky-header .logo {
