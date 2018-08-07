@@ -8,7 +8,7 @@ public enum Constants {
     WEB_SSM("ws://ctc-hq.tpadsz.com/web_ssm/websocket"),
     BLT_LIGHT("ws://ctc-hq.tpadsz.com/blt_light/websocket"),
     UICHANGE_BLT("ws://uichange.com/blt_light/websocket"),
-    TEST_URL("ws://localhost:8080/blt_light//websocket");
+    TEST_URL("ws://localhost:8080/blt_light/websocket");
 
     private String username;
 
