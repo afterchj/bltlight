@@ -849,6 +849,7 @@ h5.left-nav-title {
 .defaultLeft {
     float: left;
     width: 12%;
+    height: 1080px;
     background: #424f63;
 }
 
