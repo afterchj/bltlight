@@ -2,16 +2,16 @@
  * Created by quanquan.sun on 2017/11/6.
  */
 
-$.ajax({
-    type: 'post',
-    url: "/user/user",
-    success: function (data) {
-        console.log(data);
-        var paramsArr = [data.uNameArr, data.coNameArr, data.pNumArr];
-        var result = data.result;
-        loadData(paramsArr,result);
-    }
-});
+// $.ajax({
+//     type: 'post',
+//     url: "/user/user",
+//     success: function (data) {
+//         console.log(data);
+//         var paramsArr = [data.uNameArr, data.coNameArr, data.pNumArr];
+//         var result = data.result;
+//         loadData(paramsArr,result);
+//     }
+// });
 
 $('#button').click(function () {
     $("#tbody").remove();
