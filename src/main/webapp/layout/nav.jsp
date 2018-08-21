@@ -53,22 +53,22 @@
         <ul class="nav nav-pills nav-stacked custom-nav" id="leftNav">
             <li><i class="fa"></i></li>
 
-            <li class="menu-list" hidden="hidden"><a href="${ctx}/userInfo" id="nav1-1">
+            <li class="menu-list" hidden="hidden"><a href="${ctx}/home/userInfo" id="nav1-1">
                 <i class="fa"></i> <span>用户系统</span></a>
 
             </li>
-            <li class="menu-list" hidden="hidden"><a href="${ctx}/meshInfo" id="nav1-2">
+            <li class="menu-list" hidden="hidden"><a href="${ctx}/home/meshInfo" id="nav1-2">
                 <i class="fa"></i> <span> 网络信息</span></a>
 
             </li>
-            <li class="menu-list" hidden="hidden"><a href="${ctx}/meshSystem" id="nav1-3">
+            <li class="menu-list" hidden="hidden"><a href="${ctx}/home/meshSystem" id="nav1-3">
                 <i class="fa"></i> <span>网络系统</span></a>
 
-            <li class="menu-list" hidden="hidden"><a href="${ctx}/lightInfo" id="nav1-4"><i
+            <li class="menu-list" hidden="hidden"><a href="${ctx}/home/lightInfo" id="nav1-4"><i
                     class="fa"></i> <span>灯具信息</span></a>
             </li>
             </li>
-            <li class="menu-list" hidden="hidden"><a href="${ctx}/productInfo" id="nav1-5"><i
+            <li class="menu-list" hidden="hidden"><a href="${ctx}/home/productInfo" id="nav1-5"><i
                     class="fa"></i> <span>产品信息</span></a>
             </li>
             <li><a href="${ctx}/login.jsp"><i class="fa"></i> <span>Login Page</span></a></li>

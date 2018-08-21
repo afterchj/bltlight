@@ -18,12 +18,12 @@
             $("#myForm").submit(function () {
                 var userName = $("#name").val();
                 $.ajax({
-                    url: "webchat/" + userName,
+                    url: "home/webchat/" + userName,
                     dataType: "json",
                     async: false,//异步还是同步
                     success: function (data) {
 //                        alert(data.result);
-                        window.open("toChat");
+                        window.open("home/toChat");
                     }
                 });
             });

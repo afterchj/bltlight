@@ -13,7 +13,7 @@
 <body>
 <%--<input type="text" id="result" hidden="false" value="<%=result%>">--%>
 <div align="center" style="margin-top: 10%">
-    <form method="post" action="login" onsubmit="return check(this)" class="bs-example bs-example-form" role="form">
+    <form method="post" action="home/login" onsubmit="return check(this)" class="bs-example bs-example-form" role="form">
         <table>
             <tr>
                 <td colspan="2">
