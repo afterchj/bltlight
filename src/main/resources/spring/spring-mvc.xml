@@ -54,6 +54,21 @@
         <websocket:mapping path="/binarymessage" handler="binarymessage"/>
     </websocket:handlers>
 
+
+    <mvc:interceptors>
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/"/>
+            <bean class="com.tpadsz.after.interceptor.ParamsEncryptInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
+
+
+
+
     <!--定义跳转的文件的前后缀 ，视图模式配置 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/view/"/>
