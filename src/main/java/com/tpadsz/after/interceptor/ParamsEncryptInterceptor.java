@@ -2,12 +2,11 @@ package com.tpadsz.after.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tpadsz.after.entity.ResultDict;
-import com.tpadsz.after.util.DESCoder;
-import com.tpadsz.after.util.Encodes;
+import com.tpadsz.after.util.*;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.URLDecoder;
 
 public class ParamsEncryptInterceptor implements HandlerInterceptor {
-//    private Logger system = LoggerUtils.SYSTEM;
-//    private Logger daylog = LoggerUtils.DAYLOG;
+    private Logger system = LoggerUtils.SYSTEM;
+    private Logger daylog = LoggerUtils.DAYLOG;
 
     @Override
     public boolean preHandle(HttpServletRequest request,
@@ -81,7 +80,7 @@ public class ParamsEncryptInterceptor implements HandlerInterceptor {
                             logAccess(paramMap, result, null, request.getRequestURI(), ip);
                             Map<String, String> data = new HashMap<>();
                             data.put("result", result);
-//                            HttpServletUtil.renderText(response, Encryption.encode(JSONObject.toJSONString(data)));
+                            HttpServletUtil.renderText(response, Encryption.encode(JSONObject.toJSONString(data)));
                             return false;
                         }
                     }
@@ -93,16 +92,15 @@ public class ParamsEncryptInterceptor implements HandlerInterceptor {
             } catch (Exception e) {
                 Map<String, String> data = new HashMap<>();
                 data.put("result", ResultDict.PARAMS_NOT_PARSED.getCode());
-//                HttpServletUtil.renderText(response, Encryption.encode(JSONObject.toJSONString(data)));
+                HttpServletUtil.renderText(response, Encryption.encode(JSONObject.toJSONString(data)));
                 return false;
             }
-        }
-        else {
+        } else {
             String result = ResultDict.PARAMS_BLANK.getCode();
             logAccess(null, result, null, request.getRequestURI(), null);
             Map<String, String> data = new HashMap<>();
             data.put("result", result);
-//            HttpServletUtil.renderText(response, Encryption.encode(JSONObject.toJSONString(data)));
+            HttpServletUtil.renderText(response, Encryption.encode(JSONObject.toJSONString(data)));
             return false;
         }
     }
@@ -115,7 +113,7 @@ public class ParamsEncryptInterceptor implements HandlerInterceptor {
         String ip = "127.0.0.1";
 //        String ip = request.getHeader("x-forwarded-for").split(",")[0];
         logAccess(paramMap, String.valueOf(modelAndView.getModel().get("result")), modelAndView.getModel(), request.getRequestURI(), ip);
-//        modelAndView.getModel().put(Constants.BACKGROUND_ENCRPTION_KEY, true);
+        modelAndView.getModel().put("encrypted", true);
     }
 
     private void logAccess(Object params, String resultCode, Object value, String uri, String ip) {
