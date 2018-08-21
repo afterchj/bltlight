@@ -11,7 +11,6 @@
        http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 
-
     <!--第二种方式：加载一个properties文件-->
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="classpath:setup.production.properties"/>
@@ -49,6 +48,10 @@
         <property name="maxWait" value="${maxWait}"/>
         <!-- 最小空闲连接数 -->
         <property name="minIdle" value="${minIdle}"/>
+        <property name="validationQuery" value="SELECT 'x'"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="false"/>
 
     </bean>
     <!-- JDBC 事务管理器, 在service层面上实现事务管理 -->
@@ -100,7 +103,7 @@
     <!--p:sqlSessionFactoryBeanName="sqlSessionFactory" -->
     <!--p:basePackage="com.tpadsz.after.dao"/>-->
 
-    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
-        <constructor-arg ref="sqlSessionFactory"/>
-    </bean>
+    <!--<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">-->
+        <!--<constructor-arg ref="sqlSessionFactory"/>-->
+    <!--</bean>-->
 </beans>

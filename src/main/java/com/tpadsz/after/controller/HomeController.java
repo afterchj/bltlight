@@ -26,8 +26,8 @@ import java.util.Map;
 @RequestMapping(value = "/home")
 public class HomeController {
 
-//    @Resource
-//    private UserService userService;
+    @Resource
+    private UserService userService;
     private Logger log = Logger.getLogger(HomeController.class);
 
     @ResponseBody
@@ -72,8 +72,8 @@ public class HomeController {
 
     @RequestMapping(value = "/login")
     public String login(HttpSession session) {
-//        List<User> users = userService.getAll();
-//        session.setAttribute("users", users);
+        List<User> users = userService.getAll();
+        session.setAttribute("users", users);
         return "userInfo";
     }
 

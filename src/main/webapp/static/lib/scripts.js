@@ -85,7 +85,7 @@
             jQuery(this).addClass('menu-collapsed');
 
          } else {
-            body.removeClass('left-side-collapsed chat-view');
+            body.removeClass('left-side-collapsed chat-viewresolver');
             jQuery('.custom-nav li.active ul').css({display: 'block'});
 
             jQuery(this).removeClass('menu-collapsed');
