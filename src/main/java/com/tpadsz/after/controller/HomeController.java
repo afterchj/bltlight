@@ -23,6 +23,7 @@ import java.util.Map;
  * Created by hongjian.chen on 2018/8/1.
  */
 @Controller
+@RequestMapping(value = "/home")
 public class HomeController {
 
 //    @Resource
