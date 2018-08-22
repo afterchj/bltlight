@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tpadsz.after.dao.AppOperateDao">
+
+    <insert id="openAppLog" parameterType="com.tpadsz.after.entity.OpenApp">
+        INSERT INTO f_light_user_open_log
+        VALUES
+	      (#{id},#{uid},#{create_date},#{imei},#{imsi},#{fm},#{os},#{model},#{operators},#{resolution},#{pkg},#{clientVersion},#{appid},#{netEnv},#{behavior},#{group})
+    </insert>
+
+    <insert id="connectToBluetoothLog" parameterType="com.tpadsz.after.entity.BluethoothConnect">
+        REPLACE INTO f_bluethooth_connect_log(id,uid,lightId,connectStatus)
+          VALUES(#{id},#{uid},#{lightId},#{connectStatus})
+
+    </insert>
+
+    <insert id="lightOperationLog" parameterType="com.tpadsz.after.entity.LightOperation">
+        INSERT INTO f_light_operation_log VALUES(#{id},#{uid},#{isRegister},#{create_date},#{lightId},#{behavior})
+    </insert>
+</mapper>
