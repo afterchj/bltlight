@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tpadsz.after.dao80.LightUserDao">
+
+    <select id="findLightUserByUid" parameterType="string" resultType="string">
+        SELECT mobile FROM f_light_user WHERE id=#{uid}
+    </select>
+</mapper>

@@ -54,6 +54,26 @@
         <property name="testOnReturn" value="false"/>
 
     </bean>
+
+    <bean id="dataSource80" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+        <!-- 数据库基本信息配置 -->
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <!-- 最大并发连接数 -->
+        <property name="maxActive" value="${maxActive}"/>
+        <!-- 初始化连接数量 -->
+        <property name="initialSize" value="${initialSize}"/>
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="${maxWait}"/>
+        <!-- 最小空闲连接数 -->
+        <property name="minIdle" value="${minIdle}"/>
+        <property name="validationQuery" value="SELECT 'x'"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="false"/>
+
+    </bean>
     <!-- JDBC 事务管理器, 在service层面上实现事务管理 -->
     <bean id="transactionManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -93,10 +113,23 @@
         <property name="mapperLocations" value="classpath:mybatis/*.xml"></property>
     </bean>
 
+    <bean id="sqlSessionFactory80" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource80"/>
+        <property name="typeAliasesPackage" value="com.tpadsz.after.entity"></property>
+        <property name="configLocation" value="classpath:mybatisConfig.xml"></property>
+        <!-- mapper扫描 -->
+        <property name="mapperLocations" value="classpath:mybatis80/*.xml"></property>
+    </bean>
+
     <!-- DAO接口所在包名，Spring会自动查找其下的类 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.tpadsz.after.dao"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.tpadsz.after.dao80"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory80"/>
     </bean>
 
     <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"-->

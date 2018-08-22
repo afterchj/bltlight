@@ -7,11 +7,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import java.util.HashMap;
-import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ParamsEncryptInterceptor implements HandlerInterceptor {
     private Logger system = LoggerUtils.SYSTEM;
