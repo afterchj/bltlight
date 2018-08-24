@@ -3,12 +3,11 @@ package com.tpadsz.after.dao;
 import com.tpadsz.after.entity.LightActive;
 import com.tpadsz.after.entity.LightBinding;
 import com.tpadsz.after.entity.LightPairing;
+import com.tpadsz.after.entity.PairingLog;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-/**
- * Created by after on 2018/8/5.
- */
+
 @Repository("pairingDao")
 public interface PairingDao {
     LightActive findActiveInfoByMacAddress(@Param("mac") String mac);
@@ -29,4 +28,5 @@ public interface PairingDao {
 
     void deleteBindingInfo(@Param("deviceId") String deviceId);
 
+    void savePairingLog(PairingLog pairingLog);
 }

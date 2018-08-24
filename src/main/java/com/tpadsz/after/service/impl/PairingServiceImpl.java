@@ -5,14 +5,11 @@ import com.tpadsz.after.dao80.LoginDao;
 import com.tpadsz.after.entity.LightActive;
 import com.tpadsz.after.entity.LightBinding;
 import com.tpadsz.after.entity.LightPairing;
+import com.tpadsz.after.entity.PairingLog;
 import com.tpadsz.after.service.PairingService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-
-/**
- * Created by after on 2018/8/5.
- */
 
 @Service("pairingService")
 public class PairingServiceImpl implements PairingService {
@@ -41,13 +38,13 @@ public class PairingServiceImpl implements PairingService {
 
     @Override
     public void savePairingInfo(String lightUid, String deviceId) {
-        String name = "[\""+deviceId+"\"]";
-        pairingDao.savePairingInfo(lightUid,name);
+        String name = "[\"" + deviceId + "\"]";
+        pairingDao.savePairingInfo(lightUid, name);
     }
 
     @Override
     public void updatePairingInfo(String lightUid, String deviceIds) {
-        pairingDao.updatePairingInfo(lightUid,deviceIds);
+        pairingDao.updatePairingInfo(lightUid, deviceIds);
     }
 
     @Override
@@ -68,13 +65,18 @@ public class PairingServiceImpl implements PairingService {
     }
 
     @Override
-    public void updateBindingInfo(String lightUid,String deviceId) {
-        pairingDao.updateBindingInfo(lightUid,deviceId);
+    public void updateBindingInfo(String lightUid, String deviceId) {
+        pairingDao.updateBindingInfo(lightUid, deviceId);
     }
 
     @Override
     public void deleteBindingInfo(String deviceId) {
         pairingDao.deleteBindingInfo(deviceId);
+    }
+
+    @Override
+    public void savePairingLog(PairingLog pairingLog) {
+        pairingDao.savePairingLog(pairingLog);
     }
 
 

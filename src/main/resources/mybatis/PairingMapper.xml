@@ -32,6 +32,10 @@
         device_id, model, name, mac, version, channel, other
     </sql>
 
+    <sql id="pairing_log_columns">
+        id, light_uid, is_login, device_id, firmware, result,access_time, other
+    </sql>
+
     <select id="findActiveInfoByMacAddress" resultMap="lightActiveMap">
         SELECT * FROM light.f_light_active WHERE mac = #{mac}
     </select>
@@ -68,4 +72,8 @@
     <update id="deleteBindingInfo" parameterType="String">
         update light.f_light_binding set light_uid = NULL, boss_uid = NULL where device_id=#{deviceId}
     </update>
+
+    <insert id="savePairingLog" parameterType="PairingLog">
+        insert into light.f_light_pairing_log(<include refid="pairing_log_columns"/>) values(#{id}, #{lightUid}, #{isLogin}, #{deviceId}, #{firmware}, #{result}, #{accessTime}, #{other});
+    </insert>
 </mapper>
