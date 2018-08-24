@@ -3,7 +3,7 @@
 <mapper namespace="com.tpadsz.after.dao.PairingDao">
 
     <resultMap type="LightActive" id="lightActiveMap">
-        <id property="deviceId" column="deviceId" javaType="String" jdbcType="VARCHAR"/>
+        <id property="deviceId" column="device_id" javaType="String" jdbcType="VARCHAR"/>
         <result property="model" column="model" javaType="String" jdbcType="VARCHAR"/>
         <result property="name" column="name" javaType="String" jdbcType="VARCHAR"/>
         <result property="mac" column="mac" javaType="String" jdbcType="VARCHAR"/>
@@ -12,8 +12,60 @@
         <result property="other" column="other" javaType="String" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <select id="findMacAddress" resultMap="lightActiveMap">
+    <resultMap type="LightPairing" id="lightPairingMap">
+        <id property="lightUid" column="light_uid" javaType="String" jdbcType="VARCHAR"/>
+        <result property="name" column="name" javaType="String" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" javaType="Date" jdbcType="TIMESTAMP"/>
+        <result property="other" column="other" javaType="String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap type="LightBinding" id="lightBindingMap">
+        <id property="deviceId" column="device_id" javaType="String" jdbcType="VARCHAR"/>
+        <result property="mac" column="mac" javaType="String" jdbcType="VARCHAR"/>
+        <result property="lightUid" column="light_uid" javaType="String" jdbcType="VARCHAR"/>
+        <result property="bossUid" column="boss_uid" javaType="String" jdbcType="VARCHAR"/>
+        <result property="other" column="other" javaType="String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="active_columns">
+        device_id, model, name, mac, version, channel, other
+    </sql>
+
+    <select id="findActiveInfoByMacAddress" resultMap="lightActiveMap">
         SELECT * FROM light.f_light_active WHERE mac = #{mac}
     </select>
 
+    <insert id="saveActiveInfo" parameterType="LightActive">
+        insert into light.f_light_active(<include refid="active_columns"/>) values(#{deviceId}, #{model}, #{name}, #{mac},
+        #{version},#{channel}, #{other});
+    </insert>
+
+    <select id="findPairingInfoByLightUid" resultMap="lightPairingMap">
+        SELECT * FROM light.f_light_pairing WHERE light_uid = #{lightUid}
+    </select>
+
+    <insert id="savePairingInfo" parameterType="String">
+        insert into light.f_light_pairing(light_uid,name,create_time) values(#{lightUid}, #{name}, NOW());
+    </insert>
+
+    <update id="updatePairingInfo" parameterType="String">
+        update light.f_light_pairing set name = #{deviceIds} where light_uid=#{lightUid}
+    </update>
+
+    <select id="findBindingInfoByDeviceId" resultMap="lightBindingMap">
+        SELECT * FROM light.f_light_binding WHERE device_id = #{deviceId}
+    </select>
+
+    <insert id="saveBindingInfo" parameterType="LightBinding">
+        insert into light.f_light_binding(device_id,mac,light_uid) values(#{deviceId}, #{mac}, #{lightUid});
+    </insert>
+
+    <update id="updateBindingInfo" parameterType="String">
+        update light.f_light_binding set light_uid = #{lightUid}, boss_uid = NULL where device_id=#{deviceId}
+    </update>
+
+    <update id="deleteBindingInfo" parameterType="String">
+        update light.f_light_binding set light_uid = NULL, boss_uid = NULL where device_id=#{deviceId}
+    </update>
 </mapper>

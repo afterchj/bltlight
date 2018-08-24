@@ -17,6 +17,21 @@ public class LightActive implements Serializable {
     private String channel;
     private String other;
 
+    public LightActive() {
+        super();
+    }
+
+    public LightActive(String deviceId, String model, String name,String mac, String version, String channel,String other) {
+        super();
+        this.deviceId = deviceId;
+        this.model = model;
+        this.name = name;
+        this.mac = mac;
+        this.version = version;
+        this.channel = channel;
+        this.other = other;
+    }
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }

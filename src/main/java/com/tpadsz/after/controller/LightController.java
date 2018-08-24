@@ -1,44 +1,111 @@
 package com.tpadsz.after.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.tpadsz.after.entity.LightActive;
+import com.tpadsz.after.entity.LightBinding;
+import com.tpadsz.after.entity.LightPairing;
 import com.tpadsz.after.entity.ResultDict;
 import com.tpadsz.after.service.PairingService;
-import com.tpadsz.after.util.WSClient;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URI;
+import java.util.UUID;
 
 /**
  * Created by Administrator on 2016/8/28.
  */
 @Controller
+@RequestMapping("/light")
 public class LightController extends BaseDecodedController {
 
     private PairingService pairingService;
 
     @RequestMapping(value = "/pairing", method = RequestMethod.POST)
-    private String pairing(@ModelAttribute("decodedParams") JSONObject params, ModelMap model) throws ServletException, IOException {
-//        String searchName = params.getString("searchName");
-        System.out.println("params=" + params);
-//        PrintWriter out = res.getWriter();
-        LightActive lightActive = pairingService.findMacAddress("FC-AA-14-2B-22-FB");
-        model.put("result", ResultDict.SUCCESS.getCode());
-//        System.out.println("show=" + JSON.toJSONString(model));
+    private String pairing(@ModelAttribute("decodedParams") JSONObject params, ModelMap model) {
+        try {
+            String lightUid = params.getString("uid");
+            JSONObject firmware = JSONObject.parseObject(params.getString("firmware"));
+            String deviceModel = firmware.getString("model");
+            String name = firmware.getString("name");
+            String mac = firmware.getString("mac");
+            String version = firmware.getString("version");
+            String channel = firmware.getString("channel");
+            String deviceId = "";
+            LightActive lightActive = pairingService.findActiveInfoByMacAddress(mac);
+            if (lightActive == null) {
+                deviceId = UUID.randomUUID().toString().toUpperCase().replaceAll("-", "");
+                LightActive lightActive2 = new LightActive(deviceId, deviceModel, name, mac, version, channel, null);
+                pairingService.saveActiveInfo(lightActive2);
+            } else {
+                deviceId = lightActive.getDeviceId();
+            }
+            LightPairing lightPairing = pairingService.findPairingInfoByLightUid(lightUid);
+            if (lightPairing == null) {
+                pairingService.savePairingInfo(lightUid, deviceId);
+            } else {
+                String deviceIds = lightPairing.getName();
+                JSONArray jsonArray = JSONArray.fromObject(deviceIds);
+                if (!jsonArray.contains(deviceId)) {
+                    jsonArray.add(deviceId);
+                    pairingService.updatePairingInfo(lightUid, jsonArray.toString());
+                }
+            }
+            String isLogin = pairingService.findLoginState(lightUid);
+            if ("1".equals(isLogin)) {
+                LightBinding lightBinding = pairingService.findBindingInfoByDeviceId(deviceId);
+                if (lightBinding == null) {
+                    LightBinding lightBinding2 = new LightBinding(deviceId, mac, lightUid, null, null);
+                    pairingService.saveBindingInfo(lightBinding2);
+                } else if (!lightUid.equals(lightBinding.getLightUid())) {
+                    pairingService.updateBindingInfo(lightUid, deviceId);
+                }
+            }
+            model.put("result", ResultDict.SUCCESS.getCode());
+            model.put("result_message", "设备配对成功");
+            model.put("deviceId", deviceId);
+        } catch (Exception e) {
+            model.put("result", ResultDict.SYSTEM_ERROR.getCode());
+            model.put("result_message", "设备配对失败");
+            model.put("deviceId", "");
+        }
         return null;
     }
+
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    private String delete(@ModelAttribute("decodedParams") JSONObject params, ModelMap model) {
+        try {
+            String lightUid = params.getString("uid");
+            String deviceId = params.getString("deviceId");
+            LightPairing lightPairing = pairingService.findPairingInfoByLightUid(lightUid);
+            if (lightPairing != null) {
+                String deviceIds = lightPairing.getName();
+                JSONArray jsonArray = JSONArray.fromObject(deviceIds);
+                if (jsonArray.contains(deviceId)) {
+                    jsonArray.remove(deviceId);
+                    pairingService.updatePairingInfo(lightUid, jsonArray.toString());
+                }
+            }
+            String isLogin = pairingService.findLoginState(lightUid);
+            if ("1".equals(isLogin)) {
+                LightBinding lightBinding = pairingService.findBindingInfoByDeviceId(deviceId);
+                if(lightBinding!=null){
+                    pairingService.deleteBindingInfo(deviceId);
+                }
+            }
+            model.put("result", ResultDict.SUCCESS.getCode());
+            model.put("result_message", "设备删除成功");
+        } catch (Exception e) {
+            model.put("result", ResultDict.SYSTEM_ERROR.getCode());
+            model.put("result_message", "设备删除失败");
+        }
+        return null;
+    }
+
 
     @Autowired
     public void setPairingService(PairingService pairingService) {
