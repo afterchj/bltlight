@@ -123,7 +123,7 @@ public class ParamsEncryptInterceptor implements HandlerInterceptor {
         jsonObj.put("uri", uri);
         jsonObj.put("result", resultCode);
         jsonObj.put("ip", ip);
-//        daylog.warn(jsonObj.toJSONString());
+        daylog.warn(jsonObj.toJSONString());
     }
 
     @Override

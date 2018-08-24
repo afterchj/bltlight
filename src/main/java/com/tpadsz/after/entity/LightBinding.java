@@ -14,6 +14,19 @@ public class LightBinding implements Serializable {
     private String bossUid;
     private String other;
 
+    public LightBinding() {
+        super();
+    }
+
+    public LightBinding(String deviceId, String mac, String lightUid,String bossUid, String other) {
+        super();
+        this.deviceId = deviceId;
+        this.mac = mac;
+        this.lightUid = lightUid;
+        this.bossUid = bossUid;
+        this.other = other;
+    }
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }

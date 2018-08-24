@@ -1,5 +1,7 @@
 package com.tpadsz.after;
 
+import net.sf.json.JSONArray;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -13,12 +15,15 @@ public class Test {
      */
     public static void main(String[] args) {
         // System.out.println("This is println message.");
+//        // 记录debug级别的信息
+//        logger.debug("This is debug message.");
+//        // 记录info级别的信息
+//        logger.info("This is info message.");
+//        // 记录error级别的信息
+//        logger.error("This is error message.");
 
-        // 记录debug级别的信息
-        logger.debug("This is debug message.");
-        // 记录info级别的信息
-        logger.info("This is info message.");
-        // 记录error级别的信息
-        logger.error("This is error message.");
+       String deviceIds ="{\"DBD47F5FD33A464ABA32AA97D00EB1CE\",\"DBD47F5FD33A464ABA32AA97D00EB1CE\",\"DBD47F5FD33A464ABA32AA97D00EB1CE\",\"B59B48A74ACB4EB8A2C181AEDFBF42A6\",\"DBD47F5FD33A464ABA32AA97D00EB1CE\"}";
+//        JSONObject jsonObject = JSONObject.fromObject(deviceIds);
+//        System.out.println(list.contains("B59B48A74ACB4EB8A2C181AEDFBF42A6"));
     }
 }
