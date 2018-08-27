@@ -10,17 +10,17 @@ public class BluethoothConnect {
 
     private String id;
     private String uid;
-    private String lightId;
+    private String device_id;
     private String connectStatus;
 
     public BluethoothConnect() {
     }
 
-    public BluethoothConnect(String id, String uid, String lightId, String
+    public BluethoothConnect(String id, String uid, String device_id, String
             connectStatus) {
         this.id = id;
         this.uid = uid;
-        this.lightId = lightId;
+        this.device_id = device_id;
         this.connectStatus = connectStatus;
     }
 
@@ -40,12 +40,12 @@ public class BluethoothConnect {
         this.uid = uid;
     }
 
-    public String getLightId() {
-        return lightId;
+    public String getDevice_id() {
+        return device_id;
     }
 
-    public void setLightId(String lightId) {
-        this.lightId = lightId;
+    public void setDevice_id(String device_id) {
+        this.device_id = device_id;
     }
 
     public String getConnectStatus() {

@@ -46,7 +46,7 @@ public class AppOperateController extends BaseDecodedController{
             bluethoothConnect = new BluethoothConnect();
             bluethoothConnect.setId(id);
             bluethoothConnect.setUid(uid);
-            bluethoothConnect.setLightId(array.getJSONObject(i).getString("lightId"));
+            bluethoothConnect.setDevice_id(array.getJSONObject(i).getString("lightId"));
             bluethoothConnect.setConnectStatus(array.getJSONObject(i).getString("connectStatus"));
             appOperateService.connectToBluetoothLog(bluethoothConnect);
         }
@@ -118,7 +118,7 @@ public class AppOperateController extends BaseDecodedController{
         lightOperation.setId(id);
         lightOperation.setUid(uid);
         lightOperation.setBehavior(behavior);
-        lightOperation.setLightId(lightId);
+        lightOperation.setDevice_id(lightId);
         lightOperation.setIsRegister(isRegister);
         lightOperation.setCreate_date(new Date());
         return lightOperation;

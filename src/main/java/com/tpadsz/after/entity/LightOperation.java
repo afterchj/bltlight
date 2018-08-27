@@ -14,19 +14,19 @@ public class LightOperation {
     private String uid;
     private String isRegister;
     private Date create_date;
-    private String lightId;
+    private String device_id;
     private String behavior;
 
     public LightOperation() {
     }
 
     public LightOperation(String id, String uid, String isRegister, Date
-            create_date, String lightId, String behavior) {
+            create_date, String device_id, String behavior) {
         this.id = id;
         this.uid = uid;
         this.isRegister = isRegister;
         this.create_date = create_date;
-        this.lightId = lightId;
+        this.device_id = device_id;
         this.behavior = behavior;
     }
 
@@ -62,12 +62,12 @@ public class LightOperation {
         this.create_date = create_date;
     }
 
-    public String getLightId() {
-        return lightId;
+    public String getDevice_id() {
+        return device_id;
     }
 
-    public void setLightId(String lightId) {
-        this.lightId = lightId;
+    public void setDevice_id(String device_id) {
+        this.device_id = device_id;
     }
 
     public String getBehavior() {
