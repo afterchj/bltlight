@@ -3,6 +3,7 @@ package com.tpadsz.after.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.tpadsz.after.entity.*;
+import com.tpadsz.after.entity.dd.ResultDict;
 import com.tpadsz.after.service.AppOperateService;
 import com.tpadsz.after.service.LightUserService;
 import com.tpadsz.after.service.RecordBillService;
@@ -74,6 +75,7 @@ public class AppOperateController extends BaseDecodedController {
         LightBinding lightBinding = billService.getByUid(params.getString("deviceId"));
         lightCharge.setUid(lightBinding.getBossUid());
         billService.insetBill(lightBinding, lightOperation, lightCharge);
+
         appOperateService.lightOperationLog(lightOperation);
         model.put("result", ResultDict.SUCCESS.getCode());
         model.put("result_message", ResultDict.SUCCESS.getValue());
