@@ -2,6 +2,7 @@ package com.tpadsz.after.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tpadsz.after.entity.*;
+import com.tpadsz.after.entity.dd.ResultDict;
 import com.tpadsz.after.service.PairingService;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -29,6 +29,7 @@ public class RecordChargeController {
 
         String result = ResultDict.SUCCESS.getCode();
         String msg = ResultDict.SUCCESS.getValue();
+
         String uid = params.getString("uid");
         Map map = billService.getSumCharge(uid);
         if (StringUtils.isEmpty(uid)) {

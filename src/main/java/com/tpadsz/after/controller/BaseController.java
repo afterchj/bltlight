@@ -2,7 +2,7 @@ package com.tpadsz.after.controller;
 
 import javax.validation.ValidationException;
 
-import com.tpadsz.after.entity.ResultDict;
+import com.tpadsz.after.entity.dd.ResultDict;
 import com.tpadsz.after.util.LoggerUtils;
 import org.apache.log4j.Logger;
 import org.springframework.ui.ModelMap;

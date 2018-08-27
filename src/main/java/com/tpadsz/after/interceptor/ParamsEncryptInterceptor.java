@@ -1,7 +1,7 @@
 package com.tpadsz.after.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
-import com.tpadsz.after.entity.ResultDict;
+import com.tpadsz.after.entity.dd.ResultDict;
 import com.tpadsz.after.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
