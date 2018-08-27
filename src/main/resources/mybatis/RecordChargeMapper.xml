@@ -4,7 +4,7 @@
 <mapper namespace="com.tpadsz.after.dao.RecordBillDao">
 
     <select id="getByUid" parameterType="string" resultType="LightBinding">
-        SELECT * FROM f_light_binding WHERE light_uid=#{uid} OR boss_uid=#{uid}
+        SELECT * FROM f_light_binding WHERE device_id=#{deviceId}
     </select>
 
     <insert id="insetBill" parameterType="LightCharge">

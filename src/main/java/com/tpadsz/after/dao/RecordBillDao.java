@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public interface RecordBillDao {
 
-    LightBinding getByUid(String uid);
+    LightBinding getByUid(String deviceId);
 
     LightOperation getByLightUid(String light_uid);
 
