@@ -4,6 +4,7 @@ import com.tpadsz.after.entity.LightBinding;
 import com.tpadsz.after.entity.LightCharge;
 import com.tpadsz.after.entity.LightOperation;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,9 +15,9 @@ public interface RecordBillService {
 
     LightOperation getByLightUid(String light_uid);
 
-    void insetBill(LightBinding binding, LightOperation operation,LightCharge lightCharge);
+    void insetBill(LightBinding binding, LightOperation operation, LightCharge lightCharge);
 
-    Map getChargeList(String uid);
+    List<Map> getChargeList(String uid);
 
     Map getSumCharge(String uid);
 }

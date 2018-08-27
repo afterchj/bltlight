@@ -5,6 +5,7 @@ import com.tpadsz.after.entity.LightBinding;
 import com.tpadsz.after.entity.LightCharge;
 import com.tpadsz.after.entity.LightOperation;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,11 +15,11 @@ public interface RecordBillDao {
 
     LightBinding getByUid(String deviceId);
 
-    LightOperation getByLightUid(String light_uid);
+    LightOperation getByLightUid(String uid);
 
     void insetBill(LightCharge lightCharge);
 
-    Map getChargeList(String uid);
+    List<Map> getChargeList(String uid);
 
     Map getSumCharge(String uid);
 }

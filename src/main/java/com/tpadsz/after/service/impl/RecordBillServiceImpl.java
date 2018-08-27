@@ -9,6 +9,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,13 +24,13 @@ public class RecordBillServiceImpl implements RecordBillService {
     private RecordBillDao billDao;
 
     @Override
-    public LightBinding getByUid(String uid) {
-        return billDao.getByUid(uid);
+    public LightBinding getByUid(String deviceId) {
+        return billDao.getByUid(deviceId);
     }
 
     @Override
-    public LightOperation getByLightUid(String light_uid) {
-        return billDao.getByLightUid(light_uid);
+    public LightOperation getByLightUid(String uid) {
+        return billDao.getByLightUid(uid);
     }
 
     @Override
@@ -39,13 +41,26 @@ public class RecordBillServiceImpl implements RecordBillService {
     }
 
     @Override
-    public Map getChargeList(String uid) {
-        return billDao.getChargeList(uid);
+    public List<Map> getChargeList(String uid) {
+        List<Map> mapList = billDao.getChargeList(uid);
+        if (mapList != null) {
+            for (Map map : mapList) {
+                map.put("electric_bill", 0.1);
+            }
+        }
+        return mapList;
     }
 
     @Override
     public Map getSumCharge(String uid) {
-        return billDao.getSumCharge(uid);
+        Map map = billDao.getSumCharge(uid);
+        if (map != null) {
+            BigDecimal total = (BigDecimal) map.get("total_bill");
+            double total_bill = total.doubleValue() / 1000;
+            map.put("total_bill", total_bill);
+            map.put("ytd_charge", 0.1);
+        }
+        return map;
     }
 
     public boolean isBinding(LightBinding lightBinding) {
@@ -59,8 +74,9 @@ public class RecordBillServiceImpl implements RecordBillService {
     }
 
     public boolean isBLTOperation(LightOperation lightOperation) {
+        System.out.println("lightOperation.getIsRegister()=" + lightOperation.getIsRegister());
         boolean flag = false;
-        if (lightOperation != null && lightOperation.getIsRegister().equals(1)) {
+        if (lightOperation != null && lightOperation.getIsRegister().equals("1")) {
             flag = true;
         }
         return flag;
