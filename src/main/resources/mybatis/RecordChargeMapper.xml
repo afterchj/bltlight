@@ -4,7 +4,11 @@
 <mapper namespace="com.tpadsz.after.dao.RecordBillDao">
 
     <select id="getByUid" parameterType="string" resultType="LightBinding">
-        SELECT * FROM f_light_binding WHERE device_id=#{deviceId}
+       SELECT device_id deviceId,light_uid lightUid,boss_uid bossUid  FROM f_light_binding WHERE device_id=#{deviceId}
+    </select>
+
+    <select id="getByLightUid" parameterType="string" resultType="LightOperation">
+        SELECT * FROM f_light_operation_log WHERE uid=#{uid} LIMIT 1
     </select>
 
     <insert id="insetBill" parameterType="LightCharge">
@@ -12,10 +16,10 @@
     </insert>
 
     <select id="getChargeList" parameterType="string" resultType="map">
-       SELECT electric_bill,log_time FROM f_light_charge WHERE uid=#{uid}
+       SELECT electric_bill,log_time FROM f_light_charge WHERE uid=#{uid} ORDER BY log_time DESC LIMIT 7
     </select>
 
     <select id="getSumCharge" parameterType="string" resultType="map">
-       SELECT SUM(electric_bill) total_cahrge,electric_bill ytd_charge FROM f_light_charge WHERE uid=#{uid}
+       SELECT SUM(electric_bill) total_bill,electric_bill ytd_charge FROM f_light_charge WHERE uid=#{uid}
     </select>
 </mapper>
