@@ -2,13 +2,12 @@ package com.tpadsz.after.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.tpadsz.after.entity.BluethoothConnect;
-import com.tpadsz.after.entity.LightOperation;
-import com.tpadsz.after.entity.OpenApp;
-import com.tpadsz.after.entity.ResultDict;
+import com.tpadsz.after.entity.*;
 import com.tpadsz.after.service.AppOperateService;
 import com.tpadsz.after.service.LightUserService;
+import com.tpadsz.after.service.RecordBillService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,22 +26,25 @@ import java.util.UUID;
  **/
 @Controller
 @RequestMapping("/appOperate")
-public class AppOperateController extends BaseDecodedController{
+public class AppOperateController extends BaseDecodedController {
 
     @Resource
     private AppOperateService appOperateService;
     @Resource
     private LightUserService lightUserService;
 
-    @RequestMapping(value = "/blue",method = RequestMethod.POST)
-    public void bluethoothConnect(@ModelAttribute("decodedParams") JSONObject params, ModelMap model){
+    @Autowired
+    private RecordBillService billService;
+
+    @RequestMapping(value = "/blue", method = RequestMethod.POST)
+    public void bluethoothConnect(@ModelAttribute("decodedParams") JSONObject params, ModelMap model) {
 
         String uid = params.getString("uid");
         JSONArray array = params.getJSONArray("lightGroup");
-        String id= null;
+        String id = null;
         BluethoothConnect bluethoothConnect = null;
-        for (int i=0;i<array.size();i++){
-            id= StringUtils.replace(UUID.randomUUID().toString(), "-", "");
+        for (int i = 0; i < array.size(); i++) {
+            id = StringUtils.replace(UUID.randomUUID().toString(), "-", "");
             bluethoothConnect = new BluethoothConnect();
             bluethoothConnect.setId(id);
             bluethoothConnect.setUid(uid);
@@ -51,35 +53,39 @@ public class AppOperateController extends BaseDecodedController{
             appOperateService.connectToBluetoothLog(bluethoothConnect);
         }
         model.put("result", ResultDict.SUCCESS.getCode());
-        model.put("result_message",ResultDict.SUCCESS.getValue());
+        model.put("result_message", ResultDict.SUCCESS.getValue());
 //        return null;
     }
 
     @RequestMapping("/open")
-    public void openApp(@ModelAttribute("decodedParams") JSONObject params, ModelMap model){
+    public void openApp(@ModelAttribute("decodedParams") JSONObject params, ModelMap model) {
         OpenApp openApp = setOPenApp(params);
         appOperateService.openAppLog(openApp);
         model.put("result", ResultDict.SUCCESS.getCode());
-        model.put("result_message",ResultDict.SUCCESS.getValue());
-        model.put("uid",openApp.getUid());
-        model.put("group",openApp.getGroup());
+        model.put("result_message", ResultDict.SUCCESS.getValue());
+        model.put("uid", openApp.getUid());
+        model.put("group", openApp.getGroup());
     }
 
     @RequestMapping("/operation")
-    public void LightOperation(@ModelAttribute("decodedParams") JSONObject params, ModelMap model){
+    public void LightOperation(@ModelAttribute("decodedParams") JSONObject params, ModelMap model) {
+        LightCharge lightCharge = new LightCharge();
         LightOperation lightOperation = setLightOperation(params);
+        LightBinding lightBinding = billService.getByUid(params.getString("lightId"));
+        lightCharge.setUid(lightBinding.getBossUid());
+        billService.insetBill(lightBinding, lightOperation, lightCharge);
         appOperateService.lightOperationLog(lightOperation);
         model.put("result", ResultDict.SUCCESS.getCode());
-        model.put("result_message",ResultDict.SUCCESS.getValue());
+        model.put("result_message", ResultDict.SUCCESS.getValue());
     }
 
-    public OpenApp setOPenApp(JSONObject params){
+    public OpenApp setOPenApp(JSONObject params) {
         String uid = params.getString("uid");
         String behavior = null;
         OpenApp openApp = new OpenApp();
-        if (StringUtils.isBlank(uid)){
+        if (StringUtils.isBlank(uid)) {
             behavior = "install";
-        }else {
+        } else {
             behavior = "visit";
         }
         JSONObject firmware = params.getJSONObject("firmware");
@@ -102,7 +108,7 @@ public class AppOperateController extends BaseDecodedController{
         return openApp;
     }
 
-    public LightOperation setLightOperation(JSONObject params){
+    public LightOperation setLightOperation(JSONObject params) {
         LightOperation lightOperation = new LightOperation();
         String uid = params.getString("uid");
         String lightId = params.getString("lightId");
@@ -110,9 +116,9 @@ public class AppOperateController extends BaseDecodedController{
         String id = StringUtils.replace(UUID.randomUUID().toString(), "-", "");
         String mobile = lightUserService.findLightUserByUid(uid);
         String isRegister = null;
-        if (StringUtils.isBlank(mobile)){
+        if (StringUtils.isBlank(mobile)) {
             isRegister = "0";//未注册
-        }else {
+        } else {
             isRegister = "1";//已注册
         }
         lightOperation.setId(id);

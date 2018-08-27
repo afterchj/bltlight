@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tpadsz.after.dao.RecordBillDao">
+
+    <select id="getByUid" parameterType="string" resultType="LightBinding">
+        SELECT * FROM f_light_binding WHERE light_uid=#{uid} OR boss_uid=#{uid}
+    </select>
+
+    <insert id="insetBill" parameterType="LightCharge">
+        REPLACE INTO f_light_charge(uid,electric_bill,log_time,create_time) VALUES(#{uid},100,CURDATE(),NOW())
+    </insert>
+
+    <select id="getChargeList" parameterType="string" resultType="map">
+       SELECT electric_bill,log_time FROM f_light_charge WHERE uid=#{uid}
+    </select>
+
+    <select id="getSumCharge" parameterType="string" resultType="map">
+       SELECT SUM(electric_bill) total_cahrge,electric_bill ytd_charge FROM f_light_charge WHERE uid=#{uid}
+    </select>
+</mapper>
