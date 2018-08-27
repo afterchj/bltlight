@@ -72,8 +72,8 @@ public class HomeController {
 
     @RequestMapping(value = "/login")
     public String login(HttpSession session) {
-        List<User> users = userService.getAll();
-        session.setAttribute("users", users);
+//        List<User> users = userService.getAll();
+//        session.setAttribute("users", users);
         return "userInfo";
     }
 
