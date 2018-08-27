@@ -10,7 +10,7 @@
     </insert>
 
     <insert id="connectToBluetoothLog" parameterType="com.tpadsz.after.entity.BluethoothConnect">
-        REPLACE INTO f_bluethooth_connect_log(id,uid,lightId,connectStatus)
+        REPLACE INTO f_bluethooth_connect_log(id,uid,device_id,connectStatus)
           VALUES(#{id},#{uid},#{device_id},#{connectStatus})
 
     </insert>
