@@ -71,7 +71,7 @@ public class AppOperateController extends BaseDecodedController {
     public void LightOperation(@ModelAttribute("decodedParams") JSONObject params, ModelMap model) {
         LightCharge lightCharge = new LightCharge();
         LightOperation lightOperation = setLightOperation(params);
-        LightBinding lightBinding = billService.getByUid(params.getString("lightId"));
+        LightBinding lightBinding = billService.getByUid(params.getString("deviceId"));
         lightCharge.setUid(lightBinding.getBossUid());
         billService.insetBill(lightBinding, lightOperation, lightCharge);
         appOperateService.lightOperationLog(lightOperation);
