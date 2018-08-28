@@ -27,4 +27,7 @@ public interface PairingService {
     void deleteBindingInfo(String deviceId);
 
     void savePairingLog(PairingLog pairingLog);
+
+    void updateBossBindingInfo(String bossUid);
+
 }

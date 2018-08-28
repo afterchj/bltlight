@@ -1,10 +1,9 @@
 package com.tpadsz.after.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
-/**
- * Created by nannan.li on 2017/2/7.
- */
+
 public class LightBinding implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -12,18 +11,22 @@ public class LightBinding implements Serializable {
     private String mac;
     private String lightUid;
     private String bossUid;
+    private Date createTime;
+    private Date updateTime;
     private String other;
 
     public LightBinding() {
         super();
     }
 
-    public LightBinding(String deviceId, String mac, String lightUid,String bossUid, String other) {
+    public LightBinding(String deviceId, String mac, String lightUid,String bossUid,Date createTime,Date updateTime, String other) {
         super();
         this.deviceId = deviceId;
         this.mac = mac;
         this.lightUid = lightUid;
         this.bossUid = bossUid;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
         this.other = other;
     }
 
@@ -63,6 +66,22 @@ public class LightBinding implements Serializable {
         this.bossUid = bossUid;
     }
 
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
     public String getOther() {
         return other;
     }
@@ -78,6 +97,8 @@ public class LightBinding implements Serializable {
                 ", mac='" + mac + '\'' +
                 ", lightUid='" + lightUid + '\'' +
                 ", bossUid='" + bossUid + '\'' +
+                ", createTime='" + createTime + '\'' +
+                ", updateTime='" + updateTime + '\'' +
                 ", other=" + other +
                 '}';
     }
