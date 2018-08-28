@@ -3,7 +3,7 @@
 <mapper namespace="com.tpadsz.after.dao80.BindingDao">
 
     <update id="updateBossBindingInfo" parameterType="String">
-        update boss_locker.f_light_binding set device_id = NULL and light_uid = NULL where boss_uid=#{bossUid}
+        update boss_locker.f_light_binding set device_id = NULL, light_uid = NULL where boss_uid=#{bossUid}
     </update>
 
 </mapper>
