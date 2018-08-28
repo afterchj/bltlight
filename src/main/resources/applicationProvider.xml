@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!-- consumer application name -->
+    <dubbo:application name="consumer-of-helloworld-app" />
+
+    <!-- 使用multicast广播注册中心暴露服务地址 <dubbo:registry address="multicast://224.5.6.7:1234" /> -->
+
+    <!-- 使用zookeeper注册中心暴露服务地址 -->
+    <!--<dubbo:registry address="zookeeper://10.10.11.81:2181" />-->
+    <dubbo:registry protocol="zookeeper" address="10.10.11.81:2181,10.10.11.68:2181,10.10.11.90:2181"/>
+
+    <dubbo:consumer timeout="5000" />
+    <!-- which service to consume? -->
+
+    <dubbo:reference id="recordBillService" interface="com.tpadsz.after.api.RecordBillService" protocol="dubbo" version="0.1.0" />
+
+
+</beans>
