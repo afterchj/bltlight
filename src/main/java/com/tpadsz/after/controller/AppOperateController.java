@@ -7,7 +7,7 @@ import com.tpadsz.after.entity.dd.ResultDict;
 import com.tpadsz.after.service.AppOperateService;
 import com.tpadsz.after.service.LightUserService;
 import com.tpadsz.after.service.PairingService;
-import com.tpadsz.after.service.RecordBillService;
+import com.tpadsz.after.api.RecordBillService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

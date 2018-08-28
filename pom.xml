@@ -39,12 +39,23 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
+        <dependency>
+            <groupId>com.101tec</groupId>
+            <artifactId>zkclient</artifactId>
+            <version>0.10</version>
+        </dependency>
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
             <version>1.1.0.Final</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.tpadsz.after</groupId>
+            <artifactId>blt-light-api</artifactId>
+            <version>3.0</version>
+        </dependency>
+
 
         <!-- 添加spring核心依赖 -->
         <dependency>
