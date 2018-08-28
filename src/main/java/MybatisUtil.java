@@ -37,7 +37,7 @@ public class MybatisUtil {
 
     @Test
     public void testBind() {
-        LightBinding binding = getSession().getMapper(RecordBillDao.class).getByDeviceId("test101010");
+        LightBinding binding = getSession().getMapper(RecordBillDao.class).getByDeviceId("3E94EE45B6164231A762BB8A6E531E0D");
         System.out.println(binding + "\t" + binding.getBossUid());
     }
 
