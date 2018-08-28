@@ -1,6 +1,7 @@
 package com.tpadsz.after.service.impl;
 
 import com.tpadsz.after.dao.PairingDao;
+import com.tpadsz.after.dao80.BindingDao;
 import com.tpadsz.after.dao80.LoginDao;
 import com.tpadsz.after.entity.LightActive;
 import com.tpadsz.after.entity.LightBinding;
@@ -18,6 +19,9 @@ public class PairingServiceImpl implements PairingService {
 
     @Resource(name = "loginDao")
     private LoginDao loginDao;
+
+    @Resource(name = "bindingDao")
+    private BindingDao bindingDao;
 
     @Override
     public LightActive findActiveInfoByMacAddress(String mac) {
@@ -77,6 +81,11 @@ public class PairingServiceImpl implements PairingService {
     @Override
     public void savePairingLog(PairingLog pairingLog) {
         pairingDao.savePairingLog(pairingLog);
+    }
+
+    @Override
+    public void updateBossBindingInfo(String bossUid) {
+        bindingDao.updateBossBindingInfo(bossUid);
     }
 
 

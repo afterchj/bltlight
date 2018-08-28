@@ -3,9 +3,7 @@ package com.tpadsz.after.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * Created by nannan.li on 2017/2/7.
- */
+
 public class LightPairing implements Serializable {
     private static final long serialVersionUID = 1L;
 

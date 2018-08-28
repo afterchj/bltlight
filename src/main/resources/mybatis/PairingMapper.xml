@@ -25,6 +25,8 @@
         <result property="mac" column="mac" javaType="String" jdbcType="VARCHAR"/>
         <result property="lightUid" column="light_uid" javaType="String" jdbcType="VARCHAR"/>
         <result property="bossUid" column="boss_uid" javaType="String" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" javaType="Date" jdbcType="TIMESTAMP"/>
         <result property="other" column="other" javaType="String" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -62,7 +64,7 @@
     </select>
 
     <insert id="saveBindingInfo" parameterType="LightBinding">
-        insert into light.f_light_binding(device_id,mac,light_uid) values(#{deviceId}, #{mac}, #{lightUid});
+        insert into light.f_light_binding(device_id,mac,light_uid,create_time) values(#{deviceId}, #{mac}, #{lightUid}, #{createTime});
     </insert>
 
     <update id="updateBindingInfo" parameterType="String">

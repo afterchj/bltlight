@@ -56,10 +56,13 @@ public class LightController extends BaseDecodedController {
             if ("1".equals(isLogin)) {
                 LightBinding lightBinding = pairingService.findBindingInfoByDeviceId(deviceId);
                 if (lightBinding == null) {
-                    LightBinding lightBinding2 = new LightBinding(deviceId, mac, lightUid, null, null);
+                    LightBinding lightBinding2 = new LightBinding(deviceId, mac, lightUid,null,new Date(),null, null);
                     pairingService.saveBindingInfo(lightBinding2);
                 } else if (!lightUid.equals(lightBinding.getLightUid())) {
                     pairingService.updateBindingInfo(lightUid, deviceId);
+                    if(lightBinding.getBossUid()!=null){
+                        pairingService.updateBossBindingInfo(lightBinding.getBossUid());
+                    }
                 }
             }
             PairingLog pairingLog = new PairingLog(0, lightUid, isLogin, deviceId, firmware.toJSONString(),
@@ -100,6 +103,9 @@ public class LightController extends BaseDecodedController {
                 LightBinding lightBinding = pairingService.findBindingInfoByDeviceId(deviceId);
                 if (lightBinding != null) {
                     pairingService.deleteBindingInfo(deviceId);
+                    if(lightBinding.getBossUid()!=null){
+                        pairingService.updateBossBindingInfo(lightBinding.getBossUid());
+                    }
                 }
             }
             PairingLog pairingLog = new PairingLog(0, lightUid, isLogin, deviceId, "",
