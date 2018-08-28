@@ -16,7 +16,7 @@
     </insert>
 
     <select id="getChargeList" parameterType="string" resultType="map">
-       SELECT electric_bill,log_time FROM f_light_charge WHERE uid=#{uid} ORDER BY log_time DESC LIMIT 7
+       SELECT electric_bill,log_time FROM f_light_charge WHERE uid=#{uid} AND DATEDIFF(CURDATE(),log_time)>=1 ORDER BY log_time DESC LIMIT 7
     </select>
 
     <select id="getSumCharge" parameterType="string" resultType="map">
