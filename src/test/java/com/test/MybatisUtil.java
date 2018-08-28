@@ -1,5 +1,7 @@
 package com.test;
 
+import com.alibaba.fastjson.JSON;
+import com.tpadsz.after.api.RecordBillService;
 import com.tpadsz.after.dao.RecordBillDao;
 import com.tpadsz.after.dao80.LightUserDao;
 import com.tpadsz.after.entity.LightBinding;
@@ -29,6 +31,12 @@ public class MybatisUtil {
         return factory.openSession();
     }
 
+    public static void main(String[] args) {
+        RecordBillService recordBillService = (RecordBillService) atx.getBean("recordBillService");
+        LightBinding binding = recordBillService.getByDeviceId("test101010");
+        System.out.println("---------------------->"+binding + "\t" + binding.getBossUid());
+    }
+
     @Test
     public void Test() {
         String mobile = getSession().getMapper(LightUserDao.class).findLightUserByUid("5bc9f45ab42e453f93ee8a966b5a9726");
@@ -37,15 +45,15 @@ public class MybatisUtil {
 
     @Test
     public void testBind() {
-        LightBinding binding = getSession().getMapper(RecordBillDao.class).getByUid("test101010");
-        System.out.println(binding + "\t" + binding.getBossUid());
+        LightBinding binding = getSession().getMapper(RecordBillDao.class).getByDeviceId("3E94EE45B6164231A762BB8A6E531E0D");
+        System.out.println(binding);
 
     }
 
     @Test
     public void testOperation() {
         LightOperation operation = getSession().getMapper(RecordBillDao.class).getByLightUid("5bc9f45ab42e453f93ee8a966b5a9726");
-        System.out.println(operation + "\t" + operation.getDevice_id());
+        System.out.println(JSON.toJSONString(operation));
     }
 
     @Test

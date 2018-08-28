@@ -10,7 +10,7 @@ import org.springframework.web.context.support.XmlWebApplicationContext;
 /**
  * Created by hongjian.chen on 2018/8/1.
  */
-public class Main {
+public class MainTest {
 
 //    public static void main(String[] args) {
 //        ApplicationContext ctx=new ClassPathXmlApplicationContext("classpath:applicationContext.xml");

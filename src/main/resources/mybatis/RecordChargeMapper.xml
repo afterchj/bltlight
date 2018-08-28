@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tpadsz.after.dao.RecordBillDao">
 
-    <select id="getByUid" parameterType="string" resultType="LightBinding">
+    <select id="getByDeviceId" parameterType="string" resultType="LightBinding">
        SELECT device_id deviceId,light_uid lightUid,boss_uid bossUid  FROM f_light_binding WHERE device_id=#{deviceId}
     </select>
 
@@ -20,6 +20,6 @@
     </select>
 
     <select id="getSumCharge" parameterType="string" resultType="map">
-       SELECT SUM(electric_bill) total_bill,electric_bill ytd_charge FROM f_light_charge WHERE uid=#{uid}
+       SELECT SUM(electric_bill) total_bill,electric_bill ytd_charge FROM f_light_charge WHERE uid=#{uid} AND DATEDIFF(CURDATE(),log_time)>=1
     </select>
 </mapper>

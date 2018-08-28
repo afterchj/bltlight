@@ -1,10 +1,10 @@
 package com.tpadsz.after.service.impl;
 
+import com.tpadsz.after.api.RecordBillService;
 import com.tpadsz.after.dao.RecordBillDao;
 import com.tpadsz.after.entity.LightBinding;
 import com.tpadsz.after.entity.LightCharge;
 import com.tpadsz.after.entity.LightOperation;
-import com.tpadsz.after.service.RecordBillService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,15 +17,15 @@ import java.util.Map;
  * Created by hongjian.chen on 2018/8/27.
  */
 
-@Service
+@Service("recordBillService")
 public class RecordBillServiceImpl implements RecordBillService {
 
     @Autowired
     private RecordBillDao billDao;
 
     @Override
-    public LightBinding getByUid(String deviceId) {
-        return billDao.getByUid(deviceId);
+    public LightBinding getByDeviceId(String deviceId) {
+        return billDao.getByDeviceId(deviceId);
     }
 
     @Override
@@ -70,6 +70,7 @@ public class RecordBillServiceImpl implements RecordBillService {
                 flag = true;
             }
         }
+        System.out.println("flag=" + flag);
         return flag;
     }
 
