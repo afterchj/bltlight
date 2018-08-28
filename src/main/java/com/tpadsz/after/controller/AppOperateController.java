@@ -6,6 +6,7 @@ import com.tpadsz.after.entity.*;
 import com.tpadsz.after.entity.dd.ResultDict;
 import com.tpadsz.after.service.AppOperateService;
 import com.tpadsz.after.service.LightUserService;
+import com.tpadsz.after.service.PairingService;
 import com.tpadsz.after.service.RecordBillService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ public class AppOperateController extends BaseDecodedController {
     private AppOperateService appOperateService;
     @Resource
     private LightUserService lightUserService;
+    @Resource
+    private PairingService pairingService;
 
     @Autowired
     private RecordBillService billService;
@@ -42,20 +45,53 @@ public class AppOperateController extends BaseDecodedController {
 
         String uid = params.getString("uid");
         JSONArray array = params.getJSONArray("lightGroup");
-        String id = null;
-        BluethoothConnect bluethoothConnect = null;
+        String id;
+        String isLogin;
+        BluethoothConnect bluethoothConnect;
+        LightPairing lightPairing;
         for (int i = 0; i < array.size(); i++) {
             id = StringUtils.replace(UUID.randomUUID().toString(), "-", "");
             bluethoothConnect = new BluethoothConnect();
             bluethoothConnect.setId(id);
             bluethoothConnect.setUid(uid);
-            bluethoothConnect.setDevice_id(array.getJSONObject(i).getString("lightId"));
+            bluethoothConnect.setDevice_id(array.getJSONObject(i).getString("deviceId"));
             bluethoothConnect.setConnectStatus(array.getJSONObject(i).getString("connectStatus"));
             appOperateService.connectToBluetoothLog(bluethoothConnect);
+
+            //蓝牙配对和绑定关系判断
+            //根据uid查询配对表
+            lightPairing = pairingService
+                    .findPairingInfoByLightUid(uid);
+            if (lightPairing == null) {
+                pairingService.savePairingInfo(uid, array.getJSONObject(i).getString("deviceId"));
+            } else {
+                String deviceIds = lightPairing.getName();
+                net.sf.json.JSONArray jsonArray = net.sf.json.JSONArray.fromObject(deviceIds);
+                if (!jsonArray.contains(array.getJSONObject(i).getString("deviceId"))) {
+                    jsonArray.add(array.getJSONObject(i).getString("deviceId"));
+                    pairingService.updatePairingInfo(uid, jsonArray
+                            .toString());
+                }
+            }
+            isLogin = pairingService.findLoginState(uid);
+            if ("1".equals(isLogin)) {
+                LightBinding lightBinding = pairingService
+                        .findBindingInfoByDeviceId(array.getJSONObject(i).getString("deviceId"));
+                if (lightBinding == null) {
+                    LightBinding lightBinding2 = new LightBinding(array.getJSONObject(i).getString("deviceId"),
+                            array.getJSONObject(i).getString("mac"), uid, null, new Date(), null, null);
+                    pairingService.saveBindingInfo(lightBinding2);
+                } else if (!uid.equals(lightBinding.getLightUid())) {
+                    pairingService.updateBindingInfo(uid, array.getJSONObject(i).getString("deviceId"));
+                    if (lightBinding.getBossUid() != null) {
+                        pairingService.updateBossBindingInfo(lightBinding
+                                .getBossUid());
+                    }
+                }
+            }
         }
         model.put("result", ResultDict.SUCCESS.getCode());
         model.put("result_message", ResultDict.SUCCESS.getValue());
-//        return null;
     }
 
     @RequestMapping("/open")
@@ -71,11 +107,11 @@ public class AppOperateController extends BaseDecodedController {
     @RequestMapping("/operation")
     public void LightOperation(@ModelAttribute("decodedParams") JSONObject params, ModelMap model) {
         //生成电费表，beginning...
-        LightCharge lightCharge = new LightCharge();
+//        LightCharge lightCharge = new LightCharge();
         LightOperation lightOperation = setLightOperation(params);
-        LightBinding lightBinding = billService.getByUid(params.getString("deviceId"));
-        lightCharge.setUid(lightBinding.getBossUid());
-        billService.insetBill(lightBinding, lightOperation, lightCharge);
+//        LightBinding lightBinding = billService.getByUid(params.getString("deviceId"));
+//        lightCharge.setUid(lightBinding.getBossUid());
+//        billService.insetBill(lightBinding, lightOperation, lightCharge);
         //生成电费表，ending...
         appOperateService.lightOperationLog(lightOperation);
         model.put("result", ResultDict.SUCCESS.getCode());
@@ -84,7 +120,7 @@ public class AppOperateController extends BaseDecodedController {
 
     public OpenApp setOPenApp(JSONObject params) {
         String uid = params.getString("uid");
-        String behavior = null;
+        String behavior;
         OpenApp openApp = new OpenApp();
         if (StringUtils.isBlank(uid)) {
             behavior = "install";
@@ -114,11 +150,11 @@ public class AppOperateController extends BaseDecodedController {
     public LightOperation setLightOperation(JSONObject params) {
         LightOperation lightOperation = new LightOperation();
         String uid = params.getString("uid");
-        String lightId = params.getString("lightId");
+        String deviceId = params.getString("deviceId");
         String behavior = params.getString("behavior");//'1'为开；'0'为关
         String id = StringUtils.replace(UUID.randomUUID().toString(), "-", "");
         String mobile = lightUserService.findLightUserByUid(uid);
-        String isRegister = null;
+        String isRegister;
         if (StringUtils.isBlank(mobile)) {
             isRegister = "0";//未注册
         } else {
@@ -127,7 +163,7 @@ public class AppOperateController extends BaseDecodedController {
         lightOperation.setId(id);
         lightOperation.setUid(uid);
         lightOperation.setBehavior(behavior);
-        lightOperation.setDevice_id(lightId);
+        lightOperation.setDevice_id(deviceId);
         lightOperation.setIsRegister(isRegister);
         lightOperation.setCreate_date(new Date());
         return lightOperation;
