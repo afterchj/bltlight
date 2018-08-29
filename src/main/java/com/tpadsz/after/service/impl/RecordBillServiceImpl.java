@@ -1,10 +1,7 @@
 package com.tpadsz.after.service.impl;
 
-import com.tpadsz.after.dao.RecordBillDao;
-import com.tpadsz.after.entity.LightBinding;
-import com.tpadsz.after.entity.LightCharge;
-import com.tpadsz.after.entity.LightOperation;
 import com.tpadsz.after.api.RecordBillService;
+import com.tpadsz.after.dao.RecordBillDao;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,26 +15,27 @@ import java.util.Map;
  */
 
 @Service("recordBillService")
-public class RecordBillServiceImpl implements RecordBillService {
+public class RecordBillServiceImpl implements RecordBillService<Map> {
 
     @Autowired
     private RecordBillDao billDao;
 
     @Override
-    public LightBinding getByDeviceId(String deviceId) {
+    public Map getByDeviceId(String deviceId) {
 
         return billDao.getByDeviceId(deviceId);
     }
 
     @Override
-    public LightOperation getByLightUid(String uid) {
+    public Map getByLightUid(String uid) {
+
         return billDao.getByLightUid(uid);
     }
 
     @Override
-    public void insetBill(LightBinding binding, LightOperation operation, LightCharge lightCharge) {
-        if (isBinding(binding) && isBLTOperation(operation)) {
-            billDao.insetBill(lightCharge);
+    public void insetBill(Map map) {
+        if (isBinding(map) && isBLTOperation(map)) {
+            billDao.insetBill(map);
         }
     }
 
@@ -64,20 +62,21 @@ public class RecordBillServiceImpl implements RecordBillService {
         return map;
     }
 
-    public boolean isBinding(LightBinding lightBinding) {
+    public boolean isBinding(Map<String,String> map) {
         boolean flag = false;
-        if (lightBinding != null) {
-            if (StringUtils.isNotEmpty(lightBinding.getBossUid()) && StringUtils.isNotEmpty(lightBinding.getLightUid()) && StringUtils.isNotEmpty(lightBinding.getDeviceId())) {
+        if (map != null) {
+            if (StringUtils.isNotEmpty(map.get("bossUid")) && StringUtils.isNotEmpty(map.get("lightUid")) && StringUtils.isNotEmpty(map.get("deviceId"))) {
                 flag = true;
             }
         }
+        System.out.println("flag=" + flag);
         return flag;
     }
 
-    public boolean isBLTOperation(LightOperation lightOperation) {
-        System.out.println("lightOperation.getIsRegister()=" + lightOperation.getIsRegister());
+    public boolean isBLTOperation(Map<String,String> map) {
+        System.out.println("lightOperation.getIsRegister()=" + map.get("isRegister"));
         boolean flag = false;
-        if (lightOperation != null && lightOperation.getIsRegister().equals("1")) {
+        if (map != null && map.get("isRegister").equals("1")) {
             flag = true;
         }
         return flag;

@@ -3,16 +3,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tpadsz.after.dao.RecordBillDao">
 
-    <select id="getByDeviceId" parameterType="string" resultType="LightBinding">
+    <select id="getByDeviceId" parameterType="string" resultType="map">
        SELECT device_id deviceId,light_uid lightUid,boss_uid bossUid  FROM f_light_binding WHERE device_id=#{deviceId}
     </select>
 
-    <select id="getByLightUid" parameterType="string" resultType="LightOperation">
-        SELECT * FROM f_light_operation_log WHERE uid=#{uid} LIMIT 1
+    <select id="getByLightUid" parameterType="string" resultType="map">
+        SELECT isRegister is_register,device_id FROM f_light_operation_log WHERE uid=#{uid} LIMIT 1
     </select>
 
-    <insert id="insetBill" parameterType="LightCharge">
-        REPLACE INTO f_light_charge(uid,electric_bill,log_time,create_time) VALUES(#{uid},100,CURDATE(),NOW())
+    <insert id="insetBill" parameterType="map">
+        REPLACE INTO f_light_charge(uid,device_id,electric_bill,log_time,create_time,status) VALUES(#{uid},#{deviceId},100,CURDATE(),NOW(),#{status})
     </insert>
 
     <select id="getChargeList" parameterType="string" resultType="map">
