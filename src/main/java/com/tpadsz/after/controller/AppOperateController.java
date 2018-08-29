@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -106,16 +108,25 @@ public class AppOperateController extends BaseDecodedController {
 
     @RequestMapping("/operation")
     public void LightOperation(@ModelAttribute("decodedParams") JSONObject params, ModelMap model) {
-        //生成电费表，beginning...
-//        LightCharge lightCharge = new LightCharge();
         LightOperation lightOperation = setLightOperation(params);
-//        LightBinding lightBinding = billService.getByUid(params.getString("deviceId"));
-//        lightCharge.setUid(lightBinding.getBossUid());
-//        billService.insetBill(lightBinding, lightOperation, lightCharge);
-        //生成电费表，ending...
         appOperateService.lightOperationLog(lightOperation);
         model.put("result", ResultDict.SUCCESS.getCode());
         model.put("result_message", ResultDict.SUCCESS.getValue());
+        //生成电费表，beginning...
+        String deviceId = params.getString("deviceId");
+        Map map = new HashMap();
+        try {
+            Map<String, String> binding = (Map) billService.getByDeviceId(deviceId);
+            Map<String, String> operation = (Map) billService.getByLightUid(binding.get("lightUid"));
+            map.put("uid", binding.get("bossUid"));
+            map.put("isRegister", operation.get("is_register"));
+            map.put("status", ResultDict.SUCCESS.getCode());
+            map.putAll(binding);
+        } catch (Exception e) {
+            map.put("status", ResultDict.UID_NOT_EXIST.getCode());
+        }
+        billService.insetBill(map);
+        //生成电费表，ending...
     }
 
     public OpenApp setOPenApp(JSONObject params) {
