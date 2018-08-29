@@ -46,9 +46,31 @@
     <!-- 业务发布 -->
     <dubbo:monitor protocol="registry"/>
     <!-- 接口的位置 -->
-    <dubbo:service loadbalance="random" version="0.1.0"
-                   cluster="failover" retries="2" interface="com.tpadsz.after.api.RecordBillService"
-                   ref="recordBillService" timeout="3000"/>
+    <dubbo:service loadbalance="random" version="0.1.0" cluster="failover" retries="2" interface="com.tpadsz.after.api.RecordBillService" ref="recordBillService" timeout="3000"/>
+    <dubbo:reference id="coinsEarnerManager" version="0.2.0"  interface="com.tpadsz.cic.coin.api.CoinsEarnerManager" validation="true"/>
+
+
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <!--第1个定时任务由bosslocker-store-hq在执行了-->
+                <ref bean="exampleJob1Trigger"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="exampleJob1Trigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="exampleJob1Detail"/>
+        <property name="cronExpression" value="0 33 17 * * ?"/>
+    </bean>
+
+    <bean id="exampleJob1Detail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 指定任务类 -->
+        <property name="targetObject" ref="countCoinJob"/>
+        <!-- 指定任务执行的方法 -->
+        <property name="targetMethod" value="giveBill"/>
+    </bean>
 
     <!-- 阿里 druid数据库连接池 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
