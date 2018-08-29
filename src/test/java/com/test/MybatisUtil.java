@@ -22,7 +22,7 @@ public class MybatisUtil {
     private static ClassPathXmlApplicationContext atx;
 
     static {
-        atx = new ClassPathXmlApplicationContext("applicationContext.xml");
+        atx = new ClassPathXmlApplicationContext("applicationProvider.xml");
     }
 
 
@@ -33,8 +33,8 @@ public class MybatisUtil {
 
     public static void main(String[] args) {
         RecordBillService recordBillService = (RecordBillService) atx.getBean("recordBillService");
-        LightBinding binding = recordBillService.getByDeviceId("test101010");
-        System.out.println("---------------------->"+binding + "\t" + binding.getBossUid());
+        Map<String, String> binding = (Map) recordBillService.getByDeviceId("DBD370724B054036B5EF2DAB23128225");
+        System.out.println("binding" + JSON.toJSONString(binding));
     }
 
     @Test
@@ -45,14 +45,14 @@ public class MybatisUtil {
 
     @Test
     public void testBind() {
-        LightBinding binding = getSession().getMapper(RecordBillDao.class).getByDeviceId("3E94EE45B6164231A762BB8A6E531E0D");
-        System.out.println(binding);
+        Map<String, String> binding = getSession().getMapper(RecordBillDao.class).getByDeviceId("3E94EE45B6164231A762BB8A6E531E0D");
+        System.out.println(JSON.toJSONString(binding));
 
     }
 
     @Test
     public void testOperation() {
-        LightOperation operation = getSession().getMapper(RecordBillDao.class).getByLightUid("5bc9f45ab42e453f93ee8a966b5a9726");
+        Map<String, String> operation = getSession().getMapper(RecordBillDao.class).getByLightUid("5bc9f45ab42e453f93ee8a966b5a9726");
         System.out.println(JSON.toJSONString(operation));
     }
 
@@ -61,12 +61,13 @@ public class MybatisUtil {
         Map map = getSession().getMapper(RecordBillDao.class).getSumCharge("0016428081ec495b97edf124cb29d810");
         BigDecimal total_charge = (BigDecimal) map.get("total_bill");
         double total = total_charge.doubleValue() / 1000;
-        System.out.println(total);
+        System.out.println("total=" + total);
+        System.out.println(JSON.toJSONString(map));
     }
 
     @Test
     public void testList() {
         List<Map> list = getSession().getMapper(RecordBillDao.class).getChargeList("0016428081ec495b97edf124cb29d810");
-        System.out.println(list.size());
+        System.out.println(JSON.toJSONString(list));
     }
 }

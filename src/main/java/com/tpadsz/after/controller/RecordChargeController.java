@@ -31,7 +31,7 @@ public class RecordChargeController extends BaseDecodedController {
         String msg = ResultDict.SUCCESS.getValue();
 
         String uid = params.getString("uid");
-        Map map = billService.getSumCharge(uid);
+        Map map = (Map) billService.getSumCharge(uid);
         if (StringUtils.isEmpty(uid)) {
             result = ResultDict.UID_NOT_EXIST.getCode();
             msg = ResultDict.UID_NOT_EXIST.getValue();
