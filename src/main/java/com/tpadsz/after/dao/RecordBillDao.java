@@ -22,4 +22,7 @@ public interface RecordBillDao {
     List<Map> getChargeList(String uid);
 
     Map getSumCharge(String uid);
+
+    List<String> getUidList();
+
 }

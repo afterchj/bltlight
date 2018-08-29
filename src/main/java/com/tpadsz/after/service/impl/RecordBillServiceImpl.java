@@ -1,8 +1,6 @@
 package com.tpadsz.after.service.impl;
-
 import com.tpadsz.after.api.RecordBillService;
 import com.tpadsz.after.dao.RecordBillDao;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * Created by hongjian.chen on 2018/8/27.
@@ -63,7 +62,7 @@ public class RecordBillServiceImpl implements RecordBillService<Map> {
         return map;
     }
 
-    public boolean isBinding(Map<String,String> map) {
+    public boolean isBinding(Map<String, String> map) {
         boolean flag = false;
         if (map != null) {
             if (StringUtils.isNotEmpty(map.get("bossUid")) && StringUtils.isNotEmpty(map.get("lightUid")) && StringUtils.isNotEmpty(map.get("deviceId"))) {
@@ -74,7 +73,7 @@ public class RecordBillServiceImpl implements RecordBillService<Map> {
         return flag;
     }
 
-    public boolean isBLTOperation(Map<String,String> map) {
+    public boolean isBLTOperation(Map<String, String> map) {
         System.out.println("lightOperation.getIsRegister()=" + map.get("isRegister"));
         boolean flag = false;
         if (map != null && map.get("isRegister").equals("1")) {

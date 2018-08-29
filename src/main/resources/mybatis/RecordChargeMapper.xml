@@ -22,4 +22,8 @@
     <select id="getSumCharge" parameterType="string" resultType="map">
        SELECT SUM(electric_bill) total_bill,electric_bill ytd_charge FROM f_light_charge WHERE uid=#{uid} AND DATEDIFF(CURDATE(),log_time)>=1
     </select>
+
+    <select id="getUidList" resultType="string">
+       SELECT uid FROM f_light_charge WHERE DATEDIFF(CURDATE(),log_time)=0  GROUP BY uid
+    </select>
 </mapper>
