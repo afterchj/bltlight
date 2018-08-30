@@ -13,23 +13,9 @@ import java.util.Map;
 public class DubboStart {
 
     public static void main(String[] args) throws IOException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:applicationConsumer.xml");
-        RecordBillService billService = (RecordBillService) ctx.getBean("recordBillService");
-        System.out.println("billService=" + billService);
-        Map map = (Map) billService.getSumCharge("0016428081ec495b97edf124cb29d810");
-        System.out.println(JSON.json(map) + "\t" + map.get("total_bill"));
-        Map<String, String> binding = (Map) billService.getByDeviceId("DBD370724B054036B5EF2DAB23128225");
-        System.out.println(binding);
-        Map<String, String> operation = (Map) billService.getByLightUid(binding.get("lightUid"));
-        System.out.println(JSON.json(operation));
-
-        Map map1 = new HashMap();
-        map1.put("uid", binding.get("bossUid"));
-        map1.put("isRegister", operation.get("is_register"));
-        map1.put("status","000");
-        map1.putAll(binding);
-        System.out.println("map1=" + JSON.json(map1));
-
-        billService.insetBill(map1);
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:applicationProvider.xml");
+        context.start();
+        System.out.println("按任意键退出");
+        System.in.read();
     }
 }
