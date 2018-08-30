@@ -4,6 +4,7 @@ import com.tpadsz.after.dao.RecordBillDao;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.math.BigDecimal;
@@ -17,7 +18,7 @@ public class MybatisUtil {
     private static ClassPathXmlApplicationContext atx;
 
     static {
-        atx = new ClassPathXmlApplicationContext("applicationProvider.xml");
+        atx = new ClassPathXmlApplicationContext("applicationContext.xml");
     }
 
 
