@@ -59,10 +59,9 @@
         </property>
     </bean>
 
-    <bean id="exampleJob1Trigger"
-          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    <bean id="exampleJob1Trigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="exampleJob1Detail"/>
-        <property name="cronExpression" value="0 33 17 * * ?"/>
+        <property name="cronExpression" value="0 55 23 * * ?"/>
     </bean>
 
     <bean id="exampleJob1Detail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -149,7 +148,7 @@
         <property name="typeAliasesPackage" value="com.tpadsz.after.entity"></property>
         <property name="configLocation" value="classpath:mybatisConfig.xml"></property>
         <!-- mapper扫描 -->
-        <property name="mapperLocations" value="classpath:mybatis/*.xml"></property>
+        <property name="mapperLocations" value="classpath:mybatis/RecordChargeMapper.xml"></property>
     </bean>
 
     <bean id="sqlSessionFactory80" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -157,7 +156,7 @@
         <property name="typeAliasesPackage" value="com.tpadsz.after.entity"></property>
         <property name="configLocation" value="classpath:mybatisConfig.xml"></property>
         <!-- mapper扫描 -->
-        <property name="mapperLocations" value="classpath:mybatis80/*.xml"></property>
+        <property name="mapperLocations" value="classpath:mybatis80/BindingMapper.xml"></property>
     </bean>
 
     <!-- DAO接口所在包名，Spring会自动查找其下的类 -->
