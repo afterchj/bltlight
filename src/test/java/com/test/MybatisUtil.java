@@ -22,7 +22,7 @@ public class MybatisUtil {
     private static ClassPathXmlApplicationContext atx;
 
     static {
-        atx = new ClassPathXmlApplicationContext("applicationProvider.xml");
+        atx = new ClassPathXmlApplicationContext("applicationContext.xml");
     }
 
 

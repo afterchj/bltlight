@@ -3,12 +3,12 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/aop
-       http://www.springframework.org/schema/aop/spring-aop.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+       http://www.springframework.org/schema/aop/spring-aop.xsd ">
 
     <!-- 开启注解模式 -->
     <context:component-scan base-package="com.tpadsz.after"/>
@@ -35,20 +35,20 @@
     <!--</bean>-->
 
     <!--<dubbo:application name="${dubbo.application.name}"-->
-                       <!--owner="${dubbo.application.owner}" />-->
+    <!--owner="${dubbo.application.owner}" />-->
 
     <!--<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" />-->
 
     <!--&lt;!&ndash; <dubbo:protocol name="dubbo" port="${dubbo.protocol.port}" dispatcher="all"-->
-        <!--host="192.168.16.44" threadpool="fixed" threads="100" accepts="1000" /> &ndash;&gt;-->
+    <!--host="192.168.16.44" threadpool="fixed" threads="100" accepts="1000" /> &ndash;&gt;-->
     <!--<dubbo:protocol name="dubbo" port="${dubbo.protocol.port}" dispatcher="all" threadpool="fixed" threads="300" accepts="1000" />-->
 
     <!--&lt;!&ndash; 业务发布 &ndash;&gt;-->
     <!--<dubbo:monitor protocol="registry"/>-->
     <!--&lt;!&ndash; 接口的位置 &ndash;&gt;-->
     <!--<dubbo:service loadbalance="random" version="0.1.0"-->
-                   <!--cluster="failover" retries="2" interface="com.tpadsz.after.api.RecordBillService"-->
-                   <!--ref="recordBillService" timeout="3000"/>-->
+    <!--cluster="failover" retries="2" interface="com.tpadsz.after.api.RecordBillService"-->
+    <!--ref="recordBillService" timeout="3000"/>-->
 
     <!-- 阿里 druid数据库连接池 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
