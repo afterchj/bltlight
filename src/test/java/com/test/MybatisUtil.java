@@ -6,12 +6,14 @@ import com.tpadsz.after.dao.RecordBillDao;
 import com.tpadsz.after.dao80.LightUserDao;
 import com.tpadsz.after.entity.LightBinding;
 import com.tpadsz.after.entity.LightOperation;
+import com.tpadsz.after.work.CountCoinJob;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +24,7 @@ public class MybatisUtil {
     private static ClassPathXmlApplicationContext atx;
 
     static {
-        atx = new ClassPathXmlApplicationContext("applicationContext.xml");
+        atx = new ClassPathXmlApplicationContext("applicationProvider.xml");
     }
 
 
@@ -69,5 +71,24 @@ public class MybatisUtil {
     public void testList() {
         List<Map> list = getSession().getMapper(RecordBillDao.class).getChargeList("0016428081ec495b97edf124cb29d810");
         System.out.println(JSON.toJSONString(list));
+    }
+
+    @Test
+    public void testUpdate() {
+        Map map = new HashMap();
+        map.put("uid", "a02e46e0f3404d59b7c21a742bffc38a");
+        map.put("status", "1");
+        getSession().getMapper(RecordBillDao.class).saveStatus(map);
+    }
+
+    @Test
+    public void getUidList() {
+        List<Map> uids = getSession().getMapper(RecordBillDao.class).getUidList();
+        System.out.println("result=" + JSON.toJSONString(uids));
+        for (Map<String, String> uid : uids) {
+            if (!"1".equals(uid.get("status"))) {
+                System.out.println("执行线程任务：" + uid.get("uid"));
+            }
+        }
     }
 }
