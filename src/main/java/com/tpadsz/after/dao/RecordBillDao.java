@@ -1,10 +1,5 @@
 package com.tpadsz.after.dao;
 
-
-import com.tpadsz.after.entity.LightBinding;
-import com.tpadsz.after.entity.LightCharge;
-import com.tpadsz.after.entity.LightOperation;
-
 import java.util.List;
 import java.util.Map;
 
@@ -19,10 +14,12 @@ public interface RecordBillDao {
 
     void insetBill(Map lightCharge);
 
+    void saveStatus(Map map);
+
     List<Map> getChargeList(String uid);
 
     Map getSumCharge(String uid);
 
-    List<String> getUidList();
+    List<Map> getUidList();
 
 }

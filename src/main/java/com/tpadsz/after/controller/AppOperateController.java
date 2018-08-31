@@ -120,10 +120,10 @@ public class AppOperateController extends BaseDecodedController {
             Map<String, String> operation = (Map) billService.getByLightUid(binding.get("lightUid"));
             map.put("uid", binding.get("bossUid"));
             map.put("isRegister", operation.get("is_register"));
-            map.put("status", ResultDict.SUCCESS.getCode());
+            map.put("result", ResultDict.SUCCESS.getCode());
             map.putAll(binding);
         } catch (Exception e) {
-            map.put("status", ResultDict.UID_NOT_EXIST.getCode());
+            map.put("result", ResultDict.UID_NOT_EXIST.getCode());
         }
         billService.insetBill(map);
         //生成电费表，ending...
