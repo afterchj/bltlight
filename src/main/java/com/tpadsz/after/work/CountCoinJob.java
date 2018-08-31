@@ -5,8 +5,7 @@ import com.tpadsz.after.dao.RecordBillDao;
 import com.tpadsz.cic.coin.api.CoinsEarnerManager;
 import com.tpadsz.cic.coin.vo.CoinsEarnedType;
 import com.tpadsz.cic.coin.vo.CoinsEarnerOffer;
-import com.tpadsz.exception.CheckNotAllowedException;
-import com.tpadsz.exception.SystemAlgorithmException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +35,6 @@ public class CountCoinJob {
         ExecutorService pool = Executors.newCachedThreadPool();
         for (Map<String, String> uid : uids) {
             if (!"1".equals(uid.get("status"))) {
-                System.out.println("result=" + JSON.toJSONString(uid));
                 pool.execute(new JobThread(uid.get("uid")));
             }
         }
@@ -57,7 +55,7 @@ public class CountCoinJob {
         public void doWork(String uid) {
             Map map = new HashMap();
             map.put("uid", uid);
-            CoinsEarnerOffer offer = new CoinsEarnerOffer("9", uid, "电费收入-测试", 10, UUID.randomUUID().toString().replaceAll("-", ""), CoinsEarnedType.parse(Integer.parseInt("170")));
+            CoinsEarnerOffer offer = new CoinsEarnerOffer("9", uid, "电费转积分-测试", 100, UUID.randomUUID().toString().replaceAll("-", ""), CoinsEarnedType.parse(Integer.parseInt("170")));
             try {
                 earnerManager.earnCoins(offer);
                 map.put("status", "1");
