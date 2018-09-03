@@ -17,18 +17,17 @@ public class LightOperation implements Serializable{
     private Date create_date;
     private String device_id;
     private String behavior;
+    private String ope_date;
 
     public LightOperation() {
     }
 
-    public LightOperation(String id, String uid, String isRegister, Date
-            create_date, String device_id, String behavior) {
-        this.id = id;
-        this.uid = uid;
-        this.isRegister = isRegister;
-        this.create_date = create_date;
-        this.device_id = device_id;
-        this.behavior = behavior;
+    public String getOpe_date() {
+        return ope_date;
+    }
+
+    public void setOpe_date(String ope_date) {
+        this.ope_date = ope_date;
     }
 
     public String getId() {

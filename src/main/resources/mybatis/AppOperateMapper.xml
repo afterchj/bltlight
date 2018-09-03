@@ -16,6 +16,6 @@
     </insert>
 
     <insert id="lightOperationLog" parameterType="com.tpadsz.after.entity.LightOperation">
-        INSERT INTO f_light_operation_log VALUES(#{id},#{uid},#{isRegister},#{create_date},#{device_id},#{behavior})
+        INSERT INTO f_light_operation_log VALUES(#{id},#{uid},#{isRegister},#{create_date},#{device_id},#{behavior},#{ope_date})
     </insert>
 </mapper>
