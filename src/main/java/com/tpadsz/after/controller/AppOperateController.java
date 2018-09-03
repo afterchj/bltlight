@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -43,7 +45,7 @@ public class AppOperateController extends BaseDecodedController {
 
     @RequestMapping(value = "/blue", method = RequestMethod.POST)
     public void bluethoothConnect(@ModelAttribute("decodedParams") JSONObject
-                                              params, ModelMap model) {
+                                          params, ModelMap model) {
 
         String uid = params.getString("uid");
         JSONArray array = params.getJSONArray("lightGroup");
@@ -117,8 +119,7 @@ public class AppOperateController extends BaseDecodedController {
     }
 
     @RequestMapping("/operation")
-    public void LightOperation(@ModelAttribute("decodedParams") JSONObject
-                                           params, ModelMap model) {
+    public void LightOperation(@ModelAttribute("decodedParams") JSONObject params, ModelMap model) {
         LightOperation lightOperation = new LightOperation();
         String uid = params.getString("uid");
         String mobile = lightUserService.findLightUserByUid(uid);
@@ -133,8 +134,7 @@ public class AppOperateController extends BaseDecodedController {
             String deviceId = array.getJSONObject(i).getString("deviceId");
             String behavior = array.getJSONObject(i).getString("behavior");
             //开关次数
-            String id = StringUtils.replace(UUID.randomUUID().toString(),
-                    "-", "");
+            String id = StringUtils.replace(UUID.randomUUID().toString(), "-", "");
             lightOperation.setId(id);
             lightOperation.setUid(uid);
             lightOperation.setBehavior(behavior);
@@ -144,26 +144,25 @@ public class AppOperateController extends BaseDecodedController {
             long opeDate = array.getJSONObject(i).getLong("opeDate");
             lightOperation.setOpe_date(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(opeDate)));
             appOperateService.lightOperationLog(lightOperation);
+
+            //生成电费表，beginning...
+            Map map = new HashMap();
+            try {
+                Map<String, String> binding = (Map) billService.getByDeviceId(deviceId);
+                Map<String, String> operation = (Map) billService.getByLightUid(binding.get("lightUid"));
+                map.put("uid", binding.get("bossUid"));
+                map.put("isRegister", operation.get("is_register"));
+                map.put("result", ResultDict.SUCCESS.getCode());
+                map.putAll(binding);
+            } catch (Exception e) {
+                map.put("result", ResultDict.UID_NOT_EXIST.getCode());
+            }
+            billService.insetBill(map);
+            //生成电费表，ending...
         }
         model.put("result", ResultDict.SUCCESS.getCode());
         model.put("result_message", ResultDict.SUCCESS.getValue());
-        //生成电费表，beginning...
-//        String deviceId = params.getString("deviceId");
-//        Map map = new HashMap();
-//        try {
-//            Map<String, String> binding = (Map) billService.getByDeviceId
-//                    (deviceId);
-//            Map<String, String> operation = (Map) billService.getByLightUid
-//                    (binding.get("lightUid"));
-//            map.put("uid", binding.get("bossUid"));
-//            map.put("isRegister", operation.get("is_register"));
-//            map.put("result", ResultDict.SUCCESS.getCode());
-//            map.putAll(binding);
-//        } catch (Exception e) {
-//            map.put("result", ResultDict.UID_NOT_EXIST.getCode());
-//        }
-//        billService.insetBill(map);
-        //生成电费表，ending...
+
     }
 
     public OpenApp setOPenApp(JSONObject params) {
