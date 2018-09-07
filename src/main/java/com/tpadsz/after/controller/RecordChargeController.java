@@ -57,7 +57,7 @@ public class RecordChargeController extends BaseDecodedController {
             result = ResultDict.UID_NOT_EXIST.getCode();
             msg = ResultDict.UID_NOT_EXIST.getValue();
         }
-        if (list == null) {
+        if (list == null || list.size() < 0) {
             result = ResultDict.RECORD_NULL.getCode();
             msg = ResultDict.RECORD_NULL.getValue();
         } else {
