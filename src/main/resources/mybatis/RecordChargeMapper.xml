@@ -28,4 +28,8 @@
     <select id="getUidList" resultType="map">
        SELECT uid,status FROM f_light_charge WHERE DATEDIFF(CURDATE(),log_time)=0  GROUP BY uid
     </select>
+
+    <select id="getDeviceId" resultType="string" parameterType="string">
+        SELECT device_id FROM f_light_binding WHERE boss_uid=#{uid}
+    </select>
 </mapper>

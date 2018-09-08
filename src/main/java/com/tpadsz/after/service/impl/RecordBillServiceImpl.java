@@ -1,4 +1,5 @@
 package com.tpadsz.after.service.impl;
+
 import com.tpadsz.after.api.RecordBillService;
 import com.tpadsz.after.dao.RecordBillDao;
 import org.apache.commons.lang.StringUtils;
@@ -31,6 +32,7 @@ public class RecordBillServiceImpl implements RecordBillService<Map> {
 
         return billDao.getByLightUid(uid);
     }
+
 
     @Override
     public void insetBill(Map map) {
@@ -80,5 +82,9 @@ public class RecordBillServiceImpl implements RecordBillService<Map> {
             flag = true;
         }
         return flag;
+    }
+
+    public String getDeviceId(String uid) {
+        return billDao.getDeviceId(uid);
     }
 }

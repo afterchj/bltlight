@@ -35,8 +35,9 @@ public class MybatisUtil {
 
     public static void main(String[] args) {
         RecordBillService recordBillService = (RecordBillService) atx.getBean("recordBillService");
-        Map<String, String> binding = (Map) recordBillService.getByDeviceId("DBD370724B054036B5EF2DAB23128225");
-        System.out.println("binding" + JSON.toJSONString(binding));
+        Map<String, String> binding = (Map) recordBillService.getByDeviceId("DBD370724B054036B5EF2DAB2312822");
+        System.out.println(binding == null);
+        System.out.println("binding:" + JSON.toJSONString(binding));
     }
 
     @Test
@@ -61,15 +62,19 @@ public class MybatisUtil {
     @Test
     public void testYTD() {
         Map map = getSession().getMapper(RecordBillDao.class).getSumCharge("0016428081ec495b97edf124cb29d810");
-        BigDecimal total_charge = (BigDecimal) map.get("total_bill");
-        double total = total_charge.doubleValue() / 1000;
-        System.out.println("total=" + total);
+        System.out.println(map == null);
+        if (map != null) {
+            BigDecimal total_charge = (BigDecimal) map.get("total_bill");
+            double total = total_charge.doubleValue() / 1000;
+            System.out.println("total=" + total);
+        }
         System.out.println(JSON.toJSONString(map));
     }
 
     @Test
     public void testList() {
-        List<Map> list = getSession().getMapper(RecordBillDao.class).getChargeList("0016428081ec495b97edf124cb29d810");
+        List<Map> list = getSession().getMapper(RecordBillDao.class).getChargeList("0016428081ec495b97edf124cb29d81");
+        System.out.println(list.size());
         System.out.println(JSON.toJSONString(list));
     }
 
