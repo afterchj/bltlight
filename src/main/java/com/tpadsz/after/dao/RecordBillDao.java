@@ -22,4 +22,6 @@ public interface RecordBillDao {
 
     List<Map> getUidList();
 
+    String getDeviceId(String uid);
+
 }
