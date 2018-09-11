@@ -1,8 +1,6 @@
 package com.tpadsz.after.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.tpadsz.after.api.RecordBillService;
-import com.tpadsz.after.dao.RecordBillDao;
 import com.tpadsz.after.entity.dd.ResultDict;
 import com.tpadsz.after.service.impl.RecordBillServiceImpl;
 import org.apache.commons.lang.StringUtils;
@@ -31,9 +29,15 @@ public class RecordChargeController extends BaseDecodedController {
     public void showYTDCharge(@ModelAttribute("decodedParams") JSONObject params, ModelMap model) {
 
         String result = ResultDict.SUCCESS.getCode();
-        String msg = ResultDict.SUCCESS.getValue();
+        String msg = "";
 
         String uid = params.getString("uid");
+        if (org.apache.commons.lang3.StringUtils.isBlank(uid)){
+            model.put("result", ResultDict.UID_NOT_EXIST.getValue());
+            model.put("result_message", ResultDict.UID_NOT_EXIST.getCode());
+            model.put("device_id", params.getString("deviceId"));
+            return;
+        }
         String deviceId = params.getString("deviceId");
         Map<String, String> info = billService.getByDeviceId(deviceId);
 
@@ -59,16 +63,19 @@ public class RecordChargeController extends BaseDecodedController {
     @RequestMapping(value = "/listCharge")
     public void showChargeList(@ModelAttribute("decodedParams") JSONObject params, ModelMap model) {
         String result = ResultDict.SUCCESS.getCode();
-        String msg = ResultDict.SUCCESS.getValue();
+        String msg = "";
         String uid = params.getString("uid");
         List<Map> list = billService.getChargeList(uid);
         if (StringUtils.isEmpty(uid)) {
             result = ResultDict.UID_NOT_EXIST.getCode();
             msg = ResultDict.UID_NOT_EXIST.getValue();
+            model.put("result", result);
+            model.put("result_message", msg);
+            return;
         }
         if (list == null || list.size() == 0) {
             result = ResultDict.RECORD_NULL.getCode();
-            msg = ResultDict.RECORD_NULL.getValue();
+            msg = "您的电费记录为空";
         } else {
             model.put("chargeList", list);
         }
