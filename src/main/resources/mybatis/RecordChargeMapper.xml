@@ -15,7 +15,7 @@
         REPLACE INTO f_light_charge(uid,device_id,electric_bill,log_time,create_time,result) VALUES(#{uid},#{deviceId},100,CURDATE(),NOW(),#{result})
     </insert>
     <update id="saveStatus" parameterType="map">
-        UPDATE f_light_charge SET status=#{status} WHERE uid=#{uid} AND log_time=CURRENT_DATE()
+        UPDATE f_light_charge SET status=#{status} WHERE uid=#{uid} AND log_time=#{logTime}
     </update>
     <select id="getChargeList" parameterType="string" resultType="map">
        SELECT electric_bill,log_time FROM f_light_charge WHERE uid=#{uid} AND DATEDIFF(CURDATE(),log_time)>=1 ORDER BY log_time DESC LIMIT 7

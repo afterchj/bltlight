@@ -9,10 +9,8 @@ import com.tpadsz.cic.coin.vo.CoinsEarnerOffer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -55,6 +53,7 @@ public class CountCoinJob {
         public void doWork(String uid) {
             Map map = new HashMap();
             map.put("uid", uid);
+            map.put("logTime",new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
             CoinsEarnerOffer offer = new CoinsEarnerOffer("9", uid, "电费转积分-测试", 100, UUID.randomUUID().toString().replaceAll("-", ""), CoinsEarnedType.parse(Integer.parseInt("170")));
             try {
                 earnerManager.earnCoins(offer);
