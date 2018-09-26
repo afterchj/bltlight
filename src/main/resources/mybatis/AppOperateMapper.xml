@@ -6,7 +6,7 @@
     <insert id="openAppLog" parameterType="com.tpadsz.after.entity.OpenApp">
         INSERT INTO f_light_user_open_log
         VALUES
-	      (#{id},#{uid},#{create_date},#{imei},#{imsi},#{fm},#{os},#{model},#{operators},#{resolution},#{pkg},#{clientVersion},#{appid},#{netEnv},#{behavior},#{group})
+	      (#{id},#{uid},#{create_date},#{imei},#{imsi},#{fm},#{os},#{model},#{operators},#{resolution},#{pkg},#{clientVersion},#{appid},#{netEnv},#{behavior},#{model2},#{name},#{mac},#{version},#{channel})
     </insert>
 
     <insert id="connectToBluetoothLog" parameterType="com.tpadsz.after.entity.BluethoothConnect">
