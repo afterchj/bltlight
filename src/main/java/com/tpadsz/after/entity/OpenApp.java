@@ -26,7 +26,12 @@ public class OpenApp {
     private String appid;
     private String netEnv;
     private String behavior;
-    private String group;
+//    private String group;
+    private String model2;
+    private String name;
+    private String mac;
+    private String version;
+    private String channel;
 
     public OpenApp() {
     }
@@ -54,6 +59,47 @@ public class OpenApp {
 //        this.behavior = behavior;
 //        this.group = group;
 //    }
+
+
+    public String getModel2() {
+        return model2;
+    }
+
+    public void setModel2(String model2) {
+        this.model2 = model2;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getMac() {
+        return mac;
+    }
+
+    public void setMac(String mac) {
+        this.mac = mac;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
 
     public String getId() {
         return id;
@@ -183,11 +229,11 @@ public class OpenApp {
         this.behavior = behavior;
     }
 
-    public String getGroup() {
-        return group;
-    }
+//    public String getGroup() {
+//        return group;
+//    }
 
-    public void setGroup(String group) {
-        this.group = group;
-    }
+//    public void setGroup(String group) {
+//        this.group = group;
+//    }
 }

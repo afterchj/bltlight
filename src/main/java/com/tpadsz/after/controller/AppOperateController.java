@@ -111,11 +111,22 @@ public class AppOperateController extends BaseDecodedController {
     public void openApp(@ModelAttribute("decodedParams") JSONObject params,
                         ModelMap model) {
         OpenApp openApp = setOPenApp(params);
-        appOperateService.openAppLog(openApp);
+
+//        appOperateService.openAppLog(openApp);
+        JSONArray array = params.getJSONArray("lightGroup");
+        for (int i=0; i<array.size(); i++){
+            openApp.setId(StringUtils.replace(UUID.randomUUID().toString(), "-", ""));
+            openApp.setModel2(array.getJSONObject(i).getString("model"));
+            openApp.setName(array.getJSONObject(i).getString("name"));
+            openApp.setMac(array.getJSONObject(i).getString("mac"));
+            openApp.setVersion(array.getJSONObject(i).getString("version"));
+            openApp.setChannel(array.getJSONObject(i).getString("channel"));
+            appOperateService.openAppLog(openApp);
+        }
         model.put("result", ResultDict.SUCCESS.getCode());
         model.put("result_message", ResultDict.SUCCESS.getValue());
         model.put("uid", openApp.getUid());
-        model.put("group", openApp.getGroup());
+//        model.put("group", openApp.getGroup());
     }
 
     @RequestMapping("/operation")
@@ -175,11 +186,10 @@ public class AppOperateController extends BaseDecodedController {
             behavior = "visit";
         }
         JSONObject firmware = params.getJSONObject("firmware");
-        openApp.setId(StringUtils.replace(UUID.randomUUID().toString(), "-",
-                ""));
+//        openApp.setId(StringUtils.replace(UUID.randomUUID().toString(), "-", ""));
         openApp.setUid(uid);
         openApp.setAppid("11");
-        openApp.setGroup(params.getString("group"));
+//        openApp.setGroup(params.getString("group"));
         openApp.setCreate_date(new Date());
         openApp.setBehavior(behavior);
         openApp.setImei(firmware.getString("imei"));
