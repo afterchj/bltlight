@@ -5,6 +5,9 @@ import com.tpadsz.cic.coin.vo.CoinsEarnedType;
 import com.tpadsz.cic.coin.vo.CoinsEarnerOffer;
 import com.tpadsz.exception.CheckNotAllowedException;
 import com.tpadsz.exception.SystemAlgorithmException;
+import com.tpadsz.uic.user.api.InfoManager;
+import com.tpadsz.uic.user.api.vo.AppUserExtra;
+import com.tpadsz.uic.user.api.vo.LoginedOffer;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -55,4 +58,6 @@ public class MyClient {
 
         billService.insetBill(map1);
     }
+
+
 }

@@ -39,27 +39,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: com.101tec:zkclient:0.10" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.zookeeper:zookeeper:3.4.8" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-log4j12:1.6.1" level="project" />
-    <orderEntry type="library" name="Maven: jline:jline:0.9.94" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty:3.7.0.Final" level="project" />
-    <orderEntry type="library" name="Maven: com.tpadsz:cic.api:0.3.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: com.tpadsz:core:0.1.8" level="project" />
-    <orderEntry type="library" name="Maven: javax.activation:activation:1.1.1" level="project" />
-    <orderEntry type="library" name="Maven: com.google.collections:google-collections:1.0" level="project" />
-    <orderEntry type="library" name="Maven: net.sf.dozer:dozer:5.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.6.6" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.mail:smtp:1.5.2" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.mail:javax.mail:1.5.2" level="project" />
-    <orderEntry type="library" name="Maven: com.tpadsz.after:blt-light-api:1.0-RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.quartz-scheduler:quartz:2.2.1" level="project" />
-    <orderEntry type="library" name="Maven: c3p0:c3p0:0.9.1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.quartz-scheduler:quartz-jobs:2.2.1" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate:hibernate-validator:5.0.2.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.logging:jboss-logging:3.1.1.GA" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml:classmate:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:dubbo:2.5.3" level="project" />
     <orderEntry type="library" name="Maven: com.101tec:zkclient:0.10" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />
@@ -67,6 +46,7 @@
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-log4j12:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: jline:jline:0.9.94" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty:3.7.0.Final" level="project" />
+    <orderEntry type="library" name="Maven: com.tpadsz:uic.api:0.3.5" level="project" />
     <orderEntry type="library" name="Maven: com.tpadsz:cic.api:0.3.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.tpadsz:core:0.1.8" level="project" />
     <orderEntry type="library" name="Maven: javax.activation:activation:1.1.1" level="project" />
