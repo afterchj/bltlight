@@ -54,8 +54,10 @@
         }
 
         function connect(urlPath) {
+            console.log("url=" + urlPath);
             url = 'ws://' + window.location.host + "${ctx}" + urlPath;
 //            url = 'ws://' + window.location.host + "/web_ssm" + urlPath;
+//            url = 'ws://122.112.229.195:8080/blt_light/websocket';
             ws = new WebSocket(url);
 
             ws.onopen = function () {
@@ -157,7 +159,7 @@
         <input id="radio1" type="radio" name="group1" onclick="testAjax('0');">
         <label for="radio1">开</label>
         <input id="radio2" type="radio" name="group1" onclick="testAjax('1');">
-        <label for="radio2">开</label>
+        <label for="radio2">关</label>
         <%--<input id="radio1" type="radio" name="group1" onclick="updateUrl('/websocket');">--%>
         <%--<label for="radio1">W3C WebSocket</label>--%>
         <%--<br>--%>

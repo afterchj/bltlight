@@ -1,8 +1,5 @@
 package com.tpadsz.after;
 
-
-import org.junit.*;
-
 import java.util.*;
 import java.util.concurrent.*;
 

@@ -46,6 +46,7 @@ var ws = null;
 
 function connect() {
     url = 'ws://' + window.location.host + '/blt_light/websocket';
+    // url = 'ws://122.112.229.195:8080/blt_light/websocket';
     ws = new WebSocket(url);
     console.log('url', url);
     ws.onopen = function () {

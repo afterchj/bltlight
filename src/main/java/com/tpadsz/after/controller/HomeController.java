@@ -6,6 +6,7 @@ import com.tpadsz.after.service.UserService;
 import com.tpadsz.after.util.Constants;
 import com.tpadsz.after.util.WSClientUtil;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ import java.util.Map;
 @RequestMapping(value = "/home")
 public class HomeController {
 
-    @Resource
+    @Autowired
     private UserService userService;
     private Logger log = Logger.getLogger(HomeController.class);
 
