@@ -34,21 +34,17 @@
     <!--<property name="properties" ref="configProperties"/>-->
     <!--</bean>-->
 
-    <dubbo:application name="${dubbo.application.name}"
-                       owner="${dubbo.application.owner}" />
+    <dubbo:application name="${dubbo.application.name}" owner="${dubbo.application.owner}"/>
 
-    <dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" />
+    <dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}"/>
 
-    <!-- <dubbo:protocol name="dubbo" port="${dubbo.protocol.port}" dispatcher="all"
-        host="192.168.16.44" threadpool="fixed" threads="100" accepts="1000" /> -->
-    <dubbo:protocol name="dubbo" port="${dubbo.protocol.port}" dispatcher="all" threadpool="fixed" threads="300" accepts="1000" />
+    <dubbo:protocol name="dubbo" port="${dubbo.protocol.port}" dispatcher="all" threadpool="fixed" threads="300" accepts="1000"/>
 
     <!-- 业务发布 -->
     <dubbo:monitor protocol="registry"/>
     <!-- 接口的位置 -->
     <dubbo:service loadbalance="random" version="0.1.0" cluster="failover" retries="2" interface="com.tpadsz.after.api.RecordBillService" ref="recordBillService" timeout="3000"/>
-    <dubbo:reference id="coinsEarnerManager" version="0.2.0"  interface="com.tpadsz.cic.coin.api.CoinsEarnerManager" validation="true"/>
-
+    <dubbo:reference id="coinsEarnerManager" version="0.2.0" interface="com.tpadsz.cic.coin.api.CoinsEarnerManager" validation="true"/>
 
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
@@ -61,7 +57,7 @@
 
     <bean id="exampleJob1Trigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="exampleJob1Detail"/>
-        <property name="cronExpression" value="0 35 9 * * ?"/>
+        <property name="cronExpression" value="0 55 23 * * ?"/>
     </bean>
 
     <bean id="exampleJob1Detail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">

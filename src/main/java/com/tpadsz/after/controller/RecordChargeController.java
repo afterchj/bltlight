@@ -32,7 +32,7 @@ public class RecordChargeController extends BaseDecodedController {
         String msg = "";
 
         String uid = params.getString("uid");
-        if (org.apache.commons.lang3.StringUtils.isBlank(uid)){
+        if (org.apache.commons.lang3.StringUtils.isBlank(uid)) {
             model.put("result", ResultDict.UID_NOT_EXIST.getValue());
             model.put("result_message", ResultDict.UID_NOT_EXIST.getCode());
             model.put("device_id", params.getString("deviceId"));
@@ -47,6 +47,7 @@ public class RecordChargeController extends BaseDecodedController {
             model.put("device_id", deviceId);
         } else {
             Map map = billService.getSumCharge(uid);
+            map.put("device_id", deviceId);
             if (map == null) {
                 result = ResultDict.RECORD_NULL.getCode();
                 msg = ResultDict.RECORD_NULL.getValue();
