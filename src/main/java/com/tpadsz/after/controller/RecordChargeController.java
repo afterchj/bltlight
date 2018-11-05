@@ -47,12 +47,12 @@ public class RecordChargeController extends BaseDecodedController {
             model.put("device_id", deviceId);
         } else {
             Map map = billService.getSumCharge(uid);
-            map.put("device_id", deviceId);
             if (map == null) {
                 result = ResultDict.RECORD_NULL.getCode();
                 msg = ResultDict.RECORD_NULL.getValue();
                 model.put("device_id", info.get("deviceId"));
             } else {
+                map.put("device_id", deviceId);
                 model.put("chargeInfo", map);
             }
         }
