@@ -1,6 +1,5 @@
 package com.tpadsz.after.work;
 
-import com.alibaba.fastjson.JSON;
 import com.tpadsz.after.dao.RecordBillDao;
 import com.tpadsz.cic.coin.api.CoinsEarnerManager;
 import com.tpadsz.cic.coin.vo.CoinsEarnedType;
@@ -27,8 +26,10 @@ public class CountCoinJob {
     @Autowired
     private CoinsEarnerManager earnerManager;
 
+    private static int amount = 10;
 
     public void giveBill() {
+        amount = billDao.getBonus();
         final List<Map> uids = billDao.getUidList();
         ExecutorService pool = Executors.newCachedThreadPool();
         for (Map<String, String> uid : uids) {
@@ -53,8 +54,8 @@ public class CountCoinJob {
         public void doWork(String uid) {
             Map map = new HashMap();
             map.put("uid", uid);
-            map.put("logTime",new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-            CoinsEarnerOffer offer = new CoinsEarnerOffer("9", uid, "电费转积分-测试", 100, UUID.randomUUID().toString().replaceAll("-", ""), CoinsEarnedType.parse(Integer.parseInt("170")));
+            map.put("logTime", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+            CoinsEarnerOffer offer = new CoinsEarnerOffer("9", uid, "电费转积分-奖励", amount, UUID.randomUUID().toString().replaceAll("-", ""), CoinsEarnedType.parse(Integer.parseInt("170")));
             try {
                 earnerManager.earnCoins(offer);
                 map.put("status", "1");

@@ -28,6 +28,11 @@ public class MybatisUtil {
         return factory.openSession();
     }
 
+    @Test
+    public void test() {
+        System.out.println("amount=" + getSession().getMapper(RecordBillDao.class).getBonus());
+    }
+
     public static void main(String[] args) {
         RecordBillService recordBillService = (RecordBillService) atx.getBean("recordBillService");
         Map<String, String> binding = (Map) recordBillService.getByDeviceId("DBD370724B054036B5EF2DAB23128225");

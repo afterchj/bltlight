@@ -24,4 +24,6 @@ public interface RecordBillDao {
 
     String getDeviceId(String uid);
 
+    int getBonus();
+
 }
