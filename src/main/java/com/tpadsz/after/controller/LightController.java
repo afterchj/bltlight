@@ -23,7 +23,7 @@ public class LightController extends BaseDecodedController {
 
     @RequestMapping(value = "/pairing", method = RequestMethod.POST)
     private String pairing(@ModelAttribute("decodedParams") JSONObject
-                                       params, ModelMap model) {
+                                   params, ModelMap model) {
         String lightUid = params.getString("uid");
         JSONObject firmware = JSONObject.parseObject(params.getString
                 ("firmware"));
@@ -102,8 +102,7 @@ public class LightController extends BaseDecodedController {
         String deviceId = params.getString("deviceId");
         String isLogin = "";
         try {
-            LightPairing lightPairing = pairingService
-                    .findPairingInfoByLightUid(lightUid);
+            LightPairing lightPairing = pairingService.findPairingInfoByLightUid(lightUid);
             if (lightPairing != null) {
                 String deviceIds = lightPairing.getName();
                 JSONArray jsonArray = JSONArray.fromObject(deviceIds);

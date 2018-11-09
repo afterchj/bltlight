@@ -51,54 +51,55 @@ public class AppOperateController extends BaseDecodedController {
         JSONArray array = params.getJSONArray("lightGroup");
         String id;
         String isLogin;
+        String deviceId;
         BluethoothConnect bluethoothConnect;
         LightPairing lightPairing;
         for (int i = 0; i < array.size(); i++) {
             id = StringUtils.replace(UUID.randomUUID().toString(), "-", "");
+            deviceId = array.getJSONObject(i).getString("deviceId");
             bluethoothConnect = new BluethoothConnect();
             bluethoothConnect.setId(id);
             bluethoothConnect.setUid(uid);
-            bluethoothConnect.setDevice_id(array.getJSONObject(i).getString
-                    ("deviceId"));
+            bluethoothConnect.setDevice_id(deviceId);
             bluethoothConnect.setConnectStatus(array.getJSONObject(i)
                     .getString("connectStatus"));
             appOperateService.connectToBluetoothLog(bluethoothConnect);
 
+
             //蓝牙配对和绑定关系判断
             //根据uid查询配对表
-            lightPairing = pairingService
-                    .findPairingInfoByLightUid(uid);
-            if (lightPairing == null) {
-                pairingService.savePairingInfo(uid, array.getJSONObject(i)
-                        .getString("deviceId"));
-            } else {
-                String deviceIds = lightPairing.getName();
-                net.sf.json.JSONArray jsonArray = net.sf.json.JSONArray
-                        .fromObject(deviceIds);
-                if (!jsonArray.contains(array.getJSONObject(i).getString
-                        ("deviceId"))) {
-                    jsonArray.add(array.getJSONObject(i).getString("deviceId"));
-                    pairingService.updatePairingInfo(uid, jsonArray
-                            .toString());
+            LightActive lightActive = pairingService
+                    .findActiveInfoByMacAddress(array.getJSONObject(i).getString("mac"));
+            if (lightActive != null && lightActive.getDeviceId().equals(deviceId)) {
+                lightPairing = pairingService
+                        .findPairingInfoByLightUid(uid);
+                if (lightPairing == null) {
+                    pairingService.savePairingInfo(uid, deviceId);
+                } else {
+                    String deviceIds = lightPairing.getName();
+                    net.sf.json.JSONArray jsonArray = net.sf.json.JSONArray
+                            .fromObject(deviceIds);
+                    if (!jsonArray.contains(deviceId)) {
+                        jsonArray.add(deviceId);
+                        pairingService.updatePairingInfo(uid, jsonArray
+                                .toString());
+                    }
                 }
-            }
-            isLogin = pairingService.findLoginState(uid);
-            if ("1".equals(isLogin)) {
-                LightBinding lightBinding = pairingService
-                        .findBindingInfoByDeviceId(array.getJSONObject(i)
-                                .getString("deviceId"));
-                if (lightBinding == null) {
-                    LightBinding lightBinding2 = new LightBinding(array
-                            .getJSONObject(i).getString("deviceId"),
-                            array.getJSONObject(i).getString("mac"), uid,
-                            null, new Date(), null, null);
-                    pairingService.saveBindingInfo(lightBinding2);
-                } else if (!uid.equals(lightBinding.getLightUid())) {
-                    pairingService.updateBindingInfo(uid, array.getJSONObject
-                            (i).getString("deviceId"));
-                    if (lightBinding.getBossUid() != null) {
-                        pairingService.updateBossBindingInfo(lightBinding
-                                .getBossUid());
+                isLogin = pairingService.findLoginState(uid);
+                if ("1".equals(isLogin)) {
+                    LightBinding lightBinding = pairingService
+                            .findBindingInfoByDeviceId(deviceId);
+                    if (lightBinding == null) {
+                        LightBinding lightBinding2 = new LightBinding(deviceId,
+                                array.getJSONObject(i).getString("mac"), uid,
+                                null, new Date(), null, null);
+                        pairingService.saveBindingInfo(lightBinding2);
+                    } else if (!uid.equals(lightBinding.getLightUid())) {
+                        pairingService.updateBindingInfo(uid, deviceId);
+                        if (lightBinding.getBossUid() != null) {
+                            pairingService.updateBossBindingInfo(lightBinding
+                                    .getBossUid());
+                        }
                     }
                 }
             }
@@ -114,7 +115,7 @@ public class AppOperateController extends BaseDecodedController {
 
 //        appOperateService.openAppLog(openApp);
         JSONArray array = params.getJSONArray("lightGroup");
-        for (int i=0; i<array.size(); i++){
+        for (int i = 0; i < array.size(); i++) {
             openApp.setId(StringUtils.replace(UUID.randomUUID().toString(), "-", ""));
             openApp.setModel2(array.getJSONObject(i).getString("model"));
             openApp.setName(array.getJSONObject(i).getString("name"));
