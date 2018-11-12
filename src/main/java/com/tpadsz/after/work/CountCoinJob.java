@@ -55,7 +55,7 @@ public class CountCoinJob {
             Map map = new HashMap();
             map.put("uid", uid);
             map.put("logTime", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-            CoinsEarnerOffer offer = new CoinsEarnerOffer("9", uid, "电费转积分-奖励", amount, UUID.randomUUID().toString().replaceAll("-", ""), CoinsEarnedType.parse(Integer.parseInt("170")));
+            CoinsEarnerOffer offer = new CoinsEarnerOffer("9", uid, "电费转积分", amount, UUID.randomUUID().toString().replaceAll("-", ""), CoinsEarnedType.parse(Integer.parseInt("170")));
             try {
                 earnerManager.earnCoins(offer);
                 map.put("status", "1");
