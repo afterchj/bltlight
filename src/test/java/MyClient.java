@@ -27,7 +27,7 @@ public class MyClient {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationConsumer.xml");
         //获取服务器那边的bean
         CoinsEarnerManager earnerManager = (CoinsEarnerManager) ctx.getBean("coinsEarnerManager");
-        CoinsEarnerOffer offer = new CoinsEarnerOffer("9", "9de2725281b44136b04e474d85061151", "电费收入-测试", 100, UUID.randomUUID().toString().replaceAll("-", ""), CoinsEarnedType.parse(Integer.parseInt("170")));
+        CoinsEarnerOffer offer = new CoinsEarnerOffer("9", "9de2725281b44136b04e474d85061151", "电费转积分", 100, UUID.randomUUID().toString().replaceAll("-", ""), CoinsEarnedType.parse(Integer.parseInt("170")));
         try {
             earnerManager.earnCoins(offer);
         } catch (SystemAlgorithmException e) {
