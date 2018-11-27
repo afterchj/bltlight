@@ -28,6 +28,10 @@ public class CountCoinJob {
 
     private static int amount = 10;
 
+    public void testJob() {
+        System.out.println("执行定时任务..." + new Date());
+    }
+
     public void giveBill() {
         amount = billDao.getBonus();
         final List<Map> uids = billDao.getUidList();
