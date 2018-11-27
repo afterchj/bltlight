@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tpadsz.after.dao80.OrderFromDao">
+
+    <insert id="insertOrUpdateOrderFrom"
+            parameterType="com.tpadsz.after.entity.OrderFrom">
+        REPLACE INTO tbk.f_tbk_order(trade_id,num_iid,adzone_id,site_id,uid,tk_status,create_time,earning_time,alipay_total_price,price,pay_price,item_num,total_commission_rate,total_commission_fee,action_type,seller_shop_title,item_title)
+          VALUES(#{trade_id},#{num_iid},#{adzone_id},#{site_id},#{uid},#{tk_status},#{create_time},#{earning_time},#{alipay_total_price},#{price},#{pay_price},#{item_num},#{total_commission_rate},#{total_commission_fee},#{action_type},#{seller_shop_title},#{item_title})
+    </insert>
+
+    <insert id="insertOrderFrom"
+            parameterType="com.tpadsz.after.entity.OrderFrom">
+        INSERT INTO tbk.f_tbk_order(trade_id,num_iid,adzone_id,site_id,uid,tk_status,create_time,earning_time,alipay_total_price,price,pay_price,item_num,total_commission_rate,total_commission_fee,action_type,seller_shop_title,item_title)
+        VALUES(#{trade_id},#{num_iid},#{adzone_id},#{site_id},#{uid},#{tk_status},#{create_time},#{earning_time},#{alipay_total_price},#{price},#{pay_price},#{item_num},#{total_commission_rate},#{total_commission_fee},#{action_type},#{seller_shop_title},#{item_title})
+    </insert>
+
+    <update id="updateOrderFrom"
+            parameterType="com.tpadsz.after.entity.OrderFrom">
+        UPDATE tbk.f_tbk_order
+SET num_iid=#{num_iid},adzone_id=#{adzone_id},site_id=#{site_id},uid=#{uid},tk_status=#{tk_status},create_time=#{create_time},earning_time=#{earning_time},alipay_total_price=#{alipay_total_price},price=#{price},pay_price=#{pay_price},item_num=#{item_num},total_commission_rate=#{total_commission_rate},total_commission_fee=#{total_commission_fee},action_type=#{action_type},seller_shop_title=#{seller_shop_title},item_title=#{item_title} WHERE trade_id=#{trade_id}
+    </update>
+
+    <select id="findOrderFromById" parameterType="long" resultType="long">
+        SELECT trade_id FROM tbk.f_tbk_order WHERE trade_id=#{trade_id}
+    </select>
+
+    <select id="findAllOrderFromByUid" parameterType="string" resultType="com.tpadsz.after.entity.OrderFrom">
+        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+    </select>
+
+    <select id="findByUidWait" parameterType="string" resultType="com.tpadsz.after.entity.OrderFrom">
+        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and tk_status in(12,14) and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+    </select>
+
+    <select id="findByUidLose" parameterType="string" resultType="com.tpadsz.after.entity.OrderFrom">
+        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and tk_status=13 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+    </select>
+
+    <select id="findByUidDone" parameterType="string" resultType="com.tpadsz.after.entity.OrderFrom">
+        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and tk_status=3 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+    </select>
+</mapper>
