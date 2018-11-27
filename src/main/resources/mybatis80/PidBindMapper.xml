@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tpadsz.after.dao80.TbkBindDao">
+
+    <!--<insert id="insertPid" parameterType="java.util.List">-->
+    <!--insert ignore into tbk.f_tbk_pid(-->
+    <!--pkey,pid,adzone_id-->
+    <!--)values-->
+    <!--<foreach collection="list" item="u" index="index" separator=",">-->
+    <!--(-->
+    <!--#{u.pkey}, #{u.pid},#{u.adzone_id}-->
+    <!--)-->
+    <!--</foreach>-->
+    <!--</insert>-->
+    <insert id="bindPid" parameterType="map">
+        <selectKey keyProperty="count" resultType="int" order="BEFORE">
+            select count(*) from tbk.f_tbk_bind where pkey = #{pkey}
+        </selectKey>
+        <if test="count > 0">
+            UPDATE tbk.f_tbk_bind set last_bind_uid =#{last_bind_uid},bind_date=NOW() WHERE pkey=#{pkey}
+        </if>
+        <if test="count==0">
+            INSERT INTO tbk.f_tbk_bind VALUES(#{pkey},#{uid},NOW(),#{last_bind_uid})
+        </if>
+    </insert>
+
+    <select id="getPidInfo" resultType="Pid">
+        SELECT pkey,pid,adzone_id FROM tbk.f_tbk_pid WHERE is_used=0 ORDER BY pkey LIMIT 1
+    </select>
+
+    <update id="updatePid" parameterType="map">
+        UPDATE tbk.f_tbk_pid set is_used =#{is_used} WHERE adzone_id=#{adzone_id}
+    </update>
+
+
+</mapper>
