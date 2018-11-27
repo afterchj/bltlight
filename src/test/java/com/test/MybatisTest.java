@@ -103,7 +103,7 @@ public class MybatisTest {
     @Test
     public void testExcel() throws WriteException, IOException, BiffException, InterruptedException {
         SqlSessionTemplate sessionTemplate = (SqlSessionTemplate) atx.getBean("sqlSessionTemplate");
-        ExcelTool.exportExcel(sessionTemplate, "D:\\pid.xls");
+//        ExcelTool.exportExcel(sessionTemplate, "D:\\pid.xls");
         Thread.sleep(3000);
         ExcelTool.importExcel(sessionTemplate, "D:\\info.xls");
     }

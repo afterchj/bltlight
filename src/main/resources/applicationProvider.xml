@@ -169,7 +169,7 @@
     <!--p:sqlSessionFactoryBeanName="sqlSessionFactory" -->
     <!--p:basePackage="com.tpadsz.after.dao"/>-->
 
-    <!--<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">-->
-        <!--<constructor-arg ref="sqlSessionFactory80"/>-->
-    <!--</bean>-->
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg ref="sqlSessionFactory80"/>
+    </bean>
 </beans>
