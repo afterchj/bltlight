@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tbk">
+
+    <insert id="insertPid" parameterType="java.util.List">
+        insert ignore into tbk.f_tbk_pid(
+        pkey,pid,adzone_id
+        )values
+        <foreach collection="list" item="u" index="index" separator=",">
+            (
+            #{u.pkey}, #{u.pid},#{u.adzone_id}
+            )
+        </foreach>
+    </insert>
+
+    <select id="getPids" resultType="Pid">
+        SELECT * FROM tbk.f_tbk_pid LIMIT 10
+    </select>
+
+    <update id="updatePid" parameterType="map">
+        UPDATE tbk.f_tbk_pid set is_used =1 WHERE adzone_id=#{adzone_id}
+    </update>
+
+
+</mapper>
