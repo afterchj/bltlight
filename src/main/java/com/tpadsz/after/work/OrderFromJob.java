@@ -2,7 +2,6 @@ package com.tpadsz.after.work;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.sun.deploy.net.URLEncoder;
 import com.tpadsz.after.entity.OrderFrom;
 import com.tpadsz.after.service.OrderFromService;
 import org.springframework.stereotype.Service;
@@ -31,11 +30,14 @@ public class OrderFromJob {
     static final String vekey = "V00000585Y74210916";
     static final String span = "1200";
 
-    public void getUrlParams() {
+    public void getUrlParams(Integer num) {
 
-        String date = getTimeByMinute(-20);
+        String date = getTimeByMinute(num);
+        String code=null;
         try {
-            String code = getUrlEncode(date);
+//            code = URLEncoder.encode(date, "utf-8");
+            code=java.net.URLEncoder.encode(date,"utf-8");
+            System.out.println(date);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -44,7 +46,7 @@ public class OrderFromJob {
         int page_no = 1;
         JSONArray array;
         while (true) {
-            String param = "vekey=" + vekey + "&start_time=" + start_time +
+            String param = "vekey=" + vekey + "&start_time=" + code +
                     "&span=" + span + "&page_no=" + page_no;
             String urlNameString = url + "?" + param;
             URL realUrl;
@@ -112,7 +114,6 @@ public class OrderFromJob {
         }
     }
 
-
     public OrderFrom setOrderFrom(JSONObject jsonObject){
         OrderFrom orderFrom = new OrderFrom();
         orderFrom.setTrade_id(jsonObject.getLong("trade_id"));
@@ -141,14 +142,4 @@ public class OrderFromJob {
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar
                 .getTime());
     }
-
-
-    public static String getUrlEncode(String code) throws
-            UnsupportedEncodingException {
-        String encode = code;
-        String urlEncode = URLEncoder.encode(encode, "utf-8");
-        return urlEncode;
-    }
-
-
 }

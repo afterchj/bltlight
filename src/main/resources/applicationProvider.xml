@@ -51,6 +51,7 @@
             <list>
                 <!--第1个定时任务由bosslocker-store-hq在执行了-->
                 <ref bean="exampleJob1Trigger"/>
+                <ref bean="orderFromJobTrigger"/>
             </list>
         </property>
     </bean>
@@ -65,6 +66,18 @@
         <property name="targetObject" ref="countCoinJob"/>
         <!-- 指定任务执行的方法 -->
         <property name="targetMethod" value="giveBill"/>
+    </bean>
+
+    <bean id="orderFromJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="orderFromJobDetail"/>
+        <!--每一分钟执行一次-->
+        <property name="cronExpression" value="0 0/1 * * * ?"/>
+    </bean>
+    <bean id="orderFromJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 指定任务类 -->
+        <property name="targetObject" ref="orderFromJob"/>
+        <!-- 指定任务执行的方法 -->
+        <property name="targetMethod" value="getUrlParams"/>
     </bean>
 
     <!-- 阿里 druid数据库连接池 -->

@@ -1,6 +1,7 @@
 package com.tpadsz.after.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import com.tpadsz.after.entity.OrderFrom;
 import com.tpadsz.after.entity.dd.ResultDict;
 import com.tpadsz.after.service.OrderFromService;
@@ -80,6 +81,18 @@ public class OrderQueryController extends BaseDecodedController{
             orderFrom.setImage("/tmp/a.jpg");
         }
         model.put("orderFroms",orderFroms);
+        model.put("result", ResultDict.SUCCESS.getCode());
+    }
+
+    @RequestMapping(value = "/page", method = RequestMethod.POST)
+    public void page(@ModelAttribute("decodedParams") JSONObject
+                                 params, ModelMap model) {
+        String uid = params.getString("uid");
+        Integer pageNum=params.getInteger("pageNum");
+        Integer status = params.getInteger("status");
+        PageInfo pageInfos = orderFromService.findAll(uid,pageNum,status);
+
+        model.put("orderFroms",pageInfos.getList());
         model.put("result", ResultDict.SUCCESS.getCode());
     }
 
