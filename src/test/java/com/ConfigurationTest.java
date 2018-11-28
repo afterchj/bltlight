@@ -156,7 +156,7 @@ public class ConfigurationTest {
 
     public String getValue(String adzone_id) {
         Map map = new HashMap();
-        map.put("uid", adzone_id);
+        map.put("adzone_id", adzone_id);
         map.put("is_used", false);
         String key = formatKey(adzone_id);
         String uid = (String) redisTemplate.opsForValue().get(key);
