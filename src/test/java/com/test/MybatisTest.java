@@ -2,19 +2,20 @@ package com.test;
 
 import com.alibaba.fastjson.JSON;
 import com.tpadsz.after.api.RecordBillService;
-import com.tpadsz.after.dao80.OrderFromDao;
 import com.tpadsz.after.dao.RecordBillDao;
 import com.tpadsz.after.dao80.LightUserDao;
-import com.tpadsz.after.entity.OrderFrom;
+import com.tpadsz.after.entity.Pid;
+import com.util.ExcelTool;
+import jxl.read.biff.BiffException;
+import jxl.write.WriteException;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Test;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.io.IOException;
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ import java.util.Map;
 /**
  * Created by hongjian.chen on 2017/10/24.
  */
-public class MybatisUtil {
+public class MybatisTest {
     private static ClassPathXmlApplicationContext atx;
 
     static {
@@ -31,7 +32,7 @@ public class MybatisUtil {
 
 
     public static SqlSession getSession() {
-        SqlSessionFactory factory = (SqlSessionFactory) atx.getBean("sqlSessionFactory80");
+        SqlSessionFactory factory = (SqlSessionFactory) atx.getBean("sqlSessionFactory");
         return factory.openSession();
     }
 
@@ -100,14 +101,16 @@ public class MybatisUtil {
     }
 
     @Test
-    public void testOrderFrom() throws ParseException {
-        String da="2018-10-25 19:47:09";
-        Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(da);
-        OrderFrom orderFrom = new OrderFrom(238392046412662714L,13371072439L,"29274312","8696607","487812dasdasdasdad",3,date,date,"13.5000","13.50","13.50",1,"0.0180","0.2400","11","","");
+    public void testExcel() throws WriteException, IOException, BiffException, InterruptedException {
+        SqlSessionTemplate sessionTemplate = (SqlSessionTemplate) atx.getBean("sqlSessionTemplate");
+//        ExcelTool.exportExcel(sessionTemplate, "D:\\pid.xls");
+        Thread.sleep(3000);
+        ExcelTool.importExcel(sessionTemplate, "D:\\info.xls");
+    }
 
-        List<OrderFrom> orderFroms = getSession().getMapper(OrderFromDao.class).findByUidDone("487812dasdasdasdad");
-        for (OrderFrom orderFrom1:orderFroms){
-            System.out.println(orderFrom1.toString());
-        }
+    @Test
+    public void test(){
+        String num="54298700349";
+        System.out.println(Long.valueOf(num));
     }
 }

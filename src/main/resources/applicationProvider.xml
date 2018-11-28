@@ -109,8 +109,7 @@
 
     </bean>
     <!-- JDBC 事务管理器, 在service层面上实现事务管理 -->
-    <bean id="transactionManager"
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
@@ -170,7 +169,7 @@
     <!--p:sqlSessionFactoryBeanName="sqlSessionFactory" -->
     <!--p:basePackage="com.tpadsz.after.dao"/>-->
 
-    <!--<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">-->
-    <!--<constructor-arg ref="sqlSessionFactory"/>-->
-    <!--</bean>-->
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg ref="sqlSessionFactory80"/>
+    </bean>
 </beans>
