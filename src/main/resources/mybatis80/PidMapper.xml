@@ -14,7 +14,7 @@
     </insert>
 
     <select id="getPids" resultType="Pid">
-        SELECT * FROM tbk.f_tbk_pid LIMIT 10
+        SELECT pkey,pid,adzone_id FROM tbk.f_tbk_pid LIMIT 10
     </select>
 
     <update id="updatePid" parameterType="map">
