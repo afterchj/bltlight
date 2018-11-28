@@ -1,5 +1,6 @@
 package com.tpadsz.after.util;
 
+import com.alibaba.fastjson.JSON;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
@@ -8,15 +9,16 @@ import com.taobao.api.request.TbkUatmFavoritesItemGetRequest;
 import com.taobao.api.response.TbkUatmFavoritesGetResponse;
 import com.taobao.api.response.TbkUatmFavoritesItemGetResponse;
 import com.tpadsz.after.entity.dd.CommonParam;
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by hongjian.chen on 2018/11/19.
@@ -36,7 +38,7 @@ public class TaoBaoUtil {
         map.put("para", "558825175392");
         map.put("pid", "mm_43238250_191900396_54300950044");
         map.put("notkl", "1");
-        map.put("detail", "1");
+//        map.put("detail", "1");
         map.put("noshortlink  ", "1");
         String ret1 = HttpClientUtil.httpGet(CommonParam.VEHICPI.getValue(), map);
 //        map.put("start_time", "2018-10-25 19:48:24");
@@ -82,7 +84,7 @@ public class TaoBaoUtil {
     }
 
     @Test
-    public void test() throws ParseException {
+    public void testFormat() throws ParseException {
         String key = formatKey("9de2725281b44136b04e474d85061151");
         System.out.println(key);
 
@@ -94,5 +96,23 @@ public class TaoBaoUtil {
         //d的使用
         System.out.printf("月/日/年格式：%tD%n", date1);
         System.out.println("dateTime=" + dateTime);
+    }
+
+    @Test
+    public void getDiscount(){
+        String a="满80元减5元";
+        String regEx="[^0-9]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(a);
+        String value=m.replaceAll("_").trim();
+        String[] values=value.split("_");
+        List<Integer> list=new ArrayList<>();
+        for (String str:values){
+            if (StringUtils.isNotEmpty(str)){
+                list.add(Integer.parseInt(str));
+            }
+        }
+        System.out.println("values="+JSON.toJSONString(values));
+        System.out.println("list="+JSON.toJSONString(list));
     }
 }

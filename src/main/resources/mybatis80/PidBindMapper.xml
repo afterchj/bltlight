@@ -16,6 +16,17 @@
         SELECT pkey,pid,adzone_id FROM tbk.f_tbk_pid LIMIT 10
     </select>
 
+    <select id="getPid" parameterType="string" resultType="string">
+        SELECT
+          pid
+        FROM
+            tbk.f_tbk_pid p
+        INNER JOIN tbk.f_tbk_bind b ON p.pkey = b.pkey
+        AND last_bind_uid = #{uid}
+        ORDER BY
+            bind_date DESC LIMIT 1
+    </select>
+
     <insert id="bindPid" parameterType="map">
         <selectKey keyProperty="count" resultType="int" order="BEFORE">
             select count(*) from tbk.f_tbk_bind where pkey = #{pkey}
@@ -33,15 +44,17 @@
     </select>
 
     <update id="updatePid" parameterType="map">
-        <choose>
-            <when test="adzone_id!=null">
-                UPDATE tbk.f_tbk_pid set is_used =#{is_used} WHERE adzone_id=#{adzone_id}
-            </when>
-            <otherwise>
-                UPDATE tbk.f_tbk_pid SET is_used=#{is_used} WHERE pkey in (SELECT pkey FROM tbk.f_tbk_bind WHERE
-                last_bind_uid=#{uid})
-            </otherwise>
-        </choose>
+        UPDATE tbk.f_tbk_pid set is_used =#{is_used} WHERE adzone_id=#{adzone_id}
+        <!--<choose>-->
+            <!--<when test="adzone_id!=null">-->
+                <!--UPDATE tbk.f_tbk_pid set is_used =#{is_used} WHERE adzone_id=#{adzone_id}-->
+            <!--</when>-->
+            <!--<otherwise>-->
+                <!--UPDATE tbk.f_tbk_pid SET is_used=#{is_used} WHERE pkey in(-->
+                <!--SELECT pkey FROM tbk.f_tbk_bind WHERE last_bind_uid=#{uid}-->
+                <!--)-->
+            <!--</otherwise>-->
+        <!--</choose>-->
     </update>
 
 

@@ -16,5 +16,7 @@ public interface TbkBindService {
 
     List<Pid> getPids();
 
+    String getPid(String uid);
+
     void updatePid(Map map);
 }
