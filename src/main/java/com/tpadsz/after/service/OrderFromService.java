@@ -1,6 +1,7 @@
 package com.tpadsz.after.service;
 
 
+import com.github.pagehelper.PageInfo;
 import com.tpadsz.after.entity.OrderFrom;
 
 import java.util.List;
@@ -28,4 +29,6 @@ public interface OrderFromService {
     List<OrderFrom> findByUidLose(String uid);//已失效订单
 
     List<OrderFrom> findByUidDone(String uid);//已结算订单
+
+    PageInfo<OrderFrom> findAll(String uid,Integer pageNum,Integer status);
 }
