@@ -148,29 +148,30 @@ public class ConfigurationTest {
 
     }
 
-    public String getValue(String adzone_id) {
+    public String getValue(String uid) {
         Map map = new HashMap();
-        map.put("adzone_id", adzone_id);
+        map.put("uid", uid);
         map.put("is_used", false);
-        String key = formatKey(adzone_id);
-        String uid = (String) redisTemplate.opsForValue().get(key);
+        String key = formatKey(uid);
+        String adzone_id = (String) redisTemplate.opsForValue().get(key);
         if (uid == null) {
             sessionTemplate.getMapper(TbkBindDao.class).updatePid(map);
         }
-        return uid;
+        return adzone_id;
     }
 
-    public String formatKey(String adzone_id) {
-        return String.format("pid_%s", adzone_id);
+    public String formatKey(String uid) {
+        return String.format("pid_%s", uid);
     }
 
     @Test
     public void testSetKey() throws InterruptedException {
         String adzone_id = "54298700349";
         String uid = "9de2725281b44136b04e474d85061151";
-        String key = formatKey(adzone_id);
+
+        String key = formatKey(uid);
 //        ValueOperations<String, Object> operations = redisTemplate.opsForValue();
-//        operations.set(key, uid, 3, TimeUnit.SECONDS);
+//        operations.set(key, adzone_id, 3, TimeUnit.SECONDS);
         System.out.println(redisTemplate.hasKey(key) + "\t" + getValue(adzone_id));
         System.out.println("-----------------分隔线-----------------");
 //        Thread.sleep(3000);
@@ -182,21 +183,22 @@ public class ConfigurationTest {
     @Test
     public void testBind() {
         Pid pid = sessionTemplate.getMapper(TbkBindDao.class).getPidInfo();
-        String adzone_id=pid.getAdzone_id();
-        String key = formatKey(adzone_id);
-        String uid = "133d6b3820c84aebaaf0a6f32a359e7c";
+        String adzone_id = pid.getAdzone_id();
+        System.out.println("adzone_id="+adzone_id);
+        String uid = "e03bb58e3b834c739065bd6648017926";
+        String key = formatKey(uid);
         Map map = new HashMap();
+        map.put("pkey", pid.getPkey());
+        map.put("is_used", true);
         map.put("uid", uid);
         map.put("last_bind_uid", uid);
-        map.put("pkey", pid.getPkey());
         map.put("adzone_id", adzone_id);
-        map.put("is_used", true);
-        sessionTemplate.getMapper(TbkBindDao.class).updatePid(map);
+        redisTemplate.opsForValue().set(key, adzone_id, 3, TimeUnit.SECONDS);
         sessionTemplate.getMapper(TbkBindDao.class).bindPid(map);
-        redisTemplate.opsForValue().set(key, uid, 3, TimeUnit.SECONDS);
+        sessionTemplate.getMapper(TbkBindDao.class).updatePid(map);
 //        List<Pid> list = sessionTemplate.selectList("tbk.getPids");
         System.out.println(JSON.toJSONString(pid));
-        sessionTemplate.getMapper(TbkBindDao.class).updatePid(map);
+//        sessionTemplate.getMapper(TbkBindDao.class).updatePid(map);
 
     }
 }
