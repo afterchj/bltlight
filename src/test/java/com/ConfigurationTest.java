@@ -3,6 +3,7 @@ package com;
 import com.alibaba.fastjson.JSON;
 import com.tpadsz.after.config.DBConfig;
 import com.tpadsz.after.config.SpringConfig;
+import com.tpadsz.after.dao80.BindingDao;
 import com.tpadsz.after.dao80.TbkBindDao;
 import com.tpadsz.after.entity.Person;
 import com.tpadsz.after.entity.Pid;
@@ -153,20 +154,20 @@ public class ConfigurationTest {
 
     }
 
-    public String getValue(String uid) {
+    public String getValue(String adzone_id) {
         Map map = new HashMap();
-        map.put("uid", uid);
+        map.put("uid", adzone_id);
         map.put("is_used", false);
-        String key = formatKey(uid);
-        String adzone_id = (String) redisTemplate.opsForValue().get(key);
+        String key = formatKey(adzone_id);
+        String uid = (String) redisTemplate.opsForValue().get(key);
         if (adzone_id == null) {
             sessionTemplate.getMapper(TbkBindDao.class).updatePid(map);
         }
-        return adzone_id;
+        return uid;
     }
 
-    public String formatKey(String uid) {
-        return String.format("pid_%s", uid);
+    public String formatKey(String adzone_id) {
+        return String.format("pid_%s", adzone_id);
     }
 
     @Test
@@ -188,16 +189,16 @@ public class ConfigurationTest {
     public void testBind() {
         Pid pid = sessionTemplate.getMapper(TbkBindDao.class).getPidInfo();
         String adzone_id = pid.getAdzone_id();
-        System.out.println("adzone_id="+adzone_id);
+        System.out.println("adzone_id=" + adzone_id);
         String uid = "f0433a087dbb4b19967cc6b8da2e0558";
-        String key = formatKey(uid);
+        String key = formatKey(adzone_id);
         Map map = new HashMap();
         map.put("pkey", pid.getPkey());
         map.put("is_used", true);
         map.put("uid", uid);
         map.put("last_bind_uid", uid);
         map.put("adzone_id", adzone_id);
-        redisTemplate.opsForValue().set(key, adzone_id, 3, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(key, uid, 3, TimeUnit.SECONDS);
         sessionTemplate.getMapper(TbkBindDao.class).bindPid(map);
         sessionTemplate.getMapper(TbkBindDao.class).updatePid(map);
 //        List<Pid> list = sessionTemplate.selectList("tbk.getPids");
@@ -206,8 +207,9 @@ public class ConfigurationTest {
     }
 
     @Test
-    public void testMybatisTemplate(){
+    public void testMybatisTemplate() {
         Pid pid = sessionTemplate.selectOne("com.tpadsz.after.dao80.TbkBindDao.getPidInfo");
+        System.out.println("pid=" + sessionTemplate.getMapper(TbkBindDao.class).getPid("f0433a087dbb4b19967cc6b8da2e0558"));
         System.out.println(pid.getPid());
     }
 }

@@ -35,6 +35,11 @@ public class TbkBindServiceImpl implements TbkBindService {
     }
 
     @Override
+    public String getPid(String uid) {
+        return bindDao.getPid(uid);
+    }
+
+    @Override
     public void updatePid(Map map) {
         bindDao.updatePid(map);
     }
