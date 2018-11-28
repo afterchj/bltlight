@@ -29,7 +29,14 @@
     </select>
 
     <update id="updatePid" parameterType="map">
-        UPDATE tbk.f_tbk_pid set is_used =#{is_used} WHERE adzone_id=#{adzone_id}
+        <choose>
+            <when test="adzone_id!=null">
+                UPDATE tbk.f_tbk_pid set is_used =#{is_used} WHERE adzone_id=#{adzone_id}
+            </when>
+            <otherwise>
+                UPDATE tbk.f_tbk_pid SET is_used=#{is_used} WHERE pkey in (SELECT pkey FROM tbk.f_tbk_bind WHERE last_bind_uid=#{uid})
+            </otherwise>
+        </choose>
     </update>
 
 
