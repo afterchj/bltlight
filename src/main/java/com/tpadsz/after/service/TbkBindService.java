@@ -1,4 +1,4 @@
-package com.tpadsz.after.dao80;
+package com.tpadsz.after.service;
 
 import com.tpadsz.after.entity.Pid;
 
@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by hongjian.chen on 2018/11/27.
+ * Created by hongjian.chen on 2018/11/28.
  */
-public interface TbkBindDao {
+public interface TbkBindService {
 
     void bindPid(Map map);
 
@@ -17,5 +17,4 @@ public interface TbkBindDao {
     List<Pid> getPids();
 
     void updatePid(Map map);
-
 }

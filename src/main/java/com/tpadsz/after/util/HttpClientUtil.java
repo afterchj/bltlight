@@ -34,12 +34,11 @@ public class HttpClientUtil {
         for (String key : set) {
             builder.setParameter(key, para.get(key));
         }
-
         HttpGet request = new HttpGet(builder.build());
         RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(6000).setConnectTimeout(6000).setConnectionRequestTimeout(6000).build();
         request.setConfig(requestConfig);
         String uri = request.getURI().toString();
-        System.out.println(request.getURI().toString());
+        System.out.println("uri=" + request.getURI().toString());
 
         /* 1 生成 HttpClinet 对象并设置参数 */
         HttpClient httpClient = new HttpClient();
@@ -72,11 +71,9 @@ public class HttpClientUtil {
             // InputStream response = getMethod.getResponseBodyAsStream();
         } catch (HttpException e) {
             // 发生致命的异常，可能是协议不对或者返回的内容有问题
-            System.out.println("请检查输入的URL!");
             e.printStackTrace();
         } catch (IOException e) {
             // 发生网络异常
-            System.out.println("发生网络异常!");
             e.printStackTrace();
         } finally {
         /* 6 .释放连接 */

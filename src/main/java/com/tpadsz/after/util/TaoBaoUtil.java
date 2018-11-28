@@ -26,11 +26,11 @@ import java.util.Map;
 public class TaoBaoUtil {
 
     public static void main(String[] args) throws Exception {
-//        favoritesGet();
-//        System.out.println();
-//        favoritesItemGet();
-//        System.out.println();
-//        urlEncode();
+        favoritesGet();
+        System.out.println();
+        favoritesItemGet();
+        System.out.println();
+        urlEncode();
         Map map = new HashMap();
         map.put("vekey", CommonParam.VEKEY.getValue());
         map.put("para", "558825175392");
@@ -39,11 +39,11 @@ public class TaoBaoUtil {
         map.put("detail", "1");
         map.put("noshortlink  ", "1");
         String ret1 = HttpClientUtil.httpGet(CommonParam.VEHICPI.getValue(), map);
-        map.put("start_time", "2018-10-25 19:48:24");
-        map.put("span", "1200");
-        String ret2 = HttpClientUtil.httpGet(CommonParam.VEORDER.getValue(), map);
+//        map.put("start_time", "2018-10-25 19:48:24");
+//        map.put("span", "1200");
+//        String ret2 = HttpClientUtil.httpGet(CommonParam.VEORDER.getValue(), map);
         System.out.println("response1:\n" + ret1);
-        System.out.println("response2:\n" + ret2);
+//        System.out.println("response2:\n" + ret2);
     }
 
     public static void favoritesGet() throws ApiException {

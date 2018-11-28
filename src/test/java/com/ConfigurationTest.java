@@ -1,6 +1,7 @@
 package com;
 
 import com.alibaba.fastjson.JSON;
+import com.tpadsz.after.config.DBConfig;
 import com.tpadsz.after.config.SpringConfig;
 import com.tpadsz.after.dao80.TbkBindDao;
 import com.tpadsz.after.entity.Person;
@@ -16,6 +17,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +29,7 @@ import java.util.concurrent.TimeoutException;
  * Created by hongjian.chen on 2018/11/26.
  */
 
-@ContextConfiguration(classes = {SpringConfig.class})
+@ContextConfiguration(classes = {SpringConfig.class, DBConfig.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ConfigurationTest {
 
@@ -37,7 +39,10 @@ public class ConfigurationTest {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
-    @Autowired
+//    @Autowired
+//    private SqlSessionTemplate sessionTemplate;
+
+    @Resource(name = "mySqlSessionTemplate")
     private SqlSessionTemplate sessionTemplate;
 
     @Test
@@ -154,7 +159,7 @@ public class ConfigurationTest {
         map.put("is_used", false);
         String key = formatKey(uid);
         String adzone_id = (String) redisTemplate.opsForValue().get(key);
-        if (uid == null) {
+        if (adzone_id == null) {
             sessionTemplate.getMapper(TbkBindDao.class).updatePid(map);
         }
         return adzone_id;
@@ -167,16 +172,15 @@ public class ConfigurationTest {
     @Test
     public void testSetKey() throws InterruptedException {
         String adzone_id = "54298700349";
-        String uid = "9de2725281b44136b04e474d85061151";
+        String uid = "5bc9f45ab42e453f93ee8a966b5a9726";
 
         String key = formatKey(uid);
 //        ValueOperations<String, Object> operations = redisTemplate.opsForValue();
 //        operations.set(key, adzone_id, 3, TimeUnit.SECONDS);
-        System.out.println(redisTemplate.hasKey(key) + "\t" + getValue(adzone_id));
+        System.out.println(redisTemplate.hasKey(key) + "\t" + getValue(uid));
         System.out.println("-----------------分隔线-----------------");
 //        Thread.sleep(3000);
-//        System.out.println(redisTemplate.hasKey(key) + "\t" + getValue(adzone_id));
-        System.out.println("uid=" + getValue(adzone_id));
+        System.out.println(redisTemplate.hasKey(key) + "\t" + getValue(uid));
     }
 
 
@@ -185,7 +189,7 @@ public class ConfigurationTest {
         Pid pid = sessionTemplate.getMapper(TbkBindDao.class).getPidInfo();
         String adzone_id = pid.getAdzone_id();
         System.out.println("adzone_id="+adzone_id);
-        String uid = "e03bb58e3b834c739065bd6648017926";
+        String uid = "f0433a087dbb4b19967cc6b8da2e0558";
         String key = formatKey(uid);
         Map map = new HashMap();
         map.put("pkey", pid.getPkey());
@@ -199,6 +203,11 @@ public class ConfigurationTest {
 //        List<Pid> list = sessionTemplate.selectList("tbk.getPids");
         System.out.println(JSON.toJSONString(pid));
 //        sessionTemplate.getMapper(TbkBindDao.class).updatePid(map);
+    }
 
+    @Test
+    public void testMybatisTemplate(){
+        Pid pid = sessionTemplate.selectOne("com.tpadsz.after.dao80.TbkBindDao.getPidInfo");
+        System.out.println(pid.getPid());
     }
 }

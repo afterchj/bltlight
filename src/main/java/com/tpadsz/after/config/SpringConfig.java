@@ -28,7 +28,6 @@ import java.io.IOException;
  */
 
 @Configuration
-@ComponentScan
 @PropertySource("classpath:setup.production.properties")
 public class SpringConfig {
 

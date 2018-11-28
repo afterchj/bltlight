@@ -12,6 +12,10 @@
     <!--)-->
     <!--</foreach>-->
     <!--</insert>-->
+    <select id="getPids" resultType="Pid">
+        SELECT pkey,pid,adzone_id FROM tbk.f_tbk_pid LIMIT 10
+    </select>
+
     <insert id="bindPid" parameterType="map">
         <selectKey keyProperty="count" resultType="int" order="BEFORE">
             select count(*) from tbk.f_tbk_bind where pkey = #{pkey}
@@ -34,7 +38,8 @@
                 UPDATE tbk.f_tbk_pid set is_used =#{is_used} WHERE adzone_id=#{adzone_id}
             </when>
             <otherwise>
-                UPDATE tbk.f_tbk_pid SET is_used=#{is_used} WHERE pkey in (SELECT pkey FROM tbk.f_tbk_bind WHERE last_bind_uid=#{uid})
+                UPDATE tbk.f_tbk_pid SET is_used=#{is_used} WHERE pkey in (SELECT pkey FROM tbk.f_tbk_bind WHERE
+                last_bind_uid=#{uid})
             </otherwise>
         </choose>
     </update>
