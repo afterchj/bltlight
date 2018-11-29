@@ -20,16 +20,8 @@ import java.util.List;
 @Service("orderFromService")
 public class OrderFromServiceImpl implements OrderFromService {
 
-    static final String vekey = "V00000585Y74210916";
-    static final String span = "1200";
-
     @Resource
     private OrderFromDao orderFromDao;
-
-    @Override
-    public void insertOrUpdateOrderFrom(OrderFrom orderFrom) {
-        orderFromDao.insertOrUpdateOrderFrom(orderFrom);
-    }
 
     @Override
     public void insertOrderFrom(OrderFrom orderFrom) {
@@ -42,28 +34,8 @@ public class OrderFromServiceImpl implements OrderFromService {
     }
 
     @Override
-    public Long findOrderFromById(Long id) {
+    public OrderFrom findOrderFromById(Long id) {
         return orderFromDao.findOrderFromById(id);
-    }
-
-    @Override
-    public List<OrderFrom> findAllOrderFromByUid(String uid) {
-        return orderFromDao.findAllOrderFromByUid(uid);
-    }
-
-    @Override
-    public List<OrderFrom> findByUidWait(String uid) {
-        return orderFromDao.findByUidWait(uid);
-    }
-
-    @Override
-    public List<OrderFrom> findByUidLose(String uid) {
-        return orderFromDao.findByUidLose(uid);
-    }
-
-    @Override
-    public List<OrderFrom> findByUidDone(String uid) {
-        return orderFromDao.findByUidDone(uid);
     }
 
     @Override
@@ -87,5 +59,20 @@ public class OrderFromServiceImpl implements OrderFromService {
 
         PageInfo pageInfo = new PageInfo(allOrderFromByUid);
         return pageInfo;
+    }
+
+    @Override
+    public String findPidAndUidByZdId(String adzoneId) {
+        return orderFromDao.findPidAndUidByZdId(adzoneId);
+    }
+
+    @Override
+    public String findShopImageByNumIid(String numiid) {
+        return orderFromDao.findShopImageByNumIid(numiid);
+    }
+
+    @Override
+    public String findTimeById(Integer id) {
+        return orderFromDao.findTimeById(id);
     }
 }

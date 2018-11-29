@@ -51,7 +51,8 @@
             <list>
                 <!--第1个定时任务由bosslocker-store-hq在执行了-->
                 <ref bean="exampleJob1Trigger"/>
-                <!--<ref bean="orderFromJobTrigger"/>-->
+                <ref bean="orderEveryDayJobTrigger"/>
+                <ref bean="orderYesterDayJobTrigger"/>
             </list>
         </property>
     </bean>
@@ -68,17 +69,33 @@
         <property name="targetMethod" value="giveBill"/>
     </bean>
 
-    <!--<bean id="orderFromJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
-        <!--<property name="jobDetail" ref="orderFromJobDetail"/>-->
-        <!--&lt;!&ndash;每一分钟执行一次&ndash;&gt;-->
-        <!--<property name="cronExpression" value="0 0/1 * * * ?"/>-->
-    <!--</bean>-->
-    <!--<bean id="orderFromJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
-        <!--&lt;!&ndash; 指定任务类 &ndash;&gt;-->
-        <!--<property name="targetObject" ref="orderFromJob"/>-->
-        <!--&lt;!&ndash; 指定任务执行的方法 &ndash;&gt;-->
-        <!--<property name="targetMethod" value="getUrlParams"/>-->
-    <!--</bean>-->
+    <bean id="orderEveryDayJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="orderEveryDayobDetail"/>
+        <!--每一分钟执行一次-->
+        <property name="cronExpression" value="0 0/1 * * * ?"/>
+    </bean>
+    <bean id="orderEveryDayobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 指定任务类 -->
+        <property name="targetObject" ref="orderFromJob"/>
+        <!-- 指定任务执行的方法 -->
+        <property name="targetMethod" value="getEveryDayOrder"/>
+    </bean>
+
+    <bean id="orderYesterDayJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="orderYesterDayJobDetail"/>
+        <!--每天0点到2点每一分钟触发一次-->
+        <property name="cronExpression" value="0 0/1 17-18 * * ?"/>
+        <!--每个月20-25号0点到2点触发 3秒触发一次-->
+        <!--<property name="cronExpression" value="0/3 0 0-2 20-25 * ?"/>-->
+    </bean>
+    <bean id="orderYesterDayJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 指定任务类 -->
+        <property name="targetObject" ref="orderFromJob"/>
+        <!-- 指定任务执行的方法 -->
+        <property name="targetMethod" value="getYesterDayOrder"/>
+    </bean>
+
+
 
     <!-- 阿里 druid数据库连接池 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
@@ -103,6 +120,7 @@
 
     <bean id="dataSource80" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
         <!-- 数据库基本信息配置 -->
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="${jdbc.url}"/>
         <property name="username" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>

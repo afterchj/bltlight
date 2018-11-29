@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.tpadsz.after.api.RecordBillService;
 import com.tpadsz.after.dao.RecordBillDao;
 import com.tpadsz.after.dao80.LightUserDao;
+import com.tpadsz.after.dao80.OrderFromDao;
 import com.tpadsz.after.dao80.TbkBindDao;
 import com.tpadsz.after.entity.Pid;
 import com.util.ExcelTool;
@@ -33,7 +34,7 @@ public class MybatisTest {
 
 
     public static SqlSession getSession() {
-        SqlSessionFactory factory = (SqlSessionFactory) atx.getBean("sqlSessionFactory");
+        SqlSessionFactory factory = (SqlSessionFactory) atx.getBean("sqlSessionFactory80");
         return factory.openSession();
     }
 
@@ -114,5 +115,10 @@ public class MybatisTest {
         SqlSessionTemplate sessionTemplate = (SqlSessionTemplate) atx.getBean("sqlSessionTemplate");
         Pid pid = sessionTemplate.getMapper(TbkBindDao.class).getPidInfo();
         System.out.println(JSON.toJSONString(pid));
+    }
+
+    @Test
+    public void test20(){
+        System.out.println(getSession().getMapper(OrderFromDao.class).findTimeById(1));
     }
 }
