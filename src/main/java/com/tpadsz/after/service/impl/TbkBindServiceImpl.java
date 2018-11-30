@@ -2,6 +2,7 @@ package com.tpadsz.after.service.impl;
 
 import com.tpadsz.after.dao80.TbkBindDao;
 import com.tpadsz.after.entity.Pid;
+import com.tpadsz.after.entity.ShopInfo;
 import com.tpadsz.after.service.TbkBindService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,11 @@ public class TbkBindServiceImpl implements TbkBindService {
     }
 
     @Override
+    public void insertHiPriceLog(ShopInfo shop) {
+        bindDao.insertHiPriceLog(shop);
+    }
+
+    @Override
     public Pid getPidInfo() {
         return bindDao.getPidInfo();
     }
@@ -35,7 +41,7 @@ public class TbkBindServiceImpl implements TbkBindService {
     }
 
     @Override
-    public String getPid(String uid) {
+    public Pid getPid(String uid) {
         return bindDao.getPid(uid);
     }
 

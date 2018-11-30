@@ -1,12 +1,15 @@
 package com;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.tpadsz.after.config.DBConfig;
 import com.tpadsz.after.config.SpringConfig;
 import com.tpadsz.after.dao80.BindingDao;
 import com.tpadsz.after.dao80.TbkBindDao;
 import com.tpadsz.after.entity.Person;
 import com.tpadsz.after.entity.Pid;
+import com.tpadsz.after.entity.ShopInfo;
+import com.tpadsz.after.util.TaoBaoUtil;
 import net.rubyeye.xmemcached.XMemcachedClient;
 import net.rubyeye.xmemcached.exception.MemcachedException;
 import org.junit.Test;
@@ -160,9 +163,10 @@ public class ConfigurationTest {
         map.put("is_used", false);
         String key = formatKey(adzone_id);
         String uid = (String) redisTemplate.opsForValue().get(key);
-        if (adzone_id == null) {
+        if (uid == null) {
             sessionTemplate.getMapper(TbkBindDao.class).updatePid(map);
         }
+        System.out.println("uid=" + uid);
         return uid;
     }
 
@@ -172,16 +176,16 @@ public class ConfigurationTest {
 
     @Test
     public void testSetKey() throws InterruptedException {
-        String adzone_id = "54298700349";
-        String uid = "5bc9f45ab42e453f93ee8a966b5a9726";
+        String adzone_id = "54300950058";
+        String uid = "3bc9f45ab42e453f93ee8a966b5a9725";
 
-        String key = formatKey(uid);
-//        ValueOperations<String, Object> operations = redisTemplate.opsForValue();
-//        operations.set(key, adzone_id, 3, TimeUnit.SECONDS);
-        System.out.println(redisTemplate.hasKey(key) + "\t" + getValue(uid));
+        String key = formatKey(adzone_id);
+        ValueOperations<String, Object> operations = redisTemplate.opsForValue();
+//        operations.set(key, uid, 3, TimeUnit.SECONDS);
+        System.out.println(redisTemplate.hasKey(key) + "\t" + operations.get(key));
         System.out.println("-----------------分隔线-----------------");
 //        Thread.sleep(3000);
-        System.out.println(redisTemplate.hasKey(key) + "\t" + getValue(uid));
+        System.out.println(redisTemplate.hasKey(key) + "\t" + getValue(adzone_id));
     }
 
 
@@ -189,27 +193,64 @@ public class ConfigurationTest {
     public void testBind() {
         Pid pid = sessionTemplate.getMapper(TbkBindDao.class).getPidInfo();
         String adzone_id = pid.getAdzone_id();
-        System.out.println("adzone_id=" + adzone_id);
-        String uid = "f0433a087dbb4b19967cc6b8da2e0558";
+        String uid = "8bc9bd374f4b4a899c06b5918b48f2e1";
         String key = formatKey(adzone_id);
+        int pkey = pid.getPkey();
         Map map = new HashMap();
         map.put("pkey", pid.getPkey());
         map.put("is_used", true);
         map.put("uid", uid);
         map.put("last_bind_uid", uid);
         map.put("adzone_id", adzone_id);
+
+        String json = "{\"category_id\":\"50008163\",\"coupon_click_url\":\"https:\\/\\/uland.taobao.com\\/coupon\\/edetail?e=KpYXz%2BDAQ9IGQASttHIRqfzbS19XREsyiQ6MGVIHyzuAQiqSkK6nzbTm7F9ylnbMsIiiJ2KdX4Lyuh9GzUMEXocvvWHbqbxCsSKwS%2F%2FvFcEbUBaR%2FcKdMxemP0hpIIPvjDppvlX%2Bob8NlNJBuapvQ2MDg9t1zp0R8pjV3C9qcwRtlwZ8RA3DbvK08MqkibZ%2B&traceId=0b08079a15433978700963913e&union_lens=lensId:0b092931_0c05_16759ae8a21_8da9\",\"coupon_end_time\":\"2018-12-02\",\"coupon_info\":\"满1100元减1000元\",\"coupon_remain_count\":\"9400\",\"coupon_start_time\":\"2018-11-26\",\"coupon_total_count\":\"10000\",\"coupon_type\":\"3\",\"commission_rate\":\"30.00\",\"num_iid\":\"556602244435\",\"zk_final_price\":\"1128\",\"volume\":\"550\",\"user_type\":\"1\",\"title\":\"德兰帝斯泰国进口天然乳胶枕 保健枕头负离子护颈颈椎舒睡枕\",\"small_images\":[\"https:\\/\\/img.alicdn.com\\/i2\\/2454112044\\/O1CN011QyC1ncYMVGs5dX_!!2454112044.jpg\",\"https:\\/\\/img.alicdn.com\\/i1\\/2454112044\\/O1CN011QyC1kR1Nb7joQn_!!2454112044.jpg\",\"https:\\/\\/img.alicdn.com\\/i4\\/2454112044\\/O1CN011QyC1i4FXi362Mh_!!2454112044.jpg\",\"https:\\/\\/img.alicdn.com\\/i1\\/2454112044\\/O1CN011QyC1J2mcfMrChy_!!2454112044.jpg\"],\"seller_id\":\"2454112044\",\"reserve_price\":\"2689\",\"pict_url\":\"https:\\/\\/img.alicdn.com\\/bao\\/uploaded\\/i4\\/2454112044\\/O1CN01t8qI7G1QyC2RGW6w4_!!0-item_pic.jpg\",\"nick\":\"德兰帝斯旗舰店\",\"item_url\":\"https:\\/\\/detail.tmall.com\\/item.htm?id=556602244435\",\"cat_name\":\"床上用品\",\"cat_leaf_name\":\"枕头\\/枕芯\\/保健枕\\/颈椎枕\",\"tbk_pwd\":\"￥ScFebPGSr06￥\",\"coupon_short_url\":\"https:\\/\\/s.click.taobao.com\\/YgcaXJw\"}";
+        JSONObject jsonObject = JSON.parseObject(json);
+        System.out.println(jsonObject.getString("num_iid"));
+//        params.put("num_iid",jsonObject.getString("num_iid"));
+//        params.put("goods_info",json);
+//        params.put("result_info","{\"msg\":\"成功\",\"code\":\"000\"}");
+        ShopInfo shop = TaoBaoUtil.formatStr(json);
+        shop.setPkey(pkey);
+        shop.setUid(uid);
+        shop.setGoods_info(json);
+        shop.setResult_info("{\"msg\":\"测试\",\"code\":\"666\"}");
+//        Map params = JSONObject.parseObject(JSON.toJSONString(shop), Map.class);
+//        params.remove("out_result");
+//        System.out.println("shop=" + JSON.toJSONString(shop));
+//        System.out.println("params=" + JSON.toJSONString(params));
+//        shop.setPkey(pid.getPkey());
+//        shop.setUid(uid);
+
         redisTemplate.opsForValue().set(key, uid, 3, TimeUnit.SECONDS);
-        sessionTemplate.getMapper(TbkBindDao.class).bindPid(map);
-        sessionTemplate.getMapper(TbkBindDao.class).updatePid(map);
+        sessionTemplate.selectOne("com.tpadsz.after.dao80.TbkBindDao.save_bind_result", shop);
+        System.out.println("result=" + shop.getOut_result());
+//        sessionTemplate.getMapper(TbkBindDao.class).bindPid(map);
+//        sessionTemplate.getMapper(TbkBindDao.class).insetShop(shop);
+//        sessionTemplate.getMapper(TbkBindDao.class).insetShare(shop);
+//        sessionTemplate.getMapper(TbkBindDao.class).insertHiPriceLog(shop);
+
+//        sessionTemplate.getMapper(TbkBindDao.class).updatePid(map);
+//        sessionTemplate.getMapper(TbkBindDao.class).insertBindLog(map);
+
+
+        getValue(adzone_id);
 //        List<Pid> list = sessionTemplate.selectList("tbk.getPids");
-        System.out.println(JSON.toJSONString(pid));
+//        System.out.println(JSON.toJSONString(pid));
 //        sessionTemplate.getMapper(TbkBindDao.class).updatePid(map);
     }
 
     @Test
     public void testMybatisTemplate() {
         Pid pid = sessionTemplate.selectOne("com.tpadsz.after.dao80.TbkBindDao.getPidInfo");
-        System.out.println("pid=" + sessionTemplate.getMapper(TbkBindDao.class).getPid("f0433a087dbb4b19967cc6b8da2e0558"));
-        System.out.println(pid.getPid());
+
+//        String json = "{\"category_id\":\"50008163\",\"coupon_click_url\":\"https:\\/\\/uland.taobao.com\\/coupon\\/edetail?e=KpYXz%2BDAQ9IGQASttHIRqfzbS19XREsyiQ6MGVIHyzuAQiqSkK6nzbTm7F9ylnbMsIiiJ2KdX4Lyuh9GzUMEXocvvWHbqbxCsSKwS%2F%2FvFcEbUBaR%2FcKdMxemP0hpIIPvjDppvlX%2Bob8NlNJBuapvQ2MDg9t1zp0R8pjV3C9qcwRtlwZ8RA3DbvK08MqkibZ%2B&traceId=0b08079a15433978700963913e&union_lens=lensId:0b092931_0c05_16759ae8a21_8da9\",\"coupon_end_time\":\"2018-12-02\",\"coupon_info\":\"满1100元减1000元\",\"coupon_remain_count\":\"9400\",\"coupon_start_time\":\"2018-11-26\",\"coupon_total_count\":\"10000\",\"coupon_type\":\"3\",\"commission_rate\":\"30.00\",\"num_iid\":\"556602244435\",\"zk_final_price\":\"1128\",\"volume\":\"550\",\"user_type\":\"1\",\"title\":\"德兰帝斯泰国进口天然乳胶枕 保健枕头负离子护颈颈椎舒睡枕\",\"small_images\":[\"https:\\/\\/img.alicdn.com\\/i2\\/2454112044\\/O1CN011QyC1ncYMVGs5dX_!!2454112044.jpg\",\"https:\\/\\/img.alicdn.com\\/i1\\/2454112044\\/O1CN011QyC1kR1Nb7joQn_!!2454112044.jpg\",\"https:\\/\\/img.alicdn.com\\/i4\\/2454112044\\/O1CN011QyC1i4FXi362Mh_!!2454112044.jpg\",\"https:\\/\\/img.alicdn.com\\/i1\\/2454112044\\/O1CN011QyC1J2mcfMrChy_!!2454112044.jpg\"],\"seller_id\":\"2454112044\",\"reserve_price\":\"2689\",\"pict_url\":\"https:\\/\\/img.alicdn.com\\/bao\\/uploaded\\/i4\\/2454112044\\/O1CN01t8qI7G1QyC2RGW6w4_!!0-item_pic.jpg\",\"nick\":\"德兰帝斯旗舰店\",\"item_url\":\"https:\\/\\/detail.tmall.com\\/item.htm?id=556602244435\",\"cat_name\":\"床上用品\",\"cat_leaf_name\":\"枕头\\/枕芯\\/保健枕\\/颈椎枕\",\"tbk_pwd\":\"￥ScFebPGSr06￥\",\"coupon_short_url\":\"https:\\/\\/s.click.taobao.com\\/YgcaXJw\"}";
+//        ShopInfo shop= TaoBaoUtil.formatStr(json);
+//        shop.setPkey(pid.getPkey());
+//        shop.setUid("f0433a087dbb4b19967cc6b8da2e0558");
+//        sessionTemplate.getMapper(TbkBindDao.class).insetShop(shop);
+//        sessionTemplate.getMapper(TbkBindDao.class).insetShare(shop);
+        Pid pid1 = sessionTemplate.getMapper(TbkBindDao.class).getPid("000002");
+        System.out.println("pid=" + JSON.toJSONString(pid));
+        System.out.println("pid1=" + JSON.toJSONString(pid1));
     }
 }
