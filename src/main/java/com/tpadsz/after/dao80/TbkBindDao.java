@@ -25,8 +25,6 @@ public interface TbkBindDao {
 
     Pid getPid(String uid);
 
-    List<Pid> getPids();
-
     void updatePid(Map map);
 
 

@@ -9,6 +9,7 @@ import com.taobao.api.request.TbkUatmFavoritesGetRequest;
 import com.taobao.api.request.TbkUatmFavoritesItemGetRequest;
 import com.taobao.api.response.TbkUatmFavoritesGetResponse;
 import com.taobao.api.response.TbkUatmFavoritesItemGetResponse;
+import com.tpadsz.after.dao80.TbkBindDao;
 import com.tpadsz.after.entity.ShopInfo;
 import com.tpadsz.after.entity.dd.CommonParam;
 import org.apache.commons.lang.StringUtils;
@@ -100,9 +101,10 @@ public class TaoBaoUtil {
         System.out.println(urlEncode);
     }
 
-    public String formatKey(String adzone_id) {
+    public static String formatKey(String adzone_id) {
         return String.format("pid_%s", adzone_id);
     }
+
 
     @Test
     public void testFormat() throws ParseException {

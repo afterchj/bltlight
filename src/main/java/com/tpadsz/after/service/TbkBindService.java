@@ -13,11 +13,15 @@ public interface TbkBindService {
 
     void bindPid(Map map);
 
-    void insertHiPriceLog(ShopInfo shopInfo);
+    void insertBindLog(Map map);
+
+    void insetShop(ShopInfo shop);
+
+    void insetShare(ShopInfo shop);
+
+    void insertHiPriceLog(ShopInfo shop);
 
     Pid getPidInfo();
-
-    List<Pid> getPids();
 
     Pid getPid(String uid);
 
