@@ -15,20 +15,24 @@ import java.util.List;
 @Repository
 public interface OrderFromDao {
 
-    void insertOrUpdateOrderFrom(OrderFrom orderFrom);
-
     void insertOrderFrom(OrderFrom orderFrom);
 
     void updateOrderFrom(OrderFrom orderFrom);
 
-    Long findOrderFromById(Long id);
+    OrderFrom findOrderFromById(Long id);
 
-    List<OrderFrom> findAllOrderFromByUid(String uid);
+    List<OrderFrom> findAllOrderFromByUid(String uid);//查询全部订单
 
-    List<OrderFrom> findByUidWait(String uid);
+    List<OrderFrom> findByUidWait(String uid);//查询待返佣订单
 
-    List<OrderFrom> findByUidLose(String uid);
+    List<OrderFrom> findByUidLose(String uid);//查询失效订单
 
-    List<OrderFrom> findByUidDone(String uid);
+    List<OrderFrom> findByUidDone(String uid);//查询结算订单
+
+    String findPidAndUidByZdId(String adzoneId);//查询pid-uid绑定关系
+
+    String findShopImageByNumIid(String numiid);//根据商品id查询商品图片
+
+    String findTimeById(Integer id);
 
 }

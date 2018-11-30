@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.tpadsz.after.config.DBConfig;
 import com.tpadsz.after.config.SpringConfig;
-import com.tpadsz.after.dao80.BindingDao;
 import com.tpadsz.after.dao80.TbkBindDao;
+import com.tpadsz.after.entity.OrderFrom;
 import com.tpadsz.after.entity.Person;
 import com.tpadsz.after.entity.Pid;
 import com.tpadsz.after.entity.ShopInfo;
@@ -17,11 +17,12 @@ import org.junit.runner.RunWith;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -252,5 +253,41 @@ public class ConfigurationTest {
         Pid pid1 = sessionTemplate.getMapper(TbkBindDao.class).getPid("000002");
         System.out.println("pid=" + JSON.toJSONString(pid));
         System.out.println("pid1=" + JSON.toJSONString(pid1));
+    }
+
+    @Test
+    public void testOrder() throws ParseException {
+        java.util.Date create_time = new SimpleDateFormat("yyyy-MM-DD " +
+                "HH:mm:ss").parse("2018-10-25 19:31:33");
+        java.util.Date earning_time = new SimpleDateFormat("yyyy-MM-DD " +
+                "HH:mm:ss").parse("2018-10-31 20:26:21");
+
+        OrderFrom orderFrom = new OrderFrom(238125004584662714L,
+                569310566675L, "29274312", "8696607", "487812dasdasdasdad",
+                3, create_time, earning_time, "16.8000", "25.20", "16.80", 1,
+                "0.0045", "0.0800", null, "得力展翔专卖店",
+                "得力便利贴学生用便签贴纸创意儿童n次贴百事贴记事贴便条纸便签本可撕便利贴大号彩色记号贴批发包邮", "");
+//        Gson gson = new Gson();
+//        String src = gson.toJson(orderFrom);
+//        ValueOperations<String, Object> stringObjectValueOperations =
+//                redisTemplate.opsForValue();
+        redisTemplate.opsForHash().put("orderFroms", orderFrom.getTrade_id(),
+                orderFrom);
+        OrderFrom orderFrom1 = (OrderFrom) redisTemplate.opsForHash().get
+                ("orderFroms", 238125004584662717L);
+        if (orderFrom1 == null) {
+            System.out.println("aaaa");
+        }
+//        stringObjectValueOperations.set("orderFroms",orderFrom);
+//        OrderFrom orderFrom1 = (OrderFrom) stringObjectValueOperations.get
+// ("orderFroms");
+//        System.out.println(orderFrom1.toString());
+    }
+
+    @Test
+    public void test11(){
+        redisTemplate.opsForValue().set(formatKey("29274312"), "487812dasdasdasdad", 3, TimeUnit.DAYS);
+//        redisTemplate.opsForValue().set(formatKey("29274313"), "487812dasdasdasdad", 3, TimeUnit.DAYS);
+//        System.out.println(redisTemplate.opsForValue().get(String.format("pid_%s", "29274313")));
     }
 }

@@ -1,16 +1,23 @@
 package com.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import com.tpadsz.after.entity.LightOperation;
 import com.tpadsz.after.entity.OpenApp;
+import com.tpadsz.after.entity.OrderFrom;
 import com.tpadsz.after.service.AppOperateService;
 import com.tpadsz.after.service.LightUserService;
+import com.tpadsz.after.service.OrderFromService;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -23,11 +30,11 @@ public class AppOperateControllerTest {
 
     static ApplicationContext ac = null;
     static {
-        ac = new ClassPathXmlApplicationContext("applicationContext.xml");
+        ac = new ClassPathXmlApplicationContext("applicationProvider.xml");
     }
     AppOperateService appOperateService = ac.getBean("appOperateService",AppOperateService.class);
     LightUserService lightUserService = ac.getBean("lightUserService", LightUserService.class);
-
+    OrderFromService orderFromService = ac.getBean("orderFromService", OrderFromService.class);
 
 
     @Test
@@ -102,6 +109,51 @@ public class AppOperateControllerTest {
         lightOperation.setIsRegister(isRegister);
         lightOperation.setCreate_date(new Date());
         return lightOperation;
+    }
+
+    @Test
+    public void testOrder(){
+        PageInfo pageInfos = orderFromService.findAll("487812dasdasdasdad",1,1);
+        List<OrderFrom> orderFroms = pageInfos.getList();
+        for (OrderFrom orderFrom:orderFroms){
+            System.out.println(orderFrom.toString());
+        }
+    }
+    @Test
+    public void testPidUid(){
+        String pidAndUidByZdId = orderFromService.findPidAndUidByZdId
+                ("542987003");
+        System.out.println(pidAndUidByZdId);
+    }
+
+    @Test
+    public void testSubString() throws ParseException {
+        String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        System.out.println(date);
+    }
+
+    public static String getPreDateByDate(String strData) {
+        String preDate = "";
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = sdf.parse(strData);
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+
+        c.setTime(date);
+        int day1 = c.get(Calendar.DATE);
+        c.set(Calendar.DATE, day1 - 1);
+        preDate = sdf.format(c.getTime());
+        return preDate;
+    }
+
+    public String setPreDate(String time,long mis) throws ParseException {
+        Date date1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(time);
+        Date date2 = new Date(date1.getTime()+mis);
+        return new SimpleDateFormat("HH:mm:ss").format(date2);
     }
 
 }

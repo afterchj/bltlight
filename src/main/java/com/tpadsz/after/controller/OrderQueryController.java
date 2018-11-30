@@ -25,64 +25,7 @@ import java.util.List;
 public class OrderQueryController extends BaseDecodedController{
 
     @Resource
-    private OrderFromService orderFromService;
-
-    @RequestMapping(value = "/findAll", method = RequestMethod.POST)
-    public void findAll(@ModelAttribute("decodedParams") JSONObject
-                                          params, ModelMap model) {
-        String uid = params.getString("uid");
-        List<OrderFrom> orderFroms = orderFromService
-                .findAllOrderFromByUid(uid);
-        for (OrderFrom orderFrom:orderFroms){
-            Long numId=orderFrom.getNum_iid();
-
-            orderFrom.setImage("/tmp/a.jpg");
-        }
-        model.put("orderFroms",orderFroms);
-        model.put("result", ResultDict.SUCCESS.getCode());
-    }
-
-    @RequestMapping(value = "/findWait", method = RequestMethod.POST)
-    public void findWait(@ModelAttribute("decodedParams") JSONObject
-                                params, ModelMap model) {
-        String uid = params.getString("uid");
-        List<OrderFrom> orderFroms = orderFromService.findByUidWait(uid);
-        for (OrderFrom orderFrom:orderFroms){
-            Long numId=orderFrom.getNum_iid();
-
-            orderFrom.setImage("/tmp/a.jpg");
-        }
-        model.put("orderFroms",orderFroms);
-        model.put("result", ResultDict.SUCCESS.getCode());
-    }
-
-    @RequestMapping(value = "/findLose", method = RequestMethod.POST)
-    public void findLose(@ModelAttribute("decodedParams") JSONObject
-                                params, ModelMap model) {
-        String uid = params.getString("uid");
-        List<OrderFrom> orderFroms = orderFromService.findByUidLose(uid);
-        for (OrderFrom orderFrom:orderFroms){
-            Long numId=orderFrom.getNum_iid();
-
-            orderFrom.setImage("/tmp/a.jpg");
-        }
-        model.put("orderFroms",orderFroms);
-        model.put("result", ResultDict.SUCCESS.getCode());
-    }
-
-    @RequestMapping(value = "/findDone", method = RequestMethod.POST)
-    public void findDone(@ModelAttribute("decodedParams") JSONObject
-                                params, ModelMap model) {
-        String uid = params.getString("uid");
-        List<OrderFrom> orderFroms = orderFromService.findByUidDone(uid);
-        for (OrderFrom orderFrom:orderFroms){
-            Long numId=orderFrom.getNum_iid();
-
-            orderFrom.setImage("/tmp/a.jpg");
-        }
-        model.put("orderFroms",orderFroms);
-        model.put("result", ResultDict.SUCCESS.getCode());
-    }
+    private  OrderFromService orderFromService;
 
     @RequestMapping(value = "/page", method = RequestMethod.POST)
     public void page(@ModelAttribute("decodedParams") JSONObject
@@ -91,9 +34,17 @@ public class OrderQueryController extends BaseDecodedController{
         Integer pageNum=params.getInteger("pageNum");
         Integer status = params.getInteger("status");
         PageInfo pageInfos = orderFromService.findAll(uid,pageNum,status);
-
+        List<OrderFrom> orderFroms = pageInfos.getList();
+        for (OrderFrom orderFrom:orderFroms){
+            Long numId=orderFrom.getNum_iid();
+            //插入图片
+            String image = orderFromService.findShopImageByNumIid
+                    (String.valueOf(numId));
+            if (image!=null){
+                orderFrom.setImage(image);
+            }
+        }
         model.put("orderFroms",pageInfos.getList());
         model.put("result", ResultDict.SUCCESS.getCode());
     }
-
 }
