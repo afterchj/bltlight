@@ -2,29 +2,41 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tpadsz.after.dao80.TbkBindDao">
 
-    <!--<insert id="insertPid" parameterType="java.util.List">-->
-    <!--insert ignore into tbk.f_tbk_pid(-->
-    <!--pkey,pid,adzone_id-->
-    <!--)values-->
-    <!--<foreach collection="list" item="u" index="index" separator=",">-->
-    <!--(-->
-    <!--#{u.pkey}, #{u.pid},#{u.adzone_id}-->
-    <!--)-->
-    <!--</foreach>-->
-    <!--</insert>-->
+    <parameterMap id="shopInfoMapper" type="ShopInfo">
+        <parameter property="uid" mode="IN"/>
+        <parameter property="pkey" mode="IN"/>
+        <parameter property="num_iid" mode="IN"/>
+        <parameter property="user_type" mode="IN"/>
+        <parameter property="zk_final_price" mode="IN"/>
+        <parameter property="qh_final_price" mode="IN"/>
+        <parameter property="coupon_info" mode="IN"/>
+        <parameter property="pict_url" mode="IN"/>
+        <parameter property="commission_rate" mode="IN"/>
+        <parameter property="rate_touid" mode="IN"/>
+        <parameter property="goods_info" mode="IN"/>
+        <parameter property="result_info" mode="IN"/>
+        <parameter property="out_result" mode="OUT" jdbcType="INTEGER"/>
+    </parameterMap>
+
+    <select id="save_bind_result" parameterMap="shopInfoMapper" statementType="CALLABLE">
+         CALL tbk.save_or_update(?,?,?,?,?,?,?,?,?,?,?,?,?)
+    </select>
+
     <select id="getPids" resultType="Pid">
         SELECT pkey,pid,adzone_id FROM tbk.f_tbk_pid LIMIT 10
     </select>
 
-    <select id="getPid" parameterType="string" resultType="string">
+    <select id="getPid" parameterType="string" resultType="Pid">
         SELECT
-          pid
+            p.pkey,
+            p.pid,
+            p.adzone_id
         FROM
             tbk.f_tbk_pid p
         INNER JOIN tbk.f_tbk_bind b ON p.pkey = b.pkey
         AND last_bind_uid = #{uid}
         ORDER BY
-            bind_date DESC LIMIT 1
+            bind_date DESC LIMIT 1;
     </select>
 
     <insert id="bindPid" parameterType="map">
@@ -32,12 +44,45 @@
             select count(*) from tbk.f_tbk_bind where pkey = #{pkey}
         </selectKey>
         <if test="count > 0">
-            UPDATE tbk.f_tbk_bind set last_bind_uid =#{last_bind_uid},bind_date=NOW() WHERE pkey=#{pkey}
+            UPDATE tbk.f_tbk_bind set last_bind_uid =#{uid},bind_date=NOW() WHERE pkey=#{pkey}
         </if>
         <if test="count==0">
-            INSERT INTO tbk.f_tbk_bind VALUES(#{pkey},#{uid},NOW(),#{last_bind_uid})
+            INSERT INTO tbk.f_tbk_bind VALUES(#{pkey},#{uid},NOW(),#{uid})
         </if>
     </insert>
+
+    <insert id="insertBindLog" parameterType="map">
+        INSERT INTO tbk.f_bind_log (
+            uid,
+            pkey,
+            bind_cahnge_date,
+            change_type
+        )
+        VALUES
+            (#{uid},#{pkey},NOW(),#{is_used})
+    </insert>
+
+    <insert id="insetShop" parameterType="ShopInfo">
+       REPLACE INTO tbk.f_tbk_shop VALUES (
+          #{num_iid},#{user_type},#{zk_final_price},
+          #{coupon_info},#{qh_final_price},#{pict_url},
+          #{commission_rate},#{rate_touid},NOW())
+    </insert>
+
+    <insert id="insetShare" parameterType="ShopInfo">
+        INSERT INTO tbk.f_tbk_share_log(uid,num_iid,pkey,share_date) VALUES (#{uid},#{num_iid}, #{pkey},NOW())
+    </insert>
+
+    <insert id="insertHiPriceLog" parameterType="map">
+        INSERT INTO tbk.f_hiprice_log (
+            uid,
+            num_iid,
+            goods_info,
+            result_info,
+            touch_time
+        )
+        VALUES (#{uid},#{num_iid},#{goods_info},#{result_info},NOW())
+  </insert>
 
     <select id="getPidInfo" resultType="Pid">
         SELECT pkey,pid,adzone_id FROM tbk.f_tbk_pid WHERE is_used=0 ORDER BY pkey LIMIT 1
@@ -46,14 +91,14 @@
     <update id="updatePid" parameterType="map">
         UPDATE tbk.f_tbk_pid set is_used =#{is_used} WHERE adzone_id=#{adzone_id}
         <!--<choose>-->
-            <!--<when test="adzone_id!=null">-->
-                <!--UPDATE tbk.f_tbk_pid set is_used =#{is_used} WHERE adzone_id=#{adzone_id}-->
-            <!--</when>-->
-            <!--<otherwise>-->
-                <!--UPDATE tbk.f_tbk_pid SET is_used=#{is_used} WHERE pkey in(-->
-                <!--SELECT pkey FROM tbk.f_tbk_bind WHERE last_bind_uid=#{uid}-->
-                <!--)-->
-            <!--</otherwise>-->
+        <!--<when test="adzone_id!=null">-->
+        <!--UPDATE tbk.f_tbk_pid set is_used =#{is_used} WHERE adzone_id=#{adzone_id}-->
+        <!--</when>-->
+        <!--<otherwise>-->
+        <!--UPDATE tbk.f_tbk_pid SET is_used=#{is_used} WHERE pkey in(-->
+        <!--SELECT pkey FROM tbk.f_tbk_bind WHERE last_bind_uid=#{uid}-->
+        <!--)-->
+        <!--</otherwise>-->
         <!--</choose>-->
     </update>
 
