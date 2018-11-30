@@ -7,6 +7,8 @@ import com.tpadsz.after.dao80.LightUserDao;
 import com.tpadsz.after.dao80.OrderFromDao;
 import com.tpadsz.after.dao80.TbkBindDao;
 import com.tpadsz.after.entity.Pid;
+import com.tpadsz.after.service.ShopService;
+import com.tpadsz.after.service.impl.ShopServiceImpl;
 import com.util.ExcelTool;
 import jxl.read.biff.BiffException;
 import jxl.write.WriteException;
@@ -112,6 +114,8 @@ public class MybatisTest {
 
     @Test
     public void test() {
+        ShopService shopService=atx.getBean("shopServiceImpl",ShopService.class);
+        System.out.println("uid="+shopService.getUid("54300950044"));
         SqlSessionTemplate sessionTemplate = (SqlSessionTemplate) atx.getBean("sqlSessionTemplate");
         Pid pid = sessionTemplate.getMapper(TbkBindDao.class).getPidInfo();
         System.out.println(JSON.toJSONString(pid));
