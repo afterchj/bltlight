@@ -2,30 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tpadsz.after.dao80.TbkBindDao">
 
-    <parameterMap id="shopInfoMapper" type="ShopInfo">
-        <parameter property="uid" mode="IN"/>
-        <parameter property="pkey" mode="IN"/>
-        <parameter property="num_iid" mode="IN"/>
-        <parameter property="user_type" mode="IN"/>
-        <parameter property="zk_final_price" mode="IN"/>
-        <parameter property="qh_final_price" mode="IN"/>
-        <parameter property="coupon_info" mode="IN"/>
-        <parameter property="pict_url" mode="IN"/>
-        <parameter property="commission_rate" mode="IN"/>
-        <parameter property="rate_touid" mode="IN"/>
-        <parameter property="goods_info" mode="IN"/>
-        <parameter property="result_info" mode="IN"/>
-        <parameter property="out_result" mode="OUT" jdbcType="INTEGER"/>
-    </parameterMap>
-
-    <select id="save_bind_result" parameterMap="shopInfoMapper" statementType="CALLABLE">
-         CALL tbk.save_or_update(?,?,?,?,?,?,?,?,?,?,?,?,?)
-    </select>
-
-    <select id="getPids" resultType="Pid">
-        SELECT pkey,pid,adzone_id FROM tbk.f_tbk_pid LIMIT 10
-    </select>
-
     <select id="getPid" parameterType="string" resultType="Pid">
         SELECT
             p.pkey,
