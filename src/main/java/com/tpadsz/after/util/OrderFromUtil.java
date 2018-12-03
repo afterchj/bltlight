@@ -41,6 +41,8 @@ public class OrderFromUtil {
             connection.setRequestProperty("user-agent",
                     "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;" +
                             "SV1)");
+            connection.setRequestProperty("Accept-Charset", "utf-8");
+            connection.setRequestProperty("contentType", "utf-8");
 //            connection.setConnectTimeout(30000);
 //            connection.setReadTimeout(3000);
             // 建立实际的连接
@@ -48,7 +50,7 @@ public class OrderFromUtil {
             connection.connect();
             // 定义 BufferedReader输入流来读取URL的响应
             in = new BufferedReader(new InputStreamReader(
-                    connection.getInputStream()));
+                    connection.getInputStream(),"utf-8"));
             while ((line = in.readLine()) != null) {
                 sb.append(line);
             }
