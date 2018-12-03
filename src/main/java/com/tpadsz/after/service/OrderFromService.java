@@ -15,9 +15,9 @@ import java.util.Map;
  **/
 public interface OrderFromService {
 
-    void insertOrderFrom(OrderFrom orderFrom);//当天和隔天需要修改的接口状态
+    void insertOrderFrom(OrderFrom orderFrom);
 
-    void updateOrderFrom(OrderFrom orderFrom);//当天和隔天需要修改的接口状态
+    void updateOrderFrom(OrderFrom orderFrom);
 
 
     OrderFrom findOrderFromById(Long id);

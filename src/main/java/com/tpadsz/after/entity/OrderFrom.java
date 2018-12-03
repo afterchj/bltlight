@@ -65,6 +65,8 @@ public class OrderFrom implements Serializable{
         if (site_id != null ? !site_id.equals(that.site_id) : that.site_id !=
                 null)
             return false;
+        if (uid != null ? !uid.equals(that.uid) : that.uid != null)
+            return false;
         if (tk_status != null ? !tk_status.equals(that.tk_status) : that
                 .tk_status != null)
             return false;
@@ -92,16 +94,14 @@ public class OrderFrom implements Serializable{
         if (total_commission_fee != null ? !total_commission_fee.equals(that
                 .total_commission_fee) : that.total_commission_fee != null)
             return false;
-        if (action_type != null ? !action_type.equals(that.action_type) :
-                that.action_type != null)
-            return false;
         if (seller_shop_title != null ? !seller_shop_title.equals(that
                 .seller_shop_title) : that.seller_shop_title != null)
             return false;
         if (item_title != null ? !item_title.equals(that.item_title) : that
                 .item_title != null)
             return false;
-        return image != null ? image.equals(that.image) : that.image == null;
+        return status != null ? status.equals(that.status) : that.status ==
+                null;
 
     }
 
