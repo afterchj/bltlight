@@ -63,7 +63,7 @@
             <mvc:exclude-mapping path="/static/**"/>
             <mvc:exclude-mapping path="/websocket**"/>
             <mvc:exclude-mapping path="/home/**"/>
-            <!--<mvc:exclude-mapping path="/tbk/**"/>-->
+            <mvc:exclude-mapping path="/demo/**"/>
             <bean class="com.tpadsz.after.interceptor.ParamsEncryptInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
@@ -84,7 +84,7 @@
         </property>
         <property name="viewResolvers">
             <list>
-                <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+                <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
                 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
                     <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
                     <property name="prefix" value="/WEB-INF/view/"/>
@@ -94,12 +94,10 @@
         </property>
         <property name="defaultViews">
             <list>
-                <bean class="com.tpadsz.after.viewresolver.MyEncryptedMappingJacksonJsonView" />
+                <bean class="com.tpadsz.after.viewresolver.MyEncryptedMappingJacksonJsonView"/>
             </list>
         </property>
     </bean>
-
-
 
 
     <!--定义跳转的文件的前后缀 ，视图模式配置 -->
