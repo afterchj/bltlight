@@ -4,7 +4,9 @@ package com.tpadsz.after.dao80;
 import com.tpadsz.after.entity.OrderFrom;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: odelic
@@ -29,10 +31,11 @@ public interface OrderFromDao {
 
     List<OrderFrom> findByUidDone(String uid);//查询结算订单
 
-    String findPidAndUidByZdId(String adzoneId);//查询pid-uid绑定关系
+//    String findPidAndUidByZdId(String adzoneId);//查询pid-uid绑定关系
 
     String findShopImageByNumIid(String numiid);//根据商品id查询商品图片
 
-    String findTimeById(Integer id);
+    OrderFrom findByUid();
 
+    Date findShareLogByUidAndIid(Map<String, Object> map);
 }

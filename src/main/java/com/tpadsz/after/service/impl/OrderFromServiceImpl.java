@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: odelic
@@ -61,18 +63,23 @@ public class OrderFromServiceImpl implements OrderFromService {
         return pageInfo;
     }
 
-    @Override
-    public String findPidAndUidByZdId(String adzoneId) {
-        return orderFromDao.findPidAndUidByZdId(adzoneId);
-    }
-
+//    @Override
+//    public String findPidAndUidByZdId(String adzoneId) {
+//        return orderFromDao.findPidAndUidByZdId(adzoneId);
+//    }
+//
     @Override
     public String findShopImageByNumIid(String numiid) {
         return orderFromDao.findShopImageByNumIid(numiid);
     }
 
     @Override
-    public String findTimeById(Integer id) {
-        return orderFromDao.findTimeById(id);
+    public Date findShareLogByUidAndIid(Map<String, Object> map) {
+        return orderFromDao.findShareLogByUidAndIid(map);
     }
+//
+//    @Override
+//    public String findTimeById(Integer id) {
+//        return orderFromDao.findTimeById(id);
+//    }
 }
