@@ -9,6 +9,7 @@ import com.tpadsz.after.entity.OrderFrom;
 import com.tpadsz.after.entity.Person;
 import com.tpadsz.after.entity.Pid;
 import com.tpadsz.after.entity.ShopInfo;
+import com.tpadsz.after.entity.dd.CommonParam;
 import com.tpadsz.after.util.TaoBaoUtil;
 import net.rubyeye.xmemcached.XMemcachedClient;
 import net.rubyeye.xmemcached.exception.MemcachedException;
@@ -17,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -52,26 +54,26 @@ public class ConfigurationTest {
 
     @Test
     public void testXmemcached() throws InterruptedException, MemcachedException, TimeoutException {
-        List<Person> list = new ArrayList<>();
+        List<Person> people = new ArrayList<>();
         Person person = new Person();
         person.setName("after");
         person.setAddress("苏州");
         person.setAge(24);
-        list.add(person);
+        people.add(person);
         Person person1 = new Person();
         person1.setName("admin");
         person1.setAddress("苏州");
         person1.setAge(25);
-        list.add(person1);
+        people.add(person1);
         Person person2 = new Person();
         person2.setName("test");
         person2.setAddress("苏州");
         person2.setAge(23);
-        list.add(person2);
-//        xMemcachedClient.set("person1", 24 * 60 * 60, person);
-//        xMemcachedClient.set("people", 24 * 60 * 60, list);
-        List<Person> people = xMemcachedClient.get("people");
-        for (Person p : people) {
+        people.add(person2);
+        xMemcachedClient.set("person1", 24 * 60 * 60, person1);
+//        xMemcachedClient.set("people", 24 * 60 * 60, people);
+        List<Person> list = xMemcachedClient.get("people");
+        for (Person p : list) {
             System.out.println(p.toJsonString());
         }
         Person p = xMemcachedClient.get("person1");
@@ -91,15 +93,13 @@ public class ConfigurationTest {
 
     @Test
     public void set() {
-//		redisTemplate.opsForValue().set("mykey","test is ok");
-        redisTemplate.opsForValue().set("mykey", "Test is ok!", 10, TimeUnit.SECONDS);
-        System.out.println(redisTemplate.opsForValue().get("mykey"));
-        try {
-            new Thread().sleep(10000);
-            System.out.println(redisTemplate.opsForValue().get("mykey"));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//		  redisTemplate.opsForValue().set("mykey","test is ok");
+//        redisTemplate.opsForValue().set("mykey", "LogTest is ok!", 10, TimeUnit.SECONDS);
+        System.out.println(redisTemplate.opsForValue().get(formatKey("54298700349")));
+
+//            new Thread().sleep(10000);
+        System.out.println(redisTemplate.opsForValue().get(formatKey("54300050120")));
+
     }
 
     @Test
@@ -112,20 +112,21 @@ public class ConfigurationTest {
         person2.setName("test");
         person2.setAddress("苏州");
         person2.setAge(23);
-        redisTemplate.opsForValue().set("person1", person, 10, TimeUnit.SECONDS);
-        redisTemplate.opsForValue().set("person2", person2);
+//        redisTemplate.opsForValue().set("person1", person, 10, TimeUnit.MINUTES);
+//        redisTemplate.opsForValue().set("person2", person2);
         System.out.println(redisTemplate.hasKey("person1") + "\t" + redisTemplate.hasKey("person2"));
-        Person p1 = (Person) redisTemplate.opsForValue().get("person1");
+//        Person p1 = (Person) redisTemplate.opsForValue().get("person1");
         Person p2 = (Person) redisTemplate.opsForValue().get("person2");
         System.out.println("p2=" + p2.toJsonString());
-        System.out.println("p1=" + p1.toJsonString());
+//        System.out.println("p1=" + p1.toJsonString());
+        System.out.println("uid=" + redisTemplate.opsForValue().get(formatKey("54299250243")));
 
 //        System.out.println( redisTemplate.expire("person1", 10, TimeUnit.SECONDS));
-        System.out.println("-----------------分隔线-----------------");
-        new Thread().sleep(10000);
-        System.out.println(redisTemplate.hasKey("person1") + "\t" + redisTemplate.hasKey("person2"));
-        System.out.println("p2=" + redisTemplate.opsForValue().get("person2"));
-        System.out.println("p1=" + redisTemplate.opsForValue().get("person1"));
+//        System.out.println("-----------------分隔线-----------------");
+//        new Thread().sleep(10000);
+//        System.out.println(redisTemplate.hasKey("person1") + "\t" + redisTemplate.hasKey("person2"));
+//        System.out.println("p2=" + redisTemplate.opsForValue().get("person2"));
+//        System.out.println("p1=" + redisTemplate.opsForValue().get("person1"));
     }
 
     @Test
@@ -182,54 +183,49 @@ public class ConfigurationTest {
 
         String key = formatKey(adzone_id);
         ValueOperations<String, Object> operations = redisTemplate.opsForValue();
-//        operations.set(key, uid, 3, TimeUnit.SECONDS);
+        operations.set(key, uid, 3, TimeUnit.SECONDS);
         System.out.println(redisTemplate.hasKey(key) + "\t" + operations.get(key));
         System.out.println("-----------------分隔线-----------------");
-//        Thread.sleep(3000);
+        Thread.sleep(3000);
         System.out.println(redisTemplate.hasKey(key) + "\t" + getValue(adzone_id));
     }
 
 
     @Test
-    public void testBind() {
+    public void testBind() throws Exception {
         Pid pid = sessionTemplate.getMapper(TbkBindDao.class).getPidInfo();
         String adzone_id = pid.getAdzone_id();
-        String uid = "8bc9bd374f4b4a899c06b5918b48f2e1";
+        String uid = "80542fd8db8d498fa412d5e89dcd9d81";
         String key = formatKey(adzone_id);
         int pkey = pid.getPkey();
         Map map = new HashMap();
-        map.put("pkey", pid.getPkey());
-        map.put("is_used", true);
-        map.put("uid", uid);
-        map.put("last_bind_uid", uid);
-        map.put("adzone_id", adzone_id);
+        map.put("vekey", CommonParam.VEKEY.getValue());
+        map.put("para", "558825175392");
+        map.put("pid", pid.getPid());
+        map.put("detail", "1");
 
-        String json = "{\"category_id\":\"50008163\",\"coupon_click_url\":\"https:\\/\\/uland.taobao.com\\/coupon\\/edetail?e=KpYXz%2BDAQ9IGQASttHIRqfzbS19XREsyiQ6MGVIHyzuAQiqSkK6nzbTm7F9ylnbMsIiiJ2KdX4Lyuh9GzUMEXocvvWHbqbxCsSKwS%2F%2FvFcEbUBaR%2FcKdMxemP0hpIIPvjDppvlX%2Bob8NlNJBuapvQ2MDg9t1zp0R8pjV3C9qcwRtlwZ8RA3DbvK08MqkibZ%2B&traceId=0b08079a15433978700963913e&union_lens=lensId:0b092931_0c05_16759ae8a21_8da9\",\"coupon_end_time\":\"2018-12-02\",\"coupon_info\":\"满1100元减1000元\",\"coupon_remain_count\":\"9400\",\"coupon_start_time\":\"2018-11-26\",\"coupon_total_count\":\"10000\",\"coupon_type\":\"3\",\"commission_rate\":\"30.00\",\"num_iid\":\"556602244435\",\"zk_final_price\":\"1128\",\"volume\":\"550\",\"user_type\":\"1\",\"title\":\"德兰帝斯泰国进口天然乳胶枕 保健枕头负离子护颈颈椎舒睡枕\",\"small_images\":[\"https:\\/\\/img.alicdn.com\\/i2\\/2454112044\\/O1CN011QyC1ncYMVGs5dX_!!2454112044.jpg\",\"https:\\/\\/img.alicdn.com\\/i1\\/2454112044\\/O1CN011QyC1kR1Nb7joQn_!!2454112044.jpg\",\"https:\\/\\/img.alicdn.com\\/i4\\/2454112044\\/O1CN011QyC1i4FXi362Mh_!!2454112044.jpg\",\"https:\\/\\/img.alicdn.com\\/i1\\/2454112044\\/O1CN011QyC1J2mcfMrChy_!!2454112044.jpg\"],\"seller_id\":\"2454112044\",\"reserve_price\":\"2689\",\"pict_url\":\"https:\\/\\/img.alicdn.com\\/bao\\/uploaded\\/i4\\/2454112044\\/O1CN01t8qI7G1QyC2RGW6w4_!!0-item_pic.jpg\",\"nick\":\"德兰帝斯旗舰店\",\"item_url\":\"https:\\/\\/detail.tmall.com\\/item.htm?id=556602244435\",\"cat_name\":\"床上用品\",\"cat_leaf_name\":\"枕头\\/枕芯\\/保健枕\\/颈椎枕\",\"tbk_pwd\":\"￥ScFebPGSr06￥\",\"coupon_short_url\":\"https:\\/\\/s.click.taobao.com\\/YgcaXJw\"}";
-        JSONObject jsonObject = JSON.parseObject(json);
-        System.out.println(jsonObject.getString("num_iid"));
-//        params.put("num_iid",jsonObject.getString("num_iid"));
-//        params.put("goods_info",json);
-//        params.put("result_info","{\"msg\":\"成功\",\"code\":\"000\"}");
+//        map.put("pkey", pid.getPkey());
+//        map.put("is_used", true);
+//        map.put("uid", uid);
+//        map.put("last_bind_uid", uid);
+//        map.put("adzone_id", adzone_id);
+
+//        String json = "{\"category_id\":\"50008163\",\"coupon_click_url\":\"https:\\/\\/uland.taobao.com\\/coupon\\/edetail?e=KpYXz%2BDAQ9IGQASttHIRqfzbS19XREsyiQ6MGVIHyzuAQiqSkK6nzbTm7F9ylnbMsIiiJ2KdX4Lyuh9GzUMEXocvvWHbqbxCsSKwS%2F%2FvFcEbUBaR%2FcKdMxemP0hpIIPvjDppvlX%2Bob8NlNJBuapvQ2MDg9t1zp0R8pjV3C9qcwRtlwZ8RA3DbvK08MqkibZ%2B&traceId=0b08079a15433978700963913e&union_lens=lensId:0b092931_0c05_16759ae8a21_8da9\",\"coupon_end_time\":\"2018-12-02\",\"coupon_info\":\"满1100元减1000元\",\"coupon_remain_count\":\"9400\",\"coupon_start_time\":\"2018-11-26\",\"coupon_total_count\":\"10000\",\"coupon_type\":\"3\",\"commission_rate\":\"30.00\",\"num_iid\":\"556602244435\",\"zk_final_price\":\"1128\",\"volume\":\"550\",\"user_type\":\"1\",\"title\":\"德兰帝斯泰国进口天然乳胶枕 保健枕头负离子护颈颈椎舒睡枕\",\"small_images\":[\"https:\\/\\/img.alicdn.com\\/i2\\/2454112044\\/O1CN011QyC1ncYMVGs5dX_!!2454112044.jpg\",\"https:\\/\\/img.alicdn.com\\/i1\\/2454112044\\/O1CN011QyC1kR1Nb7joQn_!!2454112044.jpg\",\"https:\\/\\/img.alicdn.com\\/i4\\/2454112044\\/O1CN011QyC1i4FXi362Mh_!!2454112044.jpg\",\"https:\\/\\/img.alicdn.com\\/i1\\/2454112044\\/O1CN011QyC1J2mcfMrChy_!!2454112044.jpg\"],\"seller_id\":\"2454112044\",\"reserve_price\":\"2689\",\"pict_url\":\"https:\\/\\/img.alicdn.com\\/bao\\/uploaded\\/i4\\/2454112044\\/O1CN01t8qI7G1QyC2RGW6w4_!!0-item_pic.jpg\",\"nick\":\"德兰帝斯旗舰店\",\"item_url\":\"https:\\/\\/detail.tmall.com\\/item.htm?id=556602244435\",\"cat_name\":\"床上用品\",\"cat_leaf_name\":\"枕头\\/枕芯\\/保健枕\\/颈椎枕\",\"tbk_pwd\":\"￥ScFebPGSr06￥\",\"coupon_short_url\":\"https:\\/\\/s.click.taobao.com\\/YgcaXJw\"}";
+        JSONObject json = TaoBaoUtil.getHICPIInfo(map);
         ShopInfo shop = TaoBaoUtil.formatStr(json);
         shop.setPkey(pkey);
         shop.setUid(uid);
-        shop.setGoods_info(json);
+        shop.setGoods_info(json.toJSONString());
         shop.setResult_info("{\"msg\":\"测试\",\"code\":\"666\"}");
-//        Map params = JSONObject.parseObject(JSON.toJSONString(shop), Map.class);
-//        params.remove("out_result");
-//        System.out.println("shop=" + JSON.toJSONString(shop));
-//        System.out.println("params=" + JSON.toJSONString(params));
-//        shop.setPkey(pid.getPkey());
-//        shop.setUid(uid);
 
-        redisTemplate.opsForValue().set(key, uid, 3, TimeUnit.SECONDS);
-        sessionTemplate.selectOne("com.tpadsz.after.dao80.TbkBindDao.save_bind_result", shop);
+        redisTemplate.opsForValue().set(key, uid, 3, TimeUnit.DAYS);
+        sessionTemplate.selectOne("com.tpadsz.after.dao80.ShopDao.saveShop", shop);
         System.out.println("result=" + shop.getOut_result());
+
 //        sessionTemplate.getMapper(TbkBindDao.class).bindPid(map);
 //        sessionTemplate.getMapper(TbkBindDao.class).insetShop(shop);
 //        sessionTemplate.getMapper(TbkBindDao.class).insetShare(shop);
 //        sessionTemplate.getMapper(TbkBindDao.class).insertHiPriceLog(shop);
-
 //        sessionTemplate.getMapper(TbkBindDao.class).updatePid(map);
 //        sessionTemplate.getMapper(TbkBindDao.class).insertBindLog(map);
 

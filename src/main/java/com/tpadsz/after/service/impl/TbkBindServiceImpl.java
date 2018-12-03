@@ -6,8 +6,6 @@ import com.tpadsz.after.entity.ShopInfo;
 import com.tpadsz.after.service.TbkBindService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,6 +24,21 @@ public class TbkBindServiceImpl implements TbkBindService {
     }
 
     @Override
+    public void insertBindLog(Map map) {
+        bindDao.insertBindLog(map);
+    }
+
+    @Override
+    public void insetShop(ShopInfo shop) {
+        bindDao.insetShop(shop);
+    }
+
+    @Override
+    public void insetShare(ShopInfo shop) {
+        bindDao.insetShare(shop);
+    }
+
+    @Override
     public void insertHiPriceLog(ShopInfo shop) {
         bindDao.insertHiPriceLog(shop);
     }
@@ -33,11 +46,6 @@ public class TbkBindServiceImpl implements TbkBindService {
     @Override
     public Pid getPidInfo() {
         return bindDao.getPidInfo();
-    }
-
-    @Override
-    public List<Pid> getPids() {
-        return bindDao.getPids();
     }
 
     @Override
