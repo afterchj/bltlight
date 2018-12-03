@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tpadsz.after.dao80.TbkDao">
+
+    <insert id="saveShareLog" parameterType="com.tpadsz.after.entity.ShareLog">
+        INSERT INTO tbk.f_share_log
+        VALUES
+	      (#{id},#{num_iid},#{uid},#{adzone_id},#{goods_share_message},#{share_date},#{other})
+    </insert>
+
+    <select id="findEarnByNumiid" parameterType="string" resultType="double">
+        SELECT rate_touid FROM tbk.f_tbk_shop WHERE num_iid = #{num_iid}
+    </select>
+
+    <insert id="insertOrUpdateAccount" parameterType="com.tpadsz.after.entity.Account">
+        INSERT INTO tbk.account(uid,app_id,avail,earn) values(#{uid},#{app_id},#{avail},#{earn}) ON DUPLICATE KEY UPDATE avail=avail+#{avail},earn=earn+#{earn};
+    </insert>
+
+    <insert id="insertOrUpdateDailyAccount" parameterType="com.tpadsz.after.entity.DailyAccount">
+        INSERT INTO tbk.daily_account(uid,app_id,date,trade_type,earn) values(#{uid},#{app_id},#{date},#{trade_type},#{earn});
+    </insert>
+
+    <insert id="insertOrUpdateDailyEstimatedAccount" parameterType="com.tpadsz.after.entity.DailyEstimatedAccount">
+        INSERT INTO tbk.daily_estimated_account(trade_id,uid,app_id,date,update_time,trade_type,tk_status,price) values(#{trade_id},#{uid},#{app_id},#{date},NOW(),#{trade_type},#{tk_status},#{price});
+    </insert>
+
+    <select id="findAvail" parameterType="string" resultType="string">
+        SELECT avail FROM tbk.account WHERE uid = #{uid}
+    </select>
+
+</mapper>
