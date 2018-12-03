@@ -8,8 +8,8 @@ import org.apache.log4j.Logger;
 /**
  * Created by hongjian.chen on 2018/8/1.
  */
-public class Test {
-    private static Logger logger = Logger.getLogger(Test.class);
+public class LogTest {
+    private static Logger logger = Logger.getLogger(LogTest.class);
 
     /**
      * @param args

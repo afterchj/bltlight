@@ -38,36 +38,22 @@ public class TaoBaoUtil {
 //        favoritesItemGet();
 //        System.out.println();
 //        urlEncode();
+
         Map map = new HashMap();
         map.put("vekey", CommonParam.VEKEY.getValue());
         map.put("para", "556602244435");
         map.put("pid", "mm_43238250_191900396_54298500491");
         map.put("detail", "1");
-        String json=getHICPIInfo(map);
+        JSONObject json = getHICPIInfo(map);
         ShopInfo shop = formatStr(json);
-        System.out.println(json);
-//        System.out.println(JSON.toJSONString(getData(getHICPIInfo(map))));
+        System.out.println("response=" + HttpClientUtil.httpGet(CommonParam.VEHICPI.getValue(), map));
+        System.out.println("shop=" + JSON.toJSONString(shop));
+        System.out.println("data=" + JSON.toJSONString(getData(getHICPIInfo(map))));
 
 //        map.put("start_time", "2018-10-25 19:48:24");
 //        map.put("span", "1200");
 //        System.out.println("response1:\n" + ret1);
 //        System.out.println("response2:\n" + ret2);
-    }
-
-    public static String getHICPIInfo(Map map) throws Exception {
-        String result = HttpClientUtil.httpGet(CommonParam.VEHICPI.getValue(), map);
-        JSONObject jsonObject = JSON.parseObject(result);
-        String json = jsonObject.getString("data");
-        return json;
-    }
-
-    public static Map getData(String json) {
-        Map map = new HashMap();
-        JSONObject jsonObject = JSONObject.parseObject(json);
-        map.put("coupon_click_url", jsonObject.getString("coupon_click_url"));
-        map.put("tbk_pwd", jsonObject.getString("tbk_pwd"));
-        map.put("coupon_short_url", jsonObject.getString("coupon_short_url"));
-        return map;
     }
 
     public static void favoritesGet() throws ApiException {
@@ -106,41 +92,37 @@ public class TaoBaoUtil {
     }
 
 
-    @Test
-    public void testFormat() throws ParseException {
-        String key = formatKey("9de2725281b44136b04e474d85061151");
-        System.out.println(key);
-
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        Date date1 = format.parse("2018-11-23");
-        String dateTime = format.format(new Date());
-        Date date1 = format.parse(dateTime);
-        System.out.printf("年-月-日格式：%tF%n", date1);
-        //d的使用
-        System.out.printf("月/日/年格式：%tD%n", date1);
-        System.out.println("dateTime=" + dateTime);
+    public static JSONObject getHICPIInfo(Map map) throws Exception {
+        String result = HttpClientUtil.httpGet(CommonParam.VEHICPI.getValue(), map);
+        JSONObject jsonObject = JSON.parseObject(result);
+        return jsonObject.getJSONObject("data");
     }
 
-    //    @Test
-    public static ShopInfo formatStr(String json) {
-//        String var = "满80元减5元";
-//        Double price = 58.00;
-        JSONObject jsonObject = JSON.parseObject(json);
+    public static Map getData(JSONObject jsonObject) {
+        Map map = new HashMap();
+        map.put("coupon_click_url", jsonObject.getString("coupon_click_url"));
+        map.put("tbk_pwd", jsonObject.getString("tbk_pwd"));
+        map.put("coupon_short_url", jsonObject.getString("coupon_short_url"));
+        return map;
+    }
+
+
+    public static ShopInfo formatStr(JSONObject jsonObject) {
         ShopInfo shop = jsonObject.toJavaObject(ShopInfo.class);
         String str = jsonObject.getString("coupon_info");
-        Double price = Double.parseDouble(jsonObject.getString("zk_final_price"));
-        Double rate = Double.parseDouble(jsonObject.getString("commission_rate")) / 100;
-        Double qh_price = price;
+        double price = Double.parseDouble(jsonObject.getString("zk_final_price"));
+        double rate = Double.parseDouble(jsonObject.getString("commission_rate")) / 100;
+        double qh_price = price;
         if (StringUtils.isNotEmpty(str)) {
-            qh_price = TaoBaoUtil.getQhPrice(str, price);
-            shop.setQh_final_price(qh_price);
+            qh_price = getQhPrice(str, price);
         }
-        shop.setRate_touid(TaoBaoUtil.getRatePrice(qh_price, rate));
+        shop.setQh_final_price(qh_price);
+        shop.setRate_touid(getRatePrice(qh_price, rate));
         System.out.println("zk_final_price=" + price + "，qh_final_price=" + getQhPrice(str, price));
         return shop;
     }
 
-    public static Double getQhPrice(String var, Double prince) {
+    public static double getQhPrice(String var, Double prince) {
         Double qh_final_price = prince;
         String regEx = "[^0-9]";
         Pattern p = Pattern.compile(regEx);
@@ -161,7 +143,7 @@ public class TaoBaoUtil {
         return qh_final_price;
     }
 
-    public static Double getRatePrice(Double price, Double rate) {
+    public static double getRatePrice(double price, double rate) {
         Double tip = price * rate;
         if (tip > 1) {
             tip *= 0.8;
