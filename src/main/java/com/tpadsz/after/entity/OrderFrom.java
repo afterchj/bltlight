@@ -29,66 +29,79 @@ public class OrderFrom implements Serializable{
     private String seller_shop_title;
     private String item_title;
     private String image;
+    private String update_time;
+    private Integer status;
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getUpdate_time() {
+        return update_time;
+    }
+
+    public void setUpdate_time(String update_time) {
+        this.update_time = update_time;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof OrderFrom)) return false;
 
-        OrderFrom orderFrom = (OrderFrom) o;
+        OrderFrom that = (OrderFrom) o;
 
-        if (trade_id != orderFrom.trade_id) return false;
-        if (num_iid != null ? !num_iid.equals(orderFrom.num_iid) : orderFrom
-                .num_iid != null)
+        if (trade_id != that.trade_id) return false;
+        if (num_iid != null ? !num_iid.equals(that.num_iid) : that.num_iid !=
+                null)
             return false;
-        if (adzone_id != null ? !adzone_id.equals(orderFrom.adzone_id) :
-                orderFrom.adzone_id != null)
+        if (adzone_id != null ? !adzone_id.equals(that.adzone_id) : that
+                .adzone_id != null)
             return false;
-        if (site_id != null ? !site_id.equals(orderFrom.site_id) : orderFrom
-                .site_id != null)
+        if (site_id != null ? !site_id.equals(that.site_id) : that.site_id !=
+                null)
             return false;
-        if (uid != null ? !uid.equals(orderFrom.uid) : orderFrom.uid != null)
+        if (tk_status != null ? !tk_status.equals(that.tk_status) : that
+                .tk_status != null)
             return false;
-        if (tk_status != null ? !tk_status.equals(orderFrom.tk_status) :
-                orderFrom.tk_status != null)
+        if (create_time != null ? !create_time.equals(that.create_time) :
+                that.create_time != null)
             return false;
-        if (create_time != null ? !create_time.equals(orderFrom.create_time)
-                : orderFrom.create_time != null)
+        if (earning_time != null ? !earning_time.equals(that.earning_time) :
+                that.earning_time != null)
             return false;
-        if (earning_time != null ? !earning_time.equals(orderFrom
-                .earning_time) : orderFrom.earning_time != null)
+        if (alipay_total_price != null ? !alipay_total_price.equals(that
+                .alipay_total_price) : that.alipay_total_price != null)
             return false;
-        if (alipay_total_price != null ? !alipay_total_price.equals(orderFrom
-                .alipay_total_price) : orderFrom.alipay_total_price != null)
+        if (price != null ? !price.equals(that.price) : that.price != null)
             return false;
-        if (price != null ? !price.equals(orderFrom.price) : orderFrom.price
-                != null)
+        if (pay_price != null ? !pay_price.equals(that.pay_price) : that
+                .pay_price != null)
             return false;
-        if (pay_price != null ? !pay_price.equals(orderFrom.pay_price) :
-                orderFrom.pay_price != null)
-            return false;
-        if (item_num != null ? !item_num.equals(orderFrom.item_num) :
-                orderFrom.item_num != null)
+        if (item_num != null ? !item_num.equals(that.item_num) : that
+                .item_num != null)
             return false;
         if (total_commission_rate != null ? !total_commission_rate.equals
-                (orderFrom.total_commission_rate) : orderFrom
-                .total_commission_rate != null)
+                (that.total_commission_rate) : that.total_commission_rate !=
+                null)
             return false;
-        if (total_commission_fee != null ? !total_commission_fee.equals
-                (orderFrom.total_commission_fee) : orderFrom
-                .total_commission_fee != null)
+        if (total_commission_fee != null ? !total_commission_fee.equals(that
+                .total_commission_fee) : that.total_commission_fee != null)
             return false;
-        if (action_type != null ? !action_type.equals(orderFrom.action_type)
-                : orderFrom.action_type != null)
+        if (action_type != null ? !action_type.equals(that.action_type) :
+                that.action_type != null)
             return false;
-        if (seller_shop_title != null ? !seller_shop_title.equals(orderFrom
-                .seller_shop_title) : orderFrom.seller_shop_title != null)
+        if (seller_shop_title != null ? !seller_shop_title.equals(that
+                .seller_shop_title) : that.seller_shop_title != null)
             return false;
-        if (item_title != null ? !item_title.equals(orderFrom.item_title) :
-                orderFrom.item_title != null)
+        if (item_title != null ? !item_title.equals(that.item_title) : that
+                .item_title != null)
             return false;
-        return image != null ? image.equals(orderFrom.image) : orderFrom
-                .image == null;
+        return image != null ? image.equals(that.image) : that.image == null;
 
     }
 
@@ -111,10 +124,10 @@ public class OrderFrom implements Serializable{
         result = 31 * result + (item_num != null ? item_num.hashCode() : 0);
         result = 31 * result + (total_commission_rate != null ? total_commission_rate.hashCode() : 0);
         result = 31 * result + (total_commission_fee != null ? total_commission_fee.hashCode() : 0);
-        result = 31 * result + (action_type != null ? action_type.hashCode() : 0);
+        result = 31 * result + action_type.hashCode();
         result = 31 * result + (seller_shop_title != null ? seller_shop_title.hashCode() : 0);
         result = 31 * result + (item_title != null ? item_title.hashCode() : 0);
-        result = 31 * result + (image != null ? image.hashCode() : 0);
+        result = 31 * result + image.hashCode();
         return result;
     }
 

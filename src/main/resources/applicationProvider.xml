@@ -51,8 +51,12 @@
             <list>
                 <!--第1个定时任务由bosslocker-store-hq在执行了-->
                 <ref bean="exampleJob1Trigger"/>
+                <!--每一分钟查询前20分钟的订单-->
                 <ref bean="orderEveryDayJobTrigger"/>
-                <ref bean="orderYesterDayJobTrigger"/>
+                <!--第二天查询前一天订单-->
+                <!--<ref bean="orderYesterDayJobTrigger"/>-->
+                <!--20-25号调用前一月的全部接口-->
+                <!--<ref bean="orderSettleDayJobTrigger"/>-->
             </list>
         </property>
     </bean>
@@ -84,9 +88,7 @@
     <bean id="orderYesterDayJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="orderYesterDayJobDetail"/>
         <!--每天0点到2点每一分钟触发一次-->
-        <property name="cronExpression" value="0 0/1 17-18 * * ?"/>
-        <!--每个月20-25号0点到2点触发 3秒触发一次-->
-        <!--<property name="cronExpression" value="0/3 0 0-2 20-25 * ?"/>-->
+        <property name="cronExpression" value="0 0/1 0-1 * * ?"/>
     </bean>
     <bean id="orderYesterDayJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <!-- 指定任务类 -->
@@ -95,7 +97,17 @@
         <property name="targetMethod" value="getYesterDayOrder"/>
     </bean>
 
-
+    <bean id="orderSettleDayJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="orderSettleDayJobDetail"/>
+        <!--每个月21-26号0点到2点触发 3秒触发一次-->
+        <property name="cronExpression" value="0/3 * 0-1 21-26 * ?"/>
+    </bean>
+    <bean id="orderSettleDayJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 指定任务类 -->
+        <property name="targetObject" ref="orderFromJob"/>
+        <!-- 指定任务执行的方法 -->
+        <property name="targetMethod" value="getSettleDayOrder"/>
+    </bean>
 
     <!-- 阿里 druid数据库连接池 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">

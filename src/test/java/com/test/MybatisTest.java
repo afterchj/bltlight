@@ -8,10 +8,10 @@ import com.tpadsz.after.dao80.OrderFromDao;
 import com.tpadsz.after.dao80.TbkBindDao;
 import com.tpadsz.after.entity.Pid;
 import com.tpadsz.after.service.ShopService;
-import com.tpadsz.after.service.impl.ShopServiceImpl;
 import com.util.ExcelTool;
 import jxl.read.biff.BiffException;
 import jxl.write.WriteException;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Test;
@@ -20,6 +20,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,6 +125,11 @@ public class MybatisTest {
 
     @Test
     public void test20(){
-        System.out.println(getSession().getMapper(OrderFromDao.class).findTimeById(1));
+        Map<String, Object> map = new HashedMap();
+        map.put("uid","487812dasdasdasdad");
+        map.put("num_iid","13371072438");
+        Date shareLogByUidAndIid = getSession().getMapper(OrderFromDao.class)
+                .findShareLogByUidAndIid(map);
+        System.out.println(new SimpleDateFormat("yyyy-MM-dd").format(shareLogByUidAndIid));
     }
 }

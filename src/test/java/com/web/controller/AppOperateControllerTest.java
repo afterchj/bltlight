@@ -15,7 +15,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -121,9 +120,9 @@ public class AppOperateControllerTest {
     }
     @Test
     public void testPidUid(){
-        String pidAndUidByZdId = orderFromService.findPidAndUidByZdId
-                ("542987003");
-        System.out.println(pidAndUidByZdId);
+//        String pidAndUidByZdId = orderFromService.findPidAndUidByZdId
+//                ("542987003");
+//        System.out.println(pidAndUidByZdId);
     }
 
     @Test
@@ -132,28 +131,5 @@ public class AppOperateControllerTest {
         System.out.println(date);
     }
 
-    public static String getPreDateByDate(String strData) {
-        String preDate = "";
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
-        Date date = null;
-        try {
-            date = sdf.parse(strData);
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
-        }
-
-        c.setTime(date);
-        int day1 = c.get(Calendar.DATE);
-        c.set(Calendar.DATE, day1 - 1);
-        preDate = sdf.format(c.getTime());
-        return preDate;
-    }
-
-    public String setPreDate(String time,long mis) throws ParseException {
-        Date date1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(time);
-        Date date2 = new Date(date1.getTime()+mis);
-        return new SimpleDateFormat("HH:mm:ss").format(date2);
-    }
 
 }
