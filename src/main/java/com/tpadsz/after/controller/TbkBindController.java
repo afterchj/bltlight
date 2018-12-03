@@ -52,13 +52,13 @@ public class TbkBindController extends BaseDecodedController {
         map.put("detail", "1");
         JSONObject jsonObject = new JSONObject();
         try {
-            String json = TaoBaoUtil.getHICPIInfo(map);
+            JSONObject json = TaoBaoUtil.getHICPIInfo(map);
             jsonObject.put("code", result);
             jsonObject.put("msg", msg);
             shop = TaoBaoUtil.formatStr(json);
             shop.setPkey(pkey);
             shop.setUid(uid);
-            shop.setGoods_info(json);
+            shop.setGoods_info(json.toJSONString());
             shop.setResult_info(jsonObject.toJSONString());
 //            System.out.println("shop=" + JSON.toJSONString(shop));
             model.put("data", TaoBaoUtil.getData(json));
