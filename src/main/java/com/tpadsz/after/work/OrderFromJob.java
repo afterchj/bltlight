@@ -67,16 +67,16 @@ public class OrderFromJob {
      */
     public void getEveryOrder(Integer num) {
         String date;
-//        String start_time;
-      String start_time = "2018-10-25 19:31:33";
+        String start_time;
+//      String start_time = "2018-10-25 19:31:33";
         try {
             date = OrderFromUtil.getTimeByMinute(num);
-            start_time = java.net.URLEncoder.encode(start_time, "utf-8");
+            start_time = java.net.URLEncoder.encode(date, "utf-8");
             setOrderFromResult(url, start_time, "-1");
             System.out.print(date + " 执行了每天接口");
             System.out.println("当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -188,7 +188,6 @@ public class OrderFromJob {
         String newDate;
         String param;
         int pageNo = 1;
-        Map<String, String> para = new HashedMap();
         while (true) {
             if (order_query_type == "-1") {
                 param = "vekey=" + vekey + "&start_time=" + start_time +
@@ -344,6 +343,7 @@ public class OrderFromJob {
                 tbkService.recordECoins(orderFrom);
             }else if (orderFrom.getStatus()==3){
                 //已结算状态下需要在结算表中插入数据
+                tbkService.recordECoins(orderFrom);
                 tbkService.settleCoins(orderFrom);
             }
         }else {
@@ -355,6 +355,7 @@ public class OrderFromJob {
                 }else if (orderFrom.getStatus()==3){
                     //已结算状态下需要在结算表中插入数据
                     tbkService.settleCoins(orderFrom);
+                    tbkService.recordECoins(orderFrom);
                 }
             }
         }
