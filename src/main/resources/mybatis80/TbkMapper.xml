@@ -16,16 +16,49 @@
         INSERT INTO tbk.account(uid,app_id,avail,earn) values(#{uid},#{app_id},#{avail},#{earn}) ON DUPLICATE KEY UPDATE avail=avail+#{avail},earn=earn+#{earn};
     </insert>
 
-    <insert id="insertOrUpdateDailyAccount" parameterType="com.tpadsz.after.entity.DailyAccount">
+    <insert id="insertDailyAccount" parameterType="com.tpadsz.after.entity.DailyAccount">
         INSERT INTO tbk.daily_account(uid,app_id,date,trade_type,earn) values(#{uid},#{app_id},#{date},#{trade_type},#{earn});
     </insert>
 
     <insert id="insertOrUpdateDailyEstimatedAccount" parameterType="com.tpadsz.after.entity.DailyEstimatedAccount">
-        INSERT INTO tbk.daily_estimated_account(trade_id,uid,app_id,date,update_time,trade_type,tk_status,price) values(#{trade_id},#{uid},#{app_id},#{date},NOW(),#{trade_type},#{tk_status},#{price});
+        REPLACE INTO tbk.daily_estimated_account(trade_id,uid,app_id,date,update_time,trade_type,status,price) values(#{trade_id},#{uid},#{app_id},#{date},NOW(),#{trade_type},#{status},#{price});
     </insert>
 
-    <select id="findAvail" parameterType="string" resultType="string">
+    <select id="findAvail" parameterType="string" resultType="int">
         SELECT avail FROM tbk.account WHERE uid = #{uid}
     </select>
+
+    <select id="findTodayEcoins" parameterType="string" resultType="int">
+        SELECT SUM(price) FROM tbk.daily_estimated_account WHERE uid = #{uid} and status= 12 and DATEDIFF(date,CURDATE()) =0
+    </select>
+
+    <select id="findPresentMonthEcoins" parameterType="string" resultType="int">
+        SELECT SUM(price) FROM tbk.daily_estimated_account WHERE uid = #{uid} and status= 12 and DATE_FORMAT(date, '%Y%m') = DATE_FORMAT(CURDATE( ) , '%Y%m')
+    </select>
+
+    <select id="findLastMonthEcoins" parameterType="string" resultType="int">
+        SELECT SUM(price) FROM tbk.daily_estimated_account WHERE uid = #{uid} and status= 12 and PERIOD_DIFF( date_format( now() , '%Y%m' ) , date_format(date, '%Y%m' )) =1
+    </select>
+
+    <select id="findLastMonthCoins" parameterType="string" resultType="int">
+        SELECT SUM(earn) FROM tbk.daily_account WHERE uid = #{uid} and trade_type= 1 and PERIOD_DIFF( date_format( now() , '%Y%m' ) , date_format(date, '%Y%m' )) =1
+    </select>
+
+    <select id="findYesterdayEcoins" parameterType="string" resultType="int">
+        SELECT SUM(price) FROM tbk.daily_estimated_account WHERE uid = #{uid} and status= 12 and DATEDIFF(date,CURDATE()) =- 1
+    </select>
+
+    <select id="findConsumeFromPayOrder" parameterType="string" resultType="int">
+        SELECT SUM(price) FROM tbk.f_pay_order WHERE uid = #{uid} and trade_type= '8'
+    </select>
+
+    <select id="findTodayOrders" parameterType="string" resultType="int">
+        SELECT count(*) FROM tbk.f_tbk_order WHERE uid = #{uid} and status= 12 and DATEDIFF(create_time,CURDATE()) =0
+    </select>
+
+    <select id="findYesterdayOrders" parameterType="string" resultType="int">
+        SELECT count(*) FROM tbk.f_tbk_order WHERE uid = #{uid} and status= 12 and DATEDIFF(create_time,CURDATE()) =- 1
+    </select>
+
 
 </mapper>

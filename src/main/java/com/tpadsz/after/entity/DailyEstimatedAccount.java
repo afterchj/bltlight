@@ -11,7 +11,7 @@ public class DailyEstimatedAccount implements Serializable {
     private String app_id;
     private Date date;
     private String trade_type;
-    private int tk_status;
+    private int status;
     private int price;
     private String other;
 
@@ -19,14 +19,14 @@ public class DailyEstimatedAccount implements Serializable {
         super();
     }
 
-    public DailyEstimatedAccount(long trade_id, String uid, String app_id, Date date, String trade_type, int tk_status, int price, String other) {
+    public DailyEstimatedAccount(long trade_id, String uid, String app_id, Date date, String trade_type, int status, int price, String other) {
         super();
         this.trade_id = trade_id;
         this.uid = uid;
         this.app_id = app_id;
         this.date = date;
         this.trade_type = trade_type;
-        this.tk_status = tk_status;
+        this.status = status;
         this.price = price;
         this.other = other;
     }
@@ -75,12 +75,12 @@ public class DailyEstimatedAccount implements Serializable {
         this.trade_type = trade_type;
     }
 
-    public int getTk_status() {
-        return tk_status;
+    public int getStatus() {
+        return status;
     }
 
-    public void setTk_status(int tk_status) {
-        this.tk_status = tk_status;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public int getPrice() {
