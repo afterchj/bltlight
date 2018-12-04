@@ -9,17 +9,12 @@ import com.taobao.api.request.TbkUatmFavoritesGetRequest;
 import com.taobao.api.request.TbkUatmFavoritesItemGetRequest;
 import com.taobao.api.response.TbkUatmFavoritesGetResponse;
 import com.taobao.api.response.TbkUatmFavoritesItemGetResponse;
-import com.tpadsz.after.dao80.TbkBindDao;
 import com.tpadsz.after.entity.ShopInfo;
 import com.tpadsz.after.entity.dd.CommonParam;
 import org.apache.commons.lang.StringUtils;
-import org.apache.zookeeper.data.Stat;
-import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,10 +28,10 @@ public class TaoBaoUtil {
 
     public static void main(String[] args) throws Exception {
 //        System.out.println("tip="+getRatePrice(9.0,0.1));
-//        favoritesGet();
-//        System.out.println();
-//        favoritesItemGet();
-//        System.out.println();
+        favoritesGet();
+        System.out.println();
+        favoritesItemGet();
+        System.out.println();
 //        urlEncode();
 
         Map map = new HashMap();
@@ -44,11 +39,11 @@ public class TaoBaoUtil {
         map.put("para", "556602244435");
         map.put("pid", "mm_43238250_191900396_54298500491");
         map.put("detail", "1");
-        JSONObject json = getHICPIInfo(map);
-        ShopInfo shop = formatStr(json);
-        System.out.println("response=" + HttpClientUtil.httpGet(CommonParam.VEHICPI.getValue(), map));
-        System.out.println("shop=" + JSON.toJSONString(shop));
-        System.out.println("data=" + JSON.toJSONString(getData(getHICPIInfo(map))));
+//        JSONObject json = getHICPIInfo(map);
+//        ShopInfo shop = formatStr(json);
+//        System.out.println("response=" + HttpClientUtil.httpGet(CommonParam.VEHICPI.getValue(), map));
+//        System.out.println("shop=" + JSON.toJSONString(shop));
+//        System.out.println("data=" + JSON.toJSONString(getData(getHICPIInfo(map))));
 
 //        map.put("start_time", "2018-10-25 19:48:24");
 //        map.put("span", "1200");
@@ -74,7 +69,7 @@ public class TaoBaoUtil {
         req.setPageSize(20L);
         req.setAdzoneId(44740840L);
         req.setUnid("3456");
-        req.setFavoritesId(18732551L);
+        req.setFavoritesId(18750819L);
         req.setPageNo(1L);
         req.setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url,seller_id,volume,nick,shop_title,zk_final_price_wap,event_start_time,event_end_time,tk_rate,status,type");
         TbkUatmFavoritesItemGetResponse rsp = client.execute(req);
@@ -86,11 +81,6 @@ public class TaoBaoUtil {
         String urlEncode = URLEncoder.encode(encode, "utf-8");
         System.out.println(urlEncode);
     }
-
-    public static String formatKey(String adzone_id) {
-        return String.format("pid_%s", adzone_id);
-    }
-
 
     public static JSONObject getHICPIInfo(Map map) throws Exception {
         String result = HttpClientUtil.httpGet(CommonParam.VEHICPI.getValue(), map);
@@ -106,7 +96,6 @@ public class TaoBaoUtil {
         return map;
     }
 
-
     public static ShopInfo formatStr(JSONObject jsonObject) {
         ShopInfo shop = jsonObject.toJavaObject(ShopInfo.class);
         String str = jsonObject.getString("coupon_info");
@@ -118,7 +107,7 @@ public class TaoBaoUtil {
         }
         shop.setQh_final_price(qh_price);
         shop.setRate_touid(getRatePrice(qh_price, rate));
-        System.out.println("zk_final_price=" + price + "，qh_final_price=" + getQhPrice(str, price));
+        System.out.println("zk_final_price=" + price + "，qh_final_price=" + qh_price);
         return shop;
     }
 

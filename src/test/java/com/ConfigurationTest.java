@@ -200,7 +200,7 @@ public class ConfigurationTest {
         int pkey = pid.getPkey();
         Map map = new HashMap();
         map.put("vekey", CommonParam.VEKEY.getValue());
-        map.put("para", "558825175392");
+        map.put("para", "13271610728");
         map.put("pid", pid.getPid());
         map.put("detail", "1");
 
