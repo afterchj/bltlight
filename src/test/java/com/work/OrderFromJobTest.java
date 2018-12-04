@@ -6,6 +6,7 @@ import com.tpadsz.after.config.DBConfig;
 import com.tpadsz.after.config.SpringConfig;
 import com.tpadsz.after.entity.OrderFrom;
 import com.tpadsz.after.service.OrderFromService;
+import com.tpadsz.after.service.TbkService;
 import com.tpadsz.after.util.OrderFromUtil;
 import org.apache.commons.collections.map.HashedMap;
 import org.junit.Test;
@@ -41,6 +42,7 @@ public class OrderFromJobTest {
 
     OrderFromService orderFromService = ac.getBean("orderFromService",
             OrderFromService.class);
+    TbkService tbkService = ac.getBean("tbkService",TbkService.class);
 //    ShopService shopService = ac.getBean("shopService",ShopService.class);
     static final String vekey = "V00000585Y74210916";
     static final String span = "1200";
@@ -182,14 +184,14 @@ public class OrderFromJobTest {
                 String adzoneId;
                 Long tradeId;
                 Map<String, Object> map = new HashedMap();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 for (int i = 0; i < array.size(); i++) {
                     orderFrom = setOrderFrom(array.getJSONObject(i));
+                    //根据淘宝订单状态添加本地订单表的订单状态
+                    setOrderStatus(orderFrom,order_query_type);
                     adzoneId = orderFrom.getAdzone_id();
                     tradeId = orderFrom.getTrade_id();
                     //查询本地订单表是否有该笔订单
-                    orderFrom1 = orderFromService
-                            .findOrderFromById(tradeId);
+                    orderFrom1 = orderFromService.findOrderFromById(tradeId);
                     //本地表无数据,需要插入数据
                     if (orderFrom1 == null) {
                         //查询pid-uid绑定关系
@@ -204,13 +206,8 @@ public class OrderFromJobTest {
                         int days = 3;
                         //有分享时间
                         if (shareTime!=null){
-                            String share = sdf.format(shareTime);
-                            shareTime = sdf.parse(share);
-                            Date OrderTime = orderFrom.getCreate_time();
-                            String order = sdf.format(OrderTime);
-                            OrderTime = sdf.parse(order);
-                            //分享时间和下订单时间不超过三天
-                            days = (int) ((OrderTime.getTime() - shareTime.getTime()) / (1000*3600*24));
+                            //分享时间和下单时间日期差
+                            days = timeDiff(shareTime,orderFrom);
                         }
                         //有绑定关系&&分享时间不超过三天
                         //有绑定关系
@@ -220,6 +217,15 @@ public class OrderFromJobTest {
                             orderFromService.insertOrderFrom(orderFrom);
                             System.out.println("插入数据成功: " + orderFrom
                                     .getTrade_id());
+                            //修改预估和结算金额
+                            setTbCoins(orderFrom,orderFrom1);
+//                            if (orderFrom.getStatus()==3){
+//                                待返佣状态下需要在预估表中插入数据
+//                                tbkService.settleCoins(orderFrom);
+//                            }else if (orderFrom.getStatus()==12){
+//                                已结算状态下需要在结算表中插入数据
+//                                tbkService.recordECoins(orderFrom);
+//                            }
                         }
                     } else {//本地表有数据
                         //数据需要更新
@@ -228,6 +234,20 @@ public class OrderFromJobTest {
                             orderFromService.updateOrderFrom(orderFrom);
                             System.out.println("更新数据成功: " + orderFrom
                                     .getTrade_id());
+                            //修改预估和结算金额
+                            setTbCoins(orderFrom,orderFrom1);
+//                            if (orderFrom1.getStatus()!=orderFrom.getStatus()){
+//                                if (orderFrom.getStatus()==3){
+//                                    //待返佣状态下需要在预估表中插入数据
+//                                    orderFrom.setUid(orderFrom1.getUid());
+//                                    tbkService.settleCoins(orderFrom);
+//
+//                                }else if (orderFrom.getStatus()==12){
+//                                    //已结算状态下需要在结算表中插入数据
+//                                    orderFrom.setUid(orderFrom1.getUid());
+//                                    tbkService.recordECoins(orderFrom);
+//                                }
+//                            }
                         }
                     }
                 }
@@ -266,6 +286,64 @@ public class OrderFromJobTest {
         orderFrom.setItem_title(jsonObject.getString("item_title"));
         return orderFrom;
 
+    }
+
+    public void setTbCoins(OrderFrom orderFrom,OrderFrom orderFrom1){
+        if (orderFrom1 == null) {
+            if (orderFrom.getStatus()==3){
+                //待返佣状态下需要在预估表中插入数据
+                tbkService.settleCoins(orderFrom);
+            }else if (orderFrom.getStatus()==12){
+                //已结算状态下需要在结算表中插入数据
+
+                tbkService.recordECoins(orderFrom);
+            }
+        }else {
+            if (orderFrom1.getStatus()!=orderFrom.getStatus()){
+                orderFrom.setUid(orderFrom1.getUid());
+                if (orderFrom.getStatus()==3){
+                    //待返佣状态下需要在预估表中插入数据
+                    tbkService.settleCoins(orderFrom);
+                }else if (orderFrom.getStatus()==12){
+                    //已结算状态下需要在结算表中插入数据
+                    tbkService.recordECoins(orderFrom);
+                }
+            }
+        }
+    }
+
+    public Integer timeDiff(Date shareTime, OrderFrom orderFrom) throws
+            ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String share ;
+        share= sdf.format(shareTime);
+        shareTime = sdf.parse(share);
+        Date OrderTime = orderFrom.getCreate_time();
+        String order = sdf.format(OrderTime);
+        OrderTime = sdf.parse(order);
+        return  (int) ((OrderTime.getTime() - shareTime.getTime()) / (1000*3600*24));
+    }
+
+    public void setOrderStatus(OrderFrom orderFrom,String
+            order_query_type){
+        Integer tbStatus = orderFrom.getTk_status();
+        if (order_query_type == "-1"){
+            //当天和隔天需要修改的本地订单表的订单状态
+            if (tbStatus==3||tbStatus==14){
+                //淘宝订单状态为结算和成功，本地订单状态修改为待返佣
+                orderFrom.setStatus(12);
+            }else {
+                orderFrom.setStatus(orderFrom.getTk_status());
+            }
+        }else {
+            //结算日需要修改的本地订单表的订单状态
+            if (tbStatus==14){
+                //淘宝订单状态为成功的修改本地订单表的订单状态为待返佣
+                orderFrom.setStatus(12);
+            }else {
+                orderFrom.setStatus(orderFrom.getTk_status());
+            }
+        }
     }
 
     @Test
