@@ -1,6 +1,8 @@
 package com.tpadsz.after.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.tpadsz.after.entity.CoinsInfo;
+import com.tpadsz.after.entity.OrderFrom;
 import com.tpadsz.after.entity.ShareLog;
 import com.tpadsz.after.entity.dd.ResultDict;
 import com.tpadsz.after.service.TbkService;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -19,6 +23,8 @@ import java.util.UUID;
 public class TbkController extends BaseDecodedController {
 
     private TbkService tbkService;
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @RequestMapping(value = "/shareLog", method = RequestMethod.POST)
     private String shareLog(@ModelAttribute("decodedParams") JSONObject params, ModelMap model) {
@@ -40,14 +46,26 @@ public class TbkController extends BaseDecodedController {
     }
 
     @RequestMapping(value = "/search/coins", method = RequestMethod.POST)
-    private void searchCoins(@ModelAttribute("decodedParams") JSONObject params, ModelMap model) {
+    private String searchCoins(@ModelAttribute("decodedParams") JSONObject params, ModelMap model) {
         String uid = params.getString("uid");
-        String avail = tbkService.findAvail(uid);
-
-
+        try {
+            int avail = tbkService.findAvail(uid);
+            int todayEcoins = tbkService.findTodayEcoins(uid);
+            int presentMonthEcoins = tbkService.findPresentMonthEcoins(uid);
+            int lastMonthEcoins = tbkService.findLastMonthEcoins(uid);
+            int lastMonthCoins = tbkService.findLastMonthCoins(uid);
+            int consume = tbkService.findConsumeFromPayOrder(uid);
+            int todayOrders = tbkService.findTodayOrders(uid);
+            int yesterdayOrders = tbkService.findYesterdayOrders(uid);
+            int yesterdayEcoins = tbkService.findYesterdayEcoins(uid);
+            CoinsInfo coinsInfo = new CoinsInfo((float)avail/1000,(float)todayEcoins/1000,(float)presentMonthEcoins/1000,(float)lastMonthEcoins/1000,(float)lastMonthCoins/1000,(float)consume/1000,todayOrders,yesterdayOrders,(float)yesterdayEcoins/1000);
+            model.put("result", ResultDict.SUCCESS.getCode());
+            model.put("coinsInfo", coinsInfo);
+        }catch (Exception e) {
+            model.put("result", ResultDict.SYSTEM_ERROR.getCode());
+        }
+        return null;
     }
-
-
 
 
     @Autowired

@@ -4,6 +4,8 @@ package com.tpadsz.after.service;
 import com.tpadsz.after.entity.OrderFrom;
 import com.tpadsz.after.entity.ShareLog;
 
+import java.util.Date;
+
 /**
  * Created by chenhao.lu on 2018/11/27.
  */
@@ -17,7 +19,21 @@ public interface TbkService {
     //实时记录预估金额
     void recordECoins(OrderFrom orderFrom);
 
-    String findAvail(String uid);
+    int findAvail(String uid);
 
+    int findTodayEcoins(String uid);
 
+    int findPresentMonthEcoins(String uid);
+
+    int findLastMonthEcoins(String uid);
+
+    int findLastMonthCoins(String uid);
+
+    int findYesterdayEcoins(String uid);
+
+    int findConsumeFromPayOrder(String uid);
+
+    int findTodayOrders(String uid);
+
+    int findYesterdayOrders(String uid);
 }

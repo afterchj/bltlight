@@ -15,9 +15,25 @@ public interface TbkDao {
 
     void insertOrUpdateAccount(@Param("uid") String uid, @Param("app_id") String app_id,@Param("avail") int avail,@Param("earn") int earn);
 
-    void insertOrUpdateDailyAccount(@Param("uid") String uid, @Param("app_id") String app_id, @Param("date") Date date,@Param("trade_type") String trade_type, @Param("earn") int earn);
+    void insertDailyAccount(@Param("uid") String uid, @Param("app_id") String app_id, @Param("date") Date date,@Param("trade_type") String trade_type, @Param("earn") int earn);
 
-    void insertOrUpdateDailyEstimatedAccount(@Param("trade_id") long trade_id,@Param("uid") String uid, @Param("app_id") String app_id, @Param("date") Date date,@Param("trade_type") String trade_type,@Param("tk_status") int tk_status, @Param("price") int price);
+    void insertOrUpdateDailyEstimatedAccount(@Param("trade_id") long trade_id,@Param("uid") String uid, @Param("app_id") String app_id, @Param("date") Date date,@Param("trade_type") String trade_type,@Param("status") int status, @Param("price") int price);
 
-    String findAvail(@Param("uid") String uid);
+    int findAvail(@Param("uid") String uid);
+
+    int findTodayEcoins(@Param("uid") String uid);
+
+    int findPresentMonthEcoins(@Param("uid") String uid);
+
+    int findLastMonthEcoins(@Param("uid") String uid);
+
+    int findLastMonthCoins(@Param("uid") String uid);
+
+    int findYesterdayEcoins(@Param("uid") String uid);
+
+    int findConsumeFromPayOrder(@Param("uid") String uid);
+
+    int findTodayOrders(@Param("uid") String uid);
+
+    int findYesterdayOrders(@Param("uid") String uid);
 }

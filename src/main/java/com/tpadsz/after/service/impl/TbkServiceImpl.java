@@ -7,6 +7,7 @@ import com.tpadsz.after.service.TbkService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 @Service("tbkService")
 public class TbkServiceImpl implements TbkService {
@@ -24,7 +25,7 @@ public class TbkServiceImpl implements TbkService {
         int earn;
         earn = (int) (tbkDao.findEarnByNumiid(String.valueOf(orderFrom.getNum_iid())) * 1000);
         tbkDao.insertOrUpdateAccount(orderFrom.getUid(), "12", earn, earn);
-        tbkDao.insertOrUpdateDailyAccount(orderFrom.getUid(), "12", orderFrom.getCreate_time(), "1", earn);
+        tbkDao.insertDailyAccount(orderFrom.getUid(), "12", orderFrom.getCreate_time(), "1", earn);
     }
 
     @Override
@@ -37,9 +38,49 @@ public class TbkServiceImpl implements TbkService {
 
 
     @Override
-    public String findAvail(String uid) {
-        String avail = tbkDao.findAvail(uid);
-        return avail;
+    public int findAvail(String uid) {
+        return tbkDao.findAvail(uid);
     }
+
+    @Override
+    public int findTodayEcoins(String uid) {
+        return tbkDao.findTodayEcoins(uid);
+    }
+
+    @Override
+    public int findPresentMonthEcoins(String uid) {
+        return tbkDao.findPresentMonthEcoins(uid);
+    }
+
+    @Override
+    public int findLastMonthEcoins(String uid) {
+        return tbkDao.findLastMonthEcoins(uid);
+    }
+
+    @Override
+    public int findLastMonthCoins(String uid) {
+        return tbkDao.findLastMonthCoins(uid);
+    }
+
+    @Override
+    public int findYesterdayEcoins(String uid) {
+        return tbkDao.findYesterdayEcoins(uid);
+    }
+
+    @Override
+    public int findConsumeFromPayOrder(String uid) {
+        return tbkDao.findConsumeFromPayOrder(uid);
+    }
+
+    @Override
+    public int findTodayOrders(String uid) {
+        return tbkDao.findTodayOrders(uid);
+    }
+
+    @Override
+    public int findYesterdayOrders(String uid) {
+        return tbkDao.findYesterdayOrders(uid);
+    }
+
 
 }
