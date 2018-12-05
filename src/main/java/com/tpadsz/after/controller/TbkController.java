@@ -10,12 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -24,7 +26,8 @@ public class TbkController extends BaseDecodedController {
 
     private TbkService tbkService;
 
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static final int PAGE_SIZE = 50;
+
 
     @RequestMapping(value = "/shareLog", method = RequestMethod.POST)
     private String shareLog(@ModelAttribute("decodedParams") JSONObject params, ModelMap model) {
@@ -66,6 +69,24 @@ public class TbkController extends BaseDecodedController {
         }
         return null;
     }
+
+
+//    @RequestMapping(value = "/search/incomeDetails/p_{pageNo}", method = RequestMethod.POST)
+//    private String loglistOfIncome(@ModelAttribute("decodedParams") JSONObject params, @PathVariable("pageNo") Integer pageNo, ModelMap model) {
+//        String uid = params.getString("uid");
+//        try {
+//            List<IncomeLog> tasklogs = tbkService.findLoglistOfIncome(uid,(pageNo - 1) * PAGE_SIZE, PAGE_SIZE);
+//            model.put("result", ResultDict.SUCCESS.getCode());
+//            model.put("result_message", ResultDict.SUCCESS.getValue());
+//        } catch (Exception e) {
+//            model.put("result", ResultDict.SYSTEM_ERROR.getCode());
+//            model.put("result_message", ResultDict.SYSTEM_ERROR.getValue());
+//        }
+//        return null;
+//    }
+
+
+
 
 
     @Autowired
