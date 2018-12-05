@@ -1,10 +1,11 @@
 package com.tpadsz.after.service;
 
 
+import com.tpadsz.after.entity.DailyAccount;
 import com.tpadsz.after.entity.OrderFrom;
 import com.tpadsz.after.entity.ShareLog;
 
-import java.util.Date;
+import java.util.List;
 
 /**
  * Created by chenhao.lu on 2018/11/27.
@@ -36,4 +37,9 @@ public interface TbkService {
     int findTodayOrders(String uid);
 
     int findYesterdayOrders(String uid);
+
+    List<DailyAccount> findLoglistOfIncome(String uid, int var1, int var2);
+
+    List<DailyAccount> findLoglistOfConsume(String uid, int var1, int var2);
+
 }

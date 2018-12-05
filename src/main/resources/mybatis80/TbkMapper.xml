@@ -60,5 +60,12 @@
         SELECT count(*) FROM tbk.f_tbk_order WHERE uid = #{uid} and status= 12 and DATEDIFF(create_time,CURDATE()) =- 1
     </select>
 
+    <select id="findLoglistOfIncome"  resultType="com.tpadsz.after.entity.DailyAccount">
+        SELECT uid,trade_type,earn,date FROM tbk.daily_account WHERE uid = #{uid} and trade_type= 1 order by date desc limit #{startIndex},#{pageSize}
+    </select>
+
+    <select id="findLoglistOfConsume"  resultType="com.tpadsz.after.entity.DailyAccount">
+        SELECT uid,trade_type,price as consume,create_time as date FROM tbk.f_pay_order WHERE uid = #{uid} and trade_type= 8 order by create_time desc limit #{startIndex},#{pageSize}
+    </select>
 
 </mapper>

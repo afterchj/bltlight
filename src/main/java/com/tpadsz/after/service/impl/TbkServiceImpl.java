@@ -1,13 +1,14 @@
 package com.tpadsz.after.service.impl;
 
 import com.tpadsz.after.dao80.TbkDao;
+import com.tpadsz.after.entity.DailyAccount;
 import com.tpadsz.after.entity.OrderFrom;
 import com.tpadsz.after.entity.ShareLog;
 import com.tpadsz.after.service.TbkService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
+import java.util.List;
 
 @Service("tbkService")
 public class TbkServiceImpl implements TbkService {
@@ -80,6 +81,16 @@ public class TbkServiceImpl implements TbkService {
     @Override
     public int findYesterdayOrders(String uid) {
         return tbkDao.findYesterdayOrders(uid);
+    }
+
+    @Override
+    public List<DailyAccount> findLoglistOfIncome(String uid, int var1, int var2) {
+        return tbkDao.findLoglistOfIncome(uid,var1,var2);
+    }
+
+    @Override
+    public List<DailyAccount> findLoglistOfConsume(String uid, int var1, int var2) {
+        return tbkDao.findLoglistOfConsume(uid,var1,var2);
     }
 
 

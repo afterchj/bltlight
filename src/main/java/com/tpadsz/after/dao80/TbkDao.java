@@ -1,9 +1,11 @@
 package com.tpadsz.after.dao80;
 
+import com.tpadsz.after.entity.DailyAccount;
 import com.tpadsz.after.entity.ShareLog;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import java.util.Date;
+import java.util.List;
 
 
 @Repository("tbkDao")
@@ -36,4 +38,8 @@ public interface TbkDao {
     int findTodayOrders(@Param("uid") String uid);
 
     int findYesterdayOrders(@Param("uid") String uid);
+
+    List<DailyAccount> findLoglistOfIncome(@Param("uid")String uid, @Param("startIndex")int pageNo, @Param("pageSize")int pageSize);
+
+    List<DailyAccount> findLoglistOfConsume(@Param("uid")String uid, @Param("startIndex")int pageNo, @Param("pageSize")int pageSize);
 }
