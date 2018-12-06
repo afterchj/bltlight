@@ -6,26 +6,26 @@ import java.util.Date;
 
 public class ShareLog implements Serializable {
     private static final long serialVersionUID = 1L;
-    private String id;
+    private int id;
     private String num_iid;
     private String uid;
-    private String adzone_id;
+    private int share_id;
     private String goods_share_message;
-    private Date share_date;
+    private Date share_time;
     private String other;
 
     public ShareLog() {
         super();
     }
 
-    public ShareLog(String id, String num_iid, String uid, String adzone_id, String goods_share_message,Date share_date, String other) {
+    public ShareLog(int id, String num_iid, String uid, int share_id, String goods_share_message,Date share_time, String other) {
         super();
         this.id = id;
         this.num_iid = num_iid;
         this.uid = uid;
-        this.adzone_id = adzone_id;
+        this.share_id = share_id;
         this.goods_share_message = goods_share_message;
-        this.share_date = share_date;
+        this.share_time = share_time;
         this.other = other;
     }
 
@@ -33,11 +33,11 @@ public class ShareLog implements Serializable {
         return serialVersionUID;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -57,12 +57,20 @@ public class ShareLog implements Serializable {
         this.uid = uid;
     }
 
-    public String getAdzone_id() {
-        return adzone_id;
+    public int getShare_id() {
+        return share_id;
     }
 
-    public void setAdzone_id(String adzone_id) {
-        this.adzone_id = adzone_id;
+    public void setShare_id(int share_id) {
+        this.share_id = share_id;
+    }
+
+    public Date getShare_time() {
+        return share_time;
+    }
+
+    public void setShare_time(Date share_time) {
+        this.share_time = share_time;
     }
 
     public String getGoods_share_message() {
@@ -71,14 +79,6 @@ public class ShareLog implements Serializable {
 
     public void setGoods_share_message(String goods_share_message) {
         this.goods_share_message = goods_share_message;
-    }
-
-    public Date getShare_date() {
-        return share_date;
-    }
-
-    public void setShare_date(Date share_date) {
-        this.share_date = share_date;
     }
 
     public String getOther() {
