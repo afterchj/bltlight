@@ -26,7 +26,7 @@ public class TbkServiceImpl implements TbkService {
         int earn;
         earn = (int) (tbkDao.findEarnByNumiid(String.valueOf(orderFrom.getNum_iid())) * 1000);
         tbkDao.insertOrUpdateAccount(orderFrom.getUid(), "12", earn, earn);
-        tbkDao.insertDailyAccount(orderFrom.getUid(), "12", orderFrom.getCreate_time(), "1", earn);
+        tbkDao.insertDailyAccount(orderFrom.getUid(), "12", orderFrom.getCreate_time(), "1001", earn);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class TbkServiceImpl implements TbkService {
         int earn;
         earn = (int) (tbkDao.findEarnByNumiid(String.valueOf(orderFrom.getNum_iid())) * 1000);
         tbkDao.insertOrUpdateDailyEstimatedAccount(orderFrom.getTrade_id(), orderFrom.getUid(), "12", orderFrom
-                .getCreate_time(), "1", orderFrom.getStatus(), earn);
+                .getCreate_time(), "1001", orderFrom.getStatus(), earn);
     }
 
 
