@@ -69,18 +69,18 @@
         	<!--AND p.adzone_id = #{adzone_id};-->
     <!--</select>-->
 
-    <select id="findShopImageByNumIid" parameterType="string" resultType="string">
-          SELECT pict_url FROM tbk.f_tbk_shop WHERE num_id=#{num_id}
+    <select id="findShopImageByNumIid" parameterType="string" resultType="ShopInfo">
+          SELECT * FROM tbk.f_tbk_shop WHERE num_iid=#{num_iid}
     </select>
 
     <select id="findShareLogByUidAndIid" parameterType="map" resultType="java.util.Date">
         SELECT
-    	    share_date
+    	    touch_time
         FROM
-        	tbk.f_tbk_share_log
+        	tbk.f_hiprice_log
         WHERE
         	uid = #{uid}
-        	AND num_iid = #{num_iid}
+        	AND num_iid = #{num_iid} AND goods_info!=NULL
         ORDER BY
         	share_date DESC
         	LIMIT 1;
