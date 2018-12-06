@@ -75,7 +75,7 @@ public class TbkController extends BaseDecodedController {
             Integer pageNo, ModelMap model) {
         String uid = params.getString("uid");
         try {
-            List<DailyAccount> dailyAccounts = tbkService.findLoglistOfIncome(uid, (pageNo - 1) * PAGE_SIZE, PAGE_SIZE);
+            List<DailyAccount> dailyAccounts = tbkService.findLoglistOfIncome(uid, (pageNo - 1) * PAGE_SIZE,PAGE_SIZE);
             List<TradeLog> incomelogsVo = Lists.newArrayList();
             for (DailyAccount log : dailyAccounts) {
                 TradeLog incomelog = BeanMapper.map(log, TradeLog.class);
@@ -100,8 +100,7 @@ public class TbkController extends BaseDecodedController {
             Integer pageNo, ModelMap model) {
         String uid = params.getString("uid");
         try {
-            List<DailyAccount> dailyAccounts = tbkService.findLoglistOfConsume(uid, (pageNo - 1) * PAGE_SIZE,
-                    PAGE_SIZE);
+            List<DailyAccount> dailyAccounts = tbkService.findLoglistOfConsume(uid, (pageNo - 1) * PAGE_SIZE,PAGE_SIZE);
             List<TradeLog> consumelogsVo = Lists.newArrayList();
             for (DailyAccount log : dailyAccounts) {
                 TradeLog consumelog = BeanMapper.map(log, TradeLog.class);

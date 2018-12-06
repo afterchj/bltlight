@@ -41,7 +41,7 @@
     </select>
 
     <select id="findLastMonthCoins" parameterType="string" resultType="int">
-        SELECT coalesce(SUM(earn),0) FROM tbk.daily_account WHERE uid = #{uid} and trade_type= 1 and PERIOD_DIFF( date_format( now() , '%Y%m' ) , date_format(date, '%Y%m' )) =1
+        SELECT coalesce(SUM(earn),0) FROM tbk.daily_account WHERE uid = #{uid} and trade_type= 1001 and PERIOD_DIFF( date_format( now() , '%Y%m' ) , date_format(date, '%Y%m' )) =1
     </select>
 
     <select id="findYesterdayEcoins" parameterType="string" resultType="int">
@@ -49,7 +49,7 @@
     </select>
 
     <select id="findConsumeFromPayOrder" parameterType="string" resultType="int">
-        SELECT coalesce(SUM(price),0) FROM tbk.f_pay_order WHERE uid = #{uid} and trade_type= '8'
+        SELECT coalesce(SUM(price),0) FROM tbk.f_pay_order WHERE uid = #{uid} and trade_type= '2004'
     </select>
 
     <select id="findTodayOrders" parameterType="string" resultType="int">
@@ -61,11 +61,11 @@
     </select>
 
     <select id="findLoglistOfIncome"  resultType="com.tpadsz.after.entity.DailyAccount">
-        SELECT uid,trade_type,earn,date FROM tbk.daily_account WHERE uid = #{uid} and trade_type= 1 order by date desc limit #{startIndex},#{pageSize}
+        SELECT uid,trade_type,earn,date FROM tbk.daily_account WHERE uid = #{uid} and trade_type= 1001 order by date desc limit #{startIndex},#{pageSize}
     </select>
 
     <select id="findLoglistOfConsume"  resultType="com.tpadsz.after.entity.DailyAccount">
-        SELECT uid,trade_type,price as consume,create_time as date FROM tbk.f_pay_order WHERE uid = #{uid} and trade_type= 8 order by create_time desc limit #{startIndex},#{pageSize}
+        SELECT uid,trade_type,price as consume,create_time as date FROM tbk.f_pay_order WHERE uid = #{uid} and trade_type= 2004 order by create_time desc limit #{startIndex},#{pageSize}
     </select>
 
 </mapper>
