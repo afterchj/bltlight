@@ -111,8 +111,12 @@ public class ParamsEncryptInterceptor implements HandlerInterceptor {
                            HttpServletResponse response, Object handler,
                            ModelAndView modelAndView) throws Exception {
         Object paramMap = modelAndView.getModel().remove("decodedParams");
-        String ip = "127.0.0.1";
-//        String ip = request.getHeader("x-forwarded-for").split(",")[0];
+        String ip = request.getHeader("x-forwarded-for");
+        if (StringUtils.isEmpty(ip)) {
+            ip = "127.0.0.1";
+        } else {
+            ip = ip.split(",")[0];
+        }
         logAccess(paramMap, String.valueOf(modelAndView.getModel().get("result")), modelAndView.getModel(), request.getRequestURI(), ip);
         modelAndView.getModel().put("encrypted", true);
     }

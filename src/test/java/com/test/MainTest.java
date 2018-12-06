@@ -34,9 +34,6 @@ public class MainTest {
 
     @Test
     public void testFormat() throws ParseException {
-        String key = TaoBaoUtil.formatKey("54300050120");
-        System.out.println("key" + key);
-
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //        Date date1 = format.parse("2018-11-23");
         String dateTime = format.format(new Date());

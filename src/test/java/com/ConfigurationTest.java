@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.tpadsz.after.config.DBConfig;
 import com.tpadsz.after.config.SpringConfig;
-import com.tpadsz.after.dao80.BindingDao;
 import com.tpadsz.after.dao80.TbkBindDao;
+import com.tpadsz.after.entity.OrderFrom;
 import com.tpadsz.after.entity.Person;
 import com.tpadsz.after.entity.Pid;
 import com.tpadsz.after.entity.ShopInfo;
@@ -23,6 +23,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -193,12 +195,12 @@ public class ConfigurationTest {
     public void testBind() throws Exception {
         Pid pid = sessionTemplate.getMapper(TbkBindDao.class).getPidInfo();
         String adzone_id = pid.getAdzone_id();
-        String uid = "80542fd8db8d498fa412d5e89dcd9d81";
+        String uid = "3bc9f45ab42e453f93ee8a966b5a9725";
         String key = formatKey(adzone_id);
         int pkey = pid.getPkey();
         Map map = new HashMap();
         map.put("vekey", CommonParam.VEKEY.getValue());
-        map.put("para", "558825175392");
+        map.put("para", "578580044245");
         map.put("pid", pid.getPid());
         map.put("detail", "1");
 
@@ -219,6 +221,7 @@ public class ConfigurationTest {
         redisTemplate.opsForValue().set(key, uid, 3, TimeUnit.DAYS);
         sessionTemplate.selectOne("com.tpadsz.after.dao80.ShopDao.saveShop", shop);
         System.out.println("result=" + shop.getOut_result());
+        System.out.println("shop=" + JSON.toJSONString(shop));
 
 //        sessionTemplate.getMapper(TbkBindDao.class).bindPid(map);
 //        sessionTemplate.getMapper(TbkBindDao.class).insetShop(shop);
@@ -247,5 +250,44 @@ public class ConfigurationTest {
         Pid pid1 = sessionTemplate.getMapper(TbkBindDao.class).getPid("000002");
         System.out.println("pid=" + JSON.toJSONString(pid));
         System.out.println("pid1=" + JSON.toJSONString(pid1));
+    }
+
+    @Test
+    public void testOrder() throws ParseException {
+        java.util.Date create_time = new SimpleDateFormat("yyyy-MM-DD " +
+                "HH:mm:ss").parse("2018-10-25 19:31:33");
+        java.util.Date earning_time = new SimpleDateFormat("yyyy-MM-DD " +
+                "HH:mm:ss").parse("2018-10-31 20:26:21");
+
+//        OrderFrom orderFrom = new OrderFrom(111L, 111L, "11", "11", "11", 3, create_time,
+//        earning_time, "11", "11", "11", 1, "11", "11", "11", "11", 3, 22.5,"天猫");
+//        OrderFrom(long trade_id, Long num_iid, String adzone_id, String
+//        site_id, String uid, Integer tk_status, Date create_time, Date
+//        earning_time, String alipay_total_price, String price, String
+//        pay_price, Integer item_num, String total_commission_rate, String
+//        total_commission_fee, String
+//        seller_shop_title, String item_title, Integer status, double rate_touid,String order_type)
+//        Gson gson = new Gson();
+//        String src = gson.toJson(orderFrom);
+//        ValueOperations<String, Object> stringObjectValueOperations =
+//                redisTemplate.opsForValue();
+//        redisTemplate.opsForHash().put("orderFroms", orderFrom.getTrade_id(),
+//                orderFrom);
+        OrderFrom orderFrom1 = (OrderFrom) redisTemplate.opsForHash().get
+                ("orderFroms", 238125004584662717L);
+        if (orderFrom1 == null) {
+            System.out.println("aaaa");
+        }
+//        stringObjectValueOperations.set("orderFroms",orderFrom);
+//        OrderFrom orderFrom1 = (OrderFrom) stringObjectValueOperations.get
+// ("orderFroms");
+//        System.out.println(orderFrom1.toString());
+    }
+
+    @Test
+    public void test11() {
+        redisTemplate.opsForValue().set(formatKey("29274312"), "487812dasdasdasdad", 3, TimeUnit.DAYS);
+//        redisTemplate.opsForValue().set(formatKey("29274313"), "487812dasdasdasdad", 3, TimeUnit.DAYS);
+//        System.out.println(redisTemplate.opsForValue().get(String.format("pid_%s", "29274313")));
     }
 }
