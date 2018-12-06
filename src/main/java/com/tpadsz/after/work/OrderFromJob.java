@@ -8,8 +8,7 @@ import com.tpadsz.after.service.ShopService;
 import com.tpadsz.after.service.TbkService;
 import com.tpadsz.after.util.OrderFromUtil;
 import org.apache.commons.collections.map.HashedMap;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,8 +29,6 @@ public class OrderFromJob {
 
     @Resource
     private OrderFromService orderFromService;
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
     @Resource
     private ShopService shopService;
     @Resource
@@ -39,6 +36,7 @@ public class OrderFromJob {
     static final String vekey = "V00000585Y74210916";
     static final String span = "1200";
     static final String url = "http://apiorder.vephp.com/order";
+//    static final String url = "http://47.101.2.136/order";
     static final String order_query_type = "settle_time";
     static int yesterCount = 1;
     static int settleCount = 1;
@@ -46,7 +44,7 @@ public class OrderFromJob {
     static String settleTime = "00:00:00";
     static String preFirstDay = OrderFromUtil.getPreFirstDay();
     static String preLastDay = OrderFromUtil.getPreLastDay();
-
+    Logger logger = Logger.getLogger(OrderFromJob.class);
     public void getEveryDayOrder() {
         getEveryOrder(-20);
     }
@@ -66,6 +64,7 @@ public class OrderFromJob {
      * @param num
      */
     public void getEveryOrder(Integer num) {
+
         String date;
         String start_time;
 //      String start_time = "2018-10-25 19:31:33";
@@ -73,6 +72,7 @@ public class OrderFromJob {
             date = OrderFromUtil.getTimeByMinute(num);
             start_time = java.net.URLEncoder.encode(date, "utf-8");
             setOrderFromResult(url, start_time, "-1");
+            logger.info(date + " 执行了每天接口,"+"当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
             System.out.print(date + " 执行了每天接口");
             System.out.println("当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
         } catch (UnsupportedEncodingException e) {
@@ -94,6 +94,8 @@ public class OrderFromJob {
         try {
             start_time = java.net.URLEncoder.encode(yesterTime, "utf-8");
             setOrderFromResult(url, start_time, "-1");
+            logger.info(yesterTime + " 执行了 : " + yesterCount +
+                    "次---前一天接口"+"当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
             System.out.print(yesterTime + " 执行了 : " + yesterCount +
                     "次---前一天接口");
             System.out.println("当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
@@ -101,6 +103,7 @@ public class OrderFromJob {
             yesterCount++;
             if (yesterCount > 72) {
                 //调用完一天的接口
+                logger.info("---------前一天接口调用完毕------");
                 System.out.println("---------前一天接口调用完毕------");
                 return;
             }
@@ -130,6 +133,8 @@ public class OrderFromJob {
         try {
             start_time = java.net.URLEncoder.encode(settleTime, "utf-8");
             setOrderFromResult(url, start_time, order_query_type);
+            logger.info(settleTime + " 执行了 : " + settleCount +
+                    "次-一个月的全部接口"+"当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
             System.out.print(settleTime + " 执行了 : " + settleCount +
                     "次-一个月的全部接口");
             System.out.println("当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
@@ -138,6 +143,7 @@ public class OrderFromJob {
             settleTime = OrderFromUtil.setPreDate(settleTime, 1200000L);
             if (settleCount > 72) {
                 //一天接口执行完毕
+                logger.info("----一" + preDateByDate + "的接口执行完毕---");
                 System.out.println("----一" + preDateByDate + "的接口执行完毕---");
                 //重置时分秒
                 settleTime = "00:00:00";
@@ -152,6 +158,7 @@ public class OrderFromJob {
                         (preLastDay);
                 if (firstDay.getTime() > lastDay.getTime()) {
                     //循环执行到一个月的最后一天
+                    logger.info("-----一个月的全部接口循环完毕----");
                     System.out.println("-----一个月的全部接口循环完毕----");
                     //回退到前一个月的第一天
                     preFirstDay = OrderFromUtil.getPreFirstDay();
@@ -198,6 +205,10 @@ public class OrderFromJob {
                         "&span=" + span + "&page_no=" + pageNo;
             }
             result = OrderFromUtil.sendGet(url, param);
+            if (result==null){
+                System.out.println("消息异常!");
+                return;
+            }
             jsonObject = JSONObject.parseObject(result);
             array = jsonObject.getJSONArray("data");
             newDate = jsonObject.getString("data");

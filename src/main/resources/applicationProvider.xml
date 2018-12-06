@@ -99,8 +99,8 @@
 
     <bean id="orderSettleDayJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="orderSettleDayJobDetail"/>
-        <!--每个月21-26号0点到2点触发 3秒触发一次-->
-        <property name="cronExpression" value="0/3 * 0-1 21-26 * ?"/>
+        <!--每个月21-26号2点到4点触发 3秒触发一次-->
+        <property name="cronExpression" value="0/3 * 2-3 21-26 * ?"/>
     </bean>
     <bean id="orderSettleDayJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <!-- 指定任务类 -->

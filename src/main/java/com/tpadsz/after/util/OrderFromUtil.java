@@ -3,6 +3,9 @@ package com.tpadsz.after.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.ParseException;
@@ -56,6 +59,12 @@ public class OrderFromUtil {
             }
             result = sb.toString();
             return result;
+        }  catch (ConnectException e2){
+            System.out.println("连接超时！");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
