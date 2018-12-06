@@ -2,6 +2,7 @@ package com.tpadsz.after.dao80;
 
 
 import com.tpadsz.after.entity.OrderFrom;
+import com.tpadsz.after.entity.ShopInfo;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -33,7 +34,7 @@ public interface OrderFromDao {
 
 //    String findPidAndUidByZdId(String adzoneId);//查询pid-uid绑定关系
 
-    String findShopImageByNumIid(String numiid);//根据商品id查询商品图片
+    ShopInfo findShopImageByNumIid(String numiid);//根据商品id查询商品图片
 
     OrderFrom findByUid();
 

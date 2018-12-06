@@ -3,6 +3,7 @@ package com.tpadsz.after.service;
 
 import com.github.pagehelper.PageInfo;
 import com.tpadsz.after.entity.OrderFrom;
+import com.tpadsz.after.entity.ShopInfo;
 
 import java.util.Date;
 import java.util.Map;
@@ -26,7 +27,7 @@ public interface OrderFromService {
 
 //    String findPidAndUidByZdId(String adzoneId);
 
-    String findShopImageByNumIid(String numiid);
+    ShopInfo findShopImageByNumIid(String numiid);
 
 //    String findTimeById(Integer id);
 

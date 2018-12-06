@@ -3,6 +3,7 @@ package com.tpadsz.after.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.tpadsz.after.entity.OrderFrom;
+import com.tpadsz.after.entity.ShopInfo;
 import com.tpadsz.after.entity.dd.ResultDict;
 import com.tpadsz.after.service.OrderFromService;
 import org.springframework.stereotype.Controller;
@@ -38,10 +39,16 @@ public class OrderQueryController extends BaseDecodedController{
         for (OrderFrom orderFrom:orderFroms){
             Long numId=orderFrom.getNum_iid();
             //插入图片
-            String image = orderFromService.findShopImageByNumIid
+            ShopInfo shopInfo = orderFromService.findShopImageByNumIid
                     (String.valueOf(numId));
-            if (image!=null){
-                orderFrom.setImage(image);
+            if (shopInfo!=null){
+                if (shopInfo.getPict_url()!=null){
+                    orderFrom.setImage(shopInfo.getPict_url());
+                }
+                if (shopInfo.getRate_touid()!=null){
+                    orderFrom.setRate_touid(shopInfo.getRate_touid());
+                    orderFrom.setPrePrice((orderFrom.getRate_touid())*(orderFrom.getItem_num()));
+                }
             }
         }
         model.put("orderFroms",pageInfos.getList());

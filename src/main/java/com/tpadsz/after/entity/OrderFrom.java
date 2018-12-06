@@ -31,6 +31,24 @@ public class OrderFrom implements Serializable{
     private String image;
     private String update_time;
     private Integer status;
+    private double rate_touid;//实际佣金
+    private double prePrice;//预估佣金 rate_touid*item_num
+
+    public double getPrePrice() {
+        return prePrice;
+    }
+
+    public void setPrePrice(double prePrice) {
+        this.prePrice = prePrice;
+    }
+
+    public double getRate_touid() {
+        return rate_touid;
+    }
+
+    public void setRate_touid(double rate_touid) {
+        this.rate_touid = rate_touid;
+    }
 
     public Integer getStatus() {
         return status;
