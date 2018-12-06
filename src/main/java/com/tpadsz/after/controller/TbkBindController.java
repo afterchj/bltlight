@@ -8,6 +8,7 @@ import com.tpadsz.after.entity.dd.ResultDict;
 import com.tpadsz.after.service.ShopService;
 import com.tpadsz.after.service.TbkBindService;
 import com.tpadsz.after.util.TaoBaoUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -33,7 +34,6 @@ public class TbkBindController extends BaseDecodedController {
 
     @RequestMapping("/shopShare")
     public void shopShare(@ModelAttribute("decodedParams") JSONObject params, ModelMap model) {
-//        System.out.println("params=" + params);
         String result = ResultDict.SUCCESS.getCode();
         String msg = ResultDict.SUCCESS.getValue();
         String para = params.getString("num_iid");
@@ -51,28 +51,34 @@ public class TbkBindController extends BaseDecodedController {
         map.put("pid", pid.getPid());
         map.put("detail", "1");
         JSONObject jsonObject = new JSONObject();
+        JSONObject json = null;
         try {
-            JSONObject json = TaoBaoUtil.getHICPIInfo(map);
-            jsonObject.put("code", result);
-            jsonObject.put("msg", msg);
-            shop = TaoBaoUtil.formatStr(json);
-            shop.setPkey(pkey);
-            shop.setUid(uid);
-            shop.setGoods_info(json.toJSONString());
-            shop.setResult_info(jsonObject.toJSONString());
-//            System.out.println("shop=" + JSON.toJSONString(shop));
-            model.put("data", TaoBaoUtil.getData(json));
+            json = TaoBaoUtil.getHICPIInfo(map);
         } catch (Exception e) {
             result = ResultDict.SYSTEM_ERROR.getCode();
             msg = ResultDict.SYSTEM_ERROR.getValue();
             jsonObject.put("code", result);
             jsonObject.put("msg", msg);
             shop.setResult_info(jsonObject.toJSONString());
-        } finally {
-            model.put("result", result);
-            model.put("result_message", msg);
             shopService.saveShop(shop);
-//            System.out.println("result=" + shop.getOut_result() + ",value=" + shopService.getUid(pid.getAdzone_id()));
+            System.out.println("result=" + shop.getOut_result());
         }
+        String error = json.getString("error");
+        if (StringUtils.isNotEmpty(error)) {
+            result = ResultDict.EXPIRY_ERROR.getCode();
+            msg = ResultDict.EXPIRY_ERROR.getValue();
+        } else {
+            shop = TaoBaoUtil.formatStr(json);
+            shop.setPkey(pkey);
+            shop.setUid(uid);
+            shop.setGoods_info(json.toJSONString());
+            model.put("data", TaoBaoUtil.getData(json));
+        }
+        model.put("result", result);
+        model.put("result_message", msg);
+        jsonObject.put("code", result);
+        jsonObject.put("msg", msg);
+        shop.setResult_info(jsonObject.toJSONString());
+        shopService.saveShop(shop);
     }
 }
