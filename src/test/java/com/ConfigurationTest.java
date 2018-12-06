@@ -195,12 +195,12 @@ public class ConfigurationTest {
     public void testBind() throws Exception {
         Pid pid = sessionTemplate.getMapper(TbkBindDao.class).getPidInfo();
         String adzone_id = pid.getAdzone_id();
-        String uid = "80542fd8db8d498fa412d5e89dcd9d81";
+        String uid = "3bc9f45ab42e453f93ee8a966b5a9725";
         String key = formatKey(adzone_id);
         int pkey = pid.getPkey();
         Map map = new HashMap();
         map.put("vekey", CommonParam.VEKEY.getValue());
-        map.put("para", "13271610728");
+        map.put("para", "578580044245");
         map.put("pid", pid.getPid());
         map.put("detail", "1");
 
@@ -221,6 +221,7 @@ public class ConfigurationTest {
         redisTemplate.opsForValue().set(key, uid, 3, TimeUnit.DAYS);
         sessionTemplate.selectOne("com.tpadsz.after.dao80.ShopDao.saveShop", shop);
         System.out.println("result=" + shop.getOut_result());
+        System.out.println("shop=" + JSON.toJSONString(shop));
 
 //        sessionTemplate.getMapper(TbkBindDao.class).bindPid(map);
 //        sessionTemplate.getMapper(TbkBindDao.class).insetShop(shop);
@@ -284,7 +285,7 @@ public class ConfigurationTest {
     }
 
     @Test
-    public void test11(){
+    public void test11() {
         redisTemplate.opsForValue().set(formatKey("29274312"), "487812dasdasdasdad", 3, TimeUnit.DAYS);
 //        redisTemplate.opsForValue().set(formatKey("29274313"), "487812dasdasdasdad", 3, TimeUnit.DAYS);
 //        System.out.println(redisTemplate.opsForValue().get(String.format("pid_%s", "29274313")));

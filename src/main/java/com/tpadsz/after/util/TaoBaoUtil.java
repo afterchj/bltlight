@@ -28,22 +28,22 @@ public class TaoBaoUtil {
 
     public static void main(String[] args) throws Exception {
 //        System.out.println("tip="+getRatePrice(9.0,0.1));
-        favoritesGet();
-        System.out.println();
-        favoritesItemGet();
-        System.out.println();
+//        favoritesGet();
+//        System.out.println();
+//        favoritesItemGet();
+//        System.out.println();
 //        urlEncode();
 
         Map map = new HashMap();
         map.put("vekey", CommonParam.VEKEY.getValue());
-        map.put("para", "556602244435");
+        map.put("para", "564590311746");
         map.put("pid", "mm_43238250_191900396_54298500491");
         map.put("detail", "1");
-//        JSONObject json = getHICPIInfo(map);
+        JSONObject json = getHICPIInfo(map);
 //        ShopInfo shop = formatStr(json);
-//        System.out.println("response=" + HttpClientUtil.httpGet(CommonParam.VEHICPI.getValue(), map));
+        System.out.println("response=" + HttpClientUtil.httpGet(CommonParam.VEHICPI.getValue(), map));
 //        System.out.println("shop=" + JSON.toJSONString(shop));
-//        System.out.println("data=" + JSON.toJSONString(getData(getHICPIInfo(map))));
+        System.out.println("data=" + JSON.toJSONString(getData(getHICPIInfo(map))));
 
 //        map.put("start_time", "2018-10-25 19:48:24");
 //        map.put("span", "1200");
@@ -84,8 +84,9 @@ public class TaoBaoUtil {
 
     public static JSONObject getHICPIInfo(Map map) throws Exception {
         String result = HttpClientUtil.httpGet(CommonParam.VEHICPI.getValue(), map);
-        JSONObject jsonObject = JSON.parseObject(result);
-        return jsonObject.getJSONObject("data");
+        JSONObject str = JSON.parseObject(result);
+        JSONObject data = str.getJSONObject("data");
+        return data == null ? str : data;
     }
 
     public static Map getData(JSONObject jsonObject) {
@@ -107,7 +108,6 @@ public class TaoBaoUtil {
         }
         shop.setQh_final_price(qh_price);
         shop.setRate_touid(getRatePrice(qh_price, rate));
-        System.out.println("zk_final_price=" + price + "，qh_final_price=" + qh_price);
         return shop;
     }
 
