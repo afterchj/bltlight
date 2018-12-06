@@ -8,6 +8,7 @@ import com.tpadsz.after.service.TbkService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Service("tbkService")
@@ -17,8 +18,13 @@ public class TbkServiceImpl implements TbkService {
 
 
     @Override
-    public void saveShareLog(ShareLog shareLog) {
-        tbkDao.saveShareLog(shareLog);
+    public ShareLog findIdFromHipriceLog(String uid, String num_iid) {
+        return tbkDao.findIdFromHipriceLog(uid,num_iid);
+    }
+
+    @Override
+    public void saveShareLog(String num_iid, String uid, int share_id, String goods_share_message) {
+        tbkDao.saveShareLog(num_iid,uid,share_id,goods_share_message);
     }
 
     @Override

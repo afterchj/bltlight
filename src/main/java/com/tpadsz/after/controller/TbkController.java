@@ -30,12 +30,13 @@ public class TbkController extends BaseDecodedController {
     private String shareLog(@ModelAttribute("decodedParams") JSONObject params, ModelMap model) {
         String num_iid = params.getString("num_iid");
         String uid = params.getString("uid");
-        String adzone_id = params.getString("adzone_id");
         String goods_share_message = params.getString("goods_share_message");
         try {
-            ShareLog shareLog = new ShareLog(UUID.randomUUID().toString().replaceAll("-", ""), num_iid, uid,
-                    adzone_id, goods_share_message, new Date(), "");
-            tbkService.saveShareLog(shareLog);
+            ShareLog shareLog = tbkService.findIdFromHipriceLog(uid,num_iid);
+            JSONObject jsonObject=JSONObject.parseObject(shareLog.getGoods_share_message());
+            if("000".equals(jsonObject.get("code"))){
+                tbkService.saveShareLog(num_iid, uid,shareLog.getId(),goods_share_message);
+            };
             model.put("result", ResultDict.SUCCESS.getCode());
             model.put("result_message", ResultDict.SUCCESS.getValue());
         } catch (Exception e) {

@@ -11,7 +11,9 @@ import java.util.List;
 @Repository("tbkDao")
 public interface TbkDao {
 
-    void saveShareLog(ShareLog shareLog);
+    ShareLog findIdFromHipriceLog(@Param("uid") String uid, @Param("num_iid") String num_iid);
+
+    void saveShareLog(@Param("num_iid") String num_iid,@Param("uid") String uid,@Param("share_id") int share_id,@Param("goods_share_message") String goods_share_message);
 
     double findEarnByNumiid(@Param("num_iid") String num_iid);
 

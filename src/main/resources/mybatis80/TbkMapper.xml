@@ -2,10 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tpadsz.after.dao80.TbkDao">
 
+    <select id="findIdFromHipriceLog" parameterType="string"  resultType="com.tpadsz.after.entity.ShareLog">
+        SELECT id,result_info as goods_share_message FROM tbk.f_hiprice_log WHERE uid = #{uid} and num_iid= #{num_iid} order by touch_time desc limit 1
+    </select>
+
     <insert id="saveShareLog" parameterType="com.tpadsz.after.entity.ShareLog">
-        INSERT INTO tbk.f_share_log
+        INSERT INTO tbk.f_share_log(num_iid,uid,share_id,goods_share_message,share_time)
         VALUES
-	      (#{id},#{num_iid},#{uid},#{adzone_id},#{goods_share_message},#{share_date},#{other})
+	      (#{num_iid},#{uid},#{share_id},#{goods_share_message},now())
     </insert>
 
     <select id="findEarnByNumiid" parameterType="string" resultType="double">
