@@ -71,10 +71,11 @@ public class OrderFromJob {
         try {
             date = OrderFromUtil.getTimeByMinute(num);
             start_time = java.net.URLEncoder.encode(date, "utf-8");
+//            start_time = java.net.URLEncoder.encode(start_time, "utf-8");
             setOrderFromResult(url, start_time, "-1");
             logger.info(date + " 执行了每天接口,"+"当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
-            System.out.print(date + " 执行了每天接口");
-            System.out.println("当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
+//            System.out.print(date + " 执行了每天接口");
+//            System.out.println("当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (ParseException e) {
@@ -96,15 +97,15 @@ public class OrderFromJob {
             setOrderFromResult(url, start_time, "-1");
             logger.info(yesterTime + " 执行了 : " + yesterCount +
                     "次---前一天接口"+"当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
-            System.out.print(yesterTime + " 执行了 : " + yesterCount +
-                    "次---前一天接口");
-            System.out.println("当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
+//            System.out.print(yesterTime + " 执行了 : " + yesterCount +
+//                    "次---前一天接口");
+//            System.out.println("当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
             yesterTime = OrderFromUtil.setPreDate(yesterTime, 1200000L);
             yesterCount++;
             if (yesterCount > 72) {
                 //调用完一天的接口
                 logger.info("---------前一天接口调用完毕------");
-                System.out.println("---------前一天接口调用完毕------");
+//                System.out.println("---------前一天接口调用完毕------");
                 return;
             }
         } catch (UnsupportedEncodingException e) {
@@ -135,16 +136,16 @@ public class OrderFromJob {
             setOrderFromResult(url, start_time, order_query_type);
             logger.info(settleTime + " 执行了 : " + settleCount +
                     "次-一个月的全部接口"+"当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
-            System.out.print(settleTime + " 执行了 : " + settleCount +
-                    "次-一个月的全部接口");
-            System.out.println("当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
+//            System.out.print(settleTime + " 执行了 : " + settleCount +
+//                    "次-一个月的全部接口");
+//            System.out.println("当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
             settleCount++;
             //时间推进20分钟
             settleTime = OrderFromUtil.setPreDate(settleTime, 1200000L);
             if (settleCount > 72) {
                 //一天接口执行完毕
                 logger.info("----一" + preDateByDate + "的接口执行完毕---");
-                System.out.println("----一" + preDateByDate + "的接口执行完毕---");
+//                System.out.println("----一" + preDateByDate + "的接口执行完毕---");
                 //重置时分秒
                 settleTime = "00:00:00";
                 settleCount = 1;//计数器重置
@@ -159,7 +160,7 @@ public class OrderFromJob {
                 if (firstDay.getTime() > lastDay.getTime()) {
                     //循环执行到一个月的最后一天
                     logger.info("-----一个月的全部接口循环完毕----");
-                    System.out.println("-----一个月的全部接口循环完毕----");
+//                    System.out.println("-----一个月的全部接口循环完毕----");
                     //回退到前一个月的第一天
                     preFirstDay = OrderFromUtil.getPreFirstDay();
                     return;
@@ -243,6 +244,7 @@ public class OrderFromJob {
                             days = timeDiff(shareTime,orderFrom);
                         }
                         //有绑定关系&&分享时间不超过三天
+//                        if (uid != null) {
                         if (uid != null&&days<=3) {
                             //插入
                             orderFrom.setUid(uid);
@@ -293,6 +295,7 @@ public class OrderFromJob {
         orderFrom.setSeller_shop_title(jsonObject.getString
                 ("seller_shop_title"));
         orderFrom.setItem_title(jsonObject.getString("item_title"));
+        orderFrom.setOrder_type(jsonObject.getString("order_type"));
         return orderFrom;
 
     }

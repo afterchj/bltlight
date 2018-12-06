@@ -132,4 +132,9 @@ public class MybatisTest {
                 .findShareLogByUidAndIid(map);
         System.out.println(new SimpleDateFormat("yyyy-MM-dd").format(shareLogByUidAndIid));
     }
+
+    @Test
+    public void test30(){
+
+    }
 }
