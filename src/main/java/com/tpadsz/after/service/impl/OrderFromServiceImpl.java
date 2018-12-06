@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.tpadsz.after.dao80.OrderFromDao;
 import com.tpadsz.after.entity.OrderFrom;
+import com.tpadsz.after.entity.ShopInfo;
 import com.tpadsz.after.service.OrderFromService;
 import org.springframework.stereotype.Service;
 
@@ -69,7 +70,7 @@ public class OrderFromServiceImpl implements OrderFromService {
 //    }
 //
     @Override
-    public String findShopImageByNumIid(String numiid) {
+    public ShopInfo findShopImageByNumIid(String numiid) {
         return orderFromDao.findShopImageByNumIid(numiid);
     }
 

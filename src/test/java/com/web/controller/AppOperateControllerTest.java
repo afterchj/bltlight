@@ -123,6 +123,25 @@ public class AppOperateControllerTest {
 //        String pidAndUidByZdId = orderFromService.findPidAndUidByZdId
 //                ("542987003");
 //        System.out.println(pidAndUidByZdId);
+//        ShopInfo shopImageByNumIid = orderFromService.findShopImageByNumIid
+//                ("580728102184");
+//        System.out.println(shopImageByNumIid.getPict_url()+" "+shopImageByNumIid.getRate_touid());
+        OrderFrom orderFrom = new OrderFrom();
+        orderFrom.setRate_touid(5.54);
+        orderFrom.setItem_num(1);
+        orderFrom.setPrePrice((orderFrom.getRate_touid())*(orderFrom.getItem_num()));
+        System.out.println(getType(orderFrom.getPrePrice()));
+    }
+    /**
+     * 获取数据类型
+     * @param object
+     * @return
+     */
+    public static String getType(Object object){
+        String typeName=object.getClass().getName();
+        int length= typeName.lastIndexOf(".");
+        String type =typeName.substring(length+1);
+        return type;
     }
 
     @Test
