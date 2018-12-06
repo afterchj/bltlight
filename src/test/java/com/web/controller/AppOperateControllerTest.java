@@ -119,18 +119,20 @@ public class AppOperateControllerTest {
         }
     }
     @Test
-    public void testPidUid(){
+    public void testPidUid() throws ParseException {
 //        String pidAndUidByZdId = orderFromService.findPidAndUidByZdId
 //                ("542987003");
 //        System.out.println(pidAndUidByZdId);
 //        ShopInfo shopImageByNumIid = orderFromService.findShopImageByNumIid
 //                ("580728102184");
 //        System.out.println(shopImageByNumIid.getPict_url()+" "+shopImageByNumIid.getRate_touid());
-        OrderFrom orderFrom = new OrderFrom();
-        orderFrom.setRate_touid(5.54);
-        orderFrom.setItem_num(1);
-        orderFrom.setPrePrice((orderFrom.getRate_touid())*(orderFrom.getItem_num()));
-        System.out.println(getType(orderFrom.getPrePrice()));
+        java.util.Date create_time = new SimpleDateFormat("yyyy-MM-DD " +
+                "HH:mm:ss").parse("2018-10-25 19:31:33");
+        java.util.Date earning_time = new SimpleDateFormat("yyyy-MM-DD " +
+                "HH:mm:ss").parse("2018-10-31 20:26:21");
+//        OrderFrom orderFrom = new OrderFrom(111L, 111L, "11", "11", "11", 3, create_time,
+//                earning_time, "11", "11", "11", 1, "11", "11", "11", "11", 3, 22.5,"天猫");
+//        orderFromService.insertOrderFrom(orderFrom);
     }
     /**
      * 获取数据类型

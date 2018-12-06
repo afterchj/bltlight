@@ -258,17 +258,20 @@ public class ConfigurationTest {
         java.util.Date earning_time = new SimpleDateFormat("yyyy-MM-DD " +
                 "HH:mm:ss").parse("2018-10-31 20:26:21");
 
-        OrderFrom orderFrom = new OrderFrom(238125004584662714L,
-                569310566675L, "29274312", "8696607", "487812dasdasdasdad",
-                3, create_time, earning_time, "16.8000", "25.20", "16.80", 1,
-                "0.0045", "0.0800", null, "得力展翔专卖店",
-                "得力便利贴学生用便签贴纸创意儿童n次贴百事贴记事贴便条纸便签本可撕便利贴大号彩色记号贴批发包邮", "");
+//        OrderFrom orderFrom = new OrderFrom(111L, 111L, "11", "11", "11", 3, create_time,
+//        earning_time, "11", "11", "11", 1, "11", "11", "11", "11", 3, 22.5,"天猫");
+//        OrderFrom(long trade_id, Long num_iid, String adzone_id, String
+//        site_id, String uid, Integer tk_status, Date create_time, Date
+//        earning_time, String alipay_total_price, String price, String
+//        pay_price, Integer item_num, String total_commission_rate, String
+//        total_commission_fee, String
+//        seller_shop_title, String item_title, Integer status, double rate_touid,String order_type)
 //        Gson gson = new Gson();
 //        String src = gson.toJson(orderFrom);
 //        ValueOperations<String, Object> stringObjectValueOperations =
 //                redisTemplate.opsForValue();
-        redisTemplate.opsForHash().put("orderFroms", orderFrom.getTrade_id(),
-                orderFrom);
+//        redisTemplate.opsForHash().put("orderFroms", orderFrom.getTrade_id(),
+//                orderFrom);
         OrderFrom orderFrom1 = (OrderFrom) redisTemplate.opsForHash().get
                 ("orderFroms", 238125004584662717L);
         if (orderFrom1 == null) {
