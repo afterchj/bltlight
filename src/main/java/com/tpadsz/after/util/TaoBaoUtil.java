@@ -34,21 +34,25 @@ public class TaoBaoUtil {
 //        System.out.println();
 //        urlEncode();
 
-        Map map = new HashMap();
-        map.put("vekey", CommonParam.VEKEY.getValue());
-        map.put("para", "564590311746");
-        map.put("pid", "mm_43238250_191900396_54298500491");
-        map.put("detail", "1");
-        JSONObject json = getHICPIInfo(map);
+//        Map map = new HashMap();
+//        map.put("vekey", CommonParam.VEKEY.getValue());
+//        map.put("para", "564590311746");
+//        map.put("pid", "mm_43238250_191900396_54298500491");
+//        map.put("detail", "1");
+//        JSONObject json = getHICPIInfo(map);
 //        ShopInfo shop = formatStr(json);
-        System.out.println("response=" + HttpClientUtil.httpGet(CommonParam.VEHICPI.getValue(), map));
+//        System.out.println("response=" + HttpClientUtil.httpGet(CommonParam.VEHICPI.getValue(), map));
 //        System.out.println("shop=" + JSON.toJSONString(shop));
-        System.out.println("data=" + JSON.toJSONString(getData(getHICPIInfo(map))));
+//        System.out.println("data=" + JSON.toJSONString(getData(getHICPIInfo(map))));
 
 //        map.put("start_time", "2018-10-25 19:48:24");
 //        map.put("span", "1200");
 //        System.out.println("response1:\n" + ret1);
 //        System.out.println("response2:\n" + ret2);
+
+        String str="满21元减15元";
+        Double price=21.9;
+        System.out.println(getQhPrice(str,price));
     }
 
     public static void favoritesGet() throws ApiException {

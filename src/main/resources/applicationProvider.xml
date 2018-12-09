@@ -36,7 +36,7 @@
 
     <dubbo:application name="${dubbo.application.name}" owner="${dubbo.application.owner}"/>
 
-    <dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}"/>
+    <dubbo:registry protocol="zookeeper" address="114.115.217.234:2181"/>
 
     <dubbo:protocol name="dubbo" port="${dubbo.protocol.port}" dispatcher="all" threadpool="fixed" threads="300" accepts="1000"/>
 
@@ -44,7 +44,7 @@
     <dubbo:monitor protocol="registry"/>
     <!-- 接口的位置 -->
     <dubbo:service loadbalance="random" version="0.1.0" cluster="failover" retries="2" interface="com.tpadsz.after.api.RecordBillService" ref="recordBillService" timeout="3000"/>
-    <dubbo:reference id="coinsEarnerManager" version="0.2.0" interface="com.tpadsz.cic.coin.api.CoinsEarnerManager" validation="true"/>
+    <!--<dubbo:reference id="coinsEarnerManager" version="0.2.0" interface="com.tpadsz.cic.coin.api.CoinsEarnerManager" validation="true"/>-->
 
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
