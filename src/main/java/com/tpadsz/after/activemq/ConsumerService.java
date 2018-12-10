@@ -19,7 +19,9 @@ public class ConsumerService {
     public TextMessage receive(Destination destination){
         TextMessage textMessage = (TextMessage) jmsTemplate.receive(destination);
         try{
-            System.out.println("从队列" + destination.toString() + "收到了消息：\t" + textMessage.getText());
+          if(textMessage!=null){
+              System.out.println("receive从队列" + destination.toString() + "收到了消息：\t" + textMessage.getText());
+          }
         } catch (JMSException e) {
             e.printStackTrace();
         }
@@ -30,7 +32,7 @@ public class ConsumerService {
         TextMessage textMessage = (TextMessage) jmsTemplate.receive(destinationName);
         try{
            if (textMessage!=null){
-               System.out.println("从队列" +destinationName + "收到了消息：\t" + textMessage.getText());
+               System.out.println("receiveByName从队列" +destinationName + "收到了消息：\t" + textMessage.getText());
            }
         } catch (JMSException e) {
             e.printStackTrace();

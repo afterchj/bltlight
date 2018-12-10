@@ -70,8 +70,8 @@ public class MyClient {
         ProducerService producerService = (ProducerService) ctx.getBean("producerService");
         Destination destination = (Destination) ctx.getBean("demoQueueDestination");
         producerService.sendMessage(destination, "这是测试");
-        producerService.sendMessage("Test is ok");
-        consumerService.receiveByName("com.tpadsz.uic.queue.email");
         consumerService.receive(destination);
+        producerService.sendMessage("Test is ok");
+        consumerService.receiveByName("queue://com.tpadsz.uic.queue.email");
     }
 }
