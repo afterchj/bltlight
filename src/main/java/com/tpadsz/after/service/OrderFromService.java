@@ -3,8 +3,10 @@ package com.tpadsz.after.service;
 
 import com.github.pagehelper.PageInfo;
 import com.tpadsz.after.entity.OrderFrom;
+import com.tpadsz.after.entity.ShopInfo;
 
-import java.util.List;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * @program: odelic
@@ -14,21 +16,20 @@ import java.util.List;
  **/
 public interface OrderFromService {
 
-    void insertOrUpdateOrderFrom(OrderFrom orderFrom);
-
     void insertOrderFrom(OrderFrom orderFrom);
 
     void updateOrderFrom(OrderFrom orderFrom);
 
-    Long findOrderFromById(Long id);
 
-    List<OrderFrom> findAllOrderFromByUid(String uid);//全部订单
-
-    List<OrderFrom> findByUidWait(String uid);//待返佣订单
-
-    List<OrderFrom> findByUidLose(String uid);//已失效订单
-
-    List<OrderFrom> findByUidDone(String uid);//已结算订单
+    OrderFrom findOrderFromById(Long id);
 
     PageInfo<OrderFrom> findAll(String uid,Integer pageNum,Integer status);
+
+//    String findPidAndUidByZdId(String adzoneId);
+
+    ShopInfo findShopImageByNumIid(String numiid);
+
+//    String findTimeById(Integer id);
+
+    Date findShareLogByUidAndIid(Map<String, Object> map);
 }

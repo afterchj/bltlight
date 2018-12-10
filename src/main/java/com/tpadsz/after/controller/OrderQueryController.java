@@ -3,6 +3,7 @@ package com.tpadsz.after.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.tpadsz.after.entity.OrderFrom;
+import com.tpadsz.after.entity.ShopInfo;
 import com.tpadsz.after.entity.dd.ResultDict;
 import com.tpadsz.after.service.OrderFromService;
 import org.springframework.stereotype.Controller;
@@ -25,64 +26,7 @@ import java.util.List;
 public class OrderQueryController extends BaseDecodedController{
 
     @Resource
-    private OrderFromService orderFromService;
-
-    @RequestMapping(value = "/findAll", method = RequestMethod.POST)
-    public void findAll(@ModelAttribute("decodedParams") JSONObject
-                                          params, ModelMap model) {
-        String uid = params.getString("uid");
-        List<OrderFrom> orderFroms = orderFromService
-                .findAllOrderFromByUid(uid);
-        for (OrderFrom orderFrom:orderFroms){
-            Long numId=orderFrom.getNum_iid();
-
-            orderFrom.setImage("/tmp/a.jpg");
-        }
-        model.put("orderFroms",orderFroms);
-        model.put("result", ResultDict.SUCCESS.getCode());
-    }
-
-    @RequestMapping(value = "/findWait", method = RequestMethod.POST)
-    public void findWait(@ModelAttribute("decodedParams") JSONObject
-                                params, ModelMap model) {
-        String uid = params.getString("uid");
-        List<OrderFrom> orderFroms = orderFromService.findByUidWait(uid);
-        for (OrderFrom orderFrom:orderFroms){
-            Long numId=orderFrom.getNum_iid();
-
-            orderFrom.setImage("/tmp/a.jpg");
-        }
-        model.put("orderFroms",orderFroms);
-        model.put("result", ResultDict.SUCCESS.getCode());
-    }
-
-    @RequestMapping(value = "/findLose", method = RequestMethod.POST)
-    public void findLose(@ModelAttribute("decodedParams") JSONObject
-                                params, ModelMap model) {
-        String uid = params.getString("uid");
-        List<OrderFrom> orderFroms = orderFromService.findByUidLose(uid);
-        for (OrderFrom orderFrom:orderFroms){
-            Long numId=orderFrom.getNum_iid();
-
-            orderFrom.setImage("/tmp/a.jpg");
-        }
-        model.put("orderFroms",orderFroms);
-        model.put("result", ResultDict.SUCCESS.getCode());
-    }
-
-    @RequestMapping(value = "/findDone", method = RequestMethod.POST)
-    public void findDone(@ModelAttribute("decodedParams") JSONObject
-                                params, ModelMap model) {
-        String uid = params.getString("uid");
-        List<OrderFrom> orderFroms = orderFromService.findByUidDone(uid);
-        for (OrderFrom orderFrom:orderFroms){
-            Long numId=orderFrom.getNum_iid();
-
-            orderFrom.setImage("/tmp/a.jpg");
-        }
-        model.put("orderFroms",orderFroms);
-        model.put("result", ResultDict.SUCCESS.getCode());
-    }
+    private  OrderFromService orderFromService;
 
     @RequestMapping(value = "/page", method = RequestMethod.POST)
     public void page(@ModelAttribute("decodedParams") JSONObject
@@ -91,9 +35,23 @@ public class OrderQueryController extends BaseDecodedController{
         Integer pageNum=params.getInteger("pageNum");
         Integer status = params.getInteger("status");
         PageInfo pageInfos = orderFromService.findAll(uid,pageNum,status);
-
+        List<OrderFrom> orderFroms = pageInfos.getList();
+        for (OrderFrom orderFrom:orderFroms){
+            Long numId=orderFrom.getNum_iid();
+            //插入图片
+            ShopInfo shopInfo = orderFromService.findShopImageByNumIid
+                    (String.valueOf(numId));
+            if (shopInfo!=null){
+                if (shopInfo.getPict_url()!=null){
+                    orderFrom.setImage(shopInfo.getPict_url());
+                }
+                if (shopInfo.getRate_touid()!=null){
+                    orderFrom.setRate_touid(shopInfo.getRate_touid());
+                    orderFrom.setPrePrice((orderFrom.getRate_touid())*(orderFrom.getItem_num()));
+                }
+            }
+        }
         model.put("orderFroms",pageInfos.getList());
         model.put("result", ResultDict.SUCCESS.getCode());
     }
-
 }

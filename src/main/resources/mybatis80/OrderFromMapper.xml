@@ -3,41 +3,89 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tpadsz.after.dao80.OrderFromDao">
 
-    <insert id="insertOrUpdateOrderFrom"
-            parameterType="com.tpadsz.after.entity.OrderFrom">
-        REPLACE INTO tbk.f_tbk_order(trade_id,num_iid,adzone_id,site_id,uid,tk_status,create_time,earning_time,alipay_total_price,price,pay_price,item_num,total_commission_rate,total_commission_fee,action_type,seller_shop_title,item_title)
-          VALUES(#{trade_id},#{num_iid},#{adzone_id},#{site_id},#{uid},#{tk_status},#{create_time},#{earning_time},#{alipay_total_price},#{price},#{pay_price},#{item_num},#{total_commission_rate},#{total_commission_fee},#{action_type},#{seller_shop_title},#{item_title})
-    </insert>
-
     <insert id="insertOrderFrom"
             parameterType="com.tpadsz.after.entity.OrderFrom">
-        INSERT INTO tbk.f_tbk_order(trade_id,num_iid,adzone_id,site_id,uid,tk_status,create_time,earning_time,alipay_total_price,price,pay_price,item_num,total_commission_rate,total_commission_fee,action_type,seller_shop_title,item_title)
-        VALUES(#{trade_id},#{num_iid},#{adzone_id},#{site_id},#{uid},#{tk_status},#{create_time},#{earning_time},#{alipay_total_price},#{price},#{pay_price},#{item_num},#{total_commission_rate},#{total_commission_fee},#{action_type},#{seller_shop_title},#{item_title})
+        INSERT INTO
+        tbk.f_tbk_order
+        (trade_id,num_iid,adzone_id,site_id,uid,tk_status,create_time,earning_time,alipay_total_price,price,pay_price,item_num,total_commission_rate,total_commission_fee,action_type,seller_shop_title,item_title,update_time,status,order_type)
+        VALUES
+        (#{trade_id},#{num_iid},#{adzone_id},#{site_id},#{uid},#{tk_status},#{create_time},#{earning_time},#{alipay_total_price},#{price},#{pay_price},#{item_num},#{total_commission_rate},#{total_commission_fee},#{action_type},#{seller_shop_title},#{item_title},now(),#{status},#{order_type})
     </insert>
 
     <update id="updateOrderFrom"
             parameterType="com.tpadsz.after.entity.OrderFrom">
         UPDATE tbk.f_tbk_order
-SET num_iid=#{num_iid},adzone_id=#{adzone_id},site_id=#{site_id},uid=#{uid},tk_status=#{tk_status},create_time=#{create_time},earning_time=#{earning_time},alipay_total_price=#{alipay_total_price},price=#{price},pay_price=#{pay_price},item_num=#{item_num},total_commission_rate=#{total_commission_rate},total_commission_fee=#{total_commission_fee},action_type=#{action_type},seller_shop_title=#{seller_shop_title},item_title=#{item_title} WHERE trade_id=#{trade_id}
+        SET num_iid=#{num_iid},adzone_id=#{adzone_id},site_id=#{site_id},tk_status=#{tk_status},create_time=#{create_time},earning_time=#{earning_time},alipay_total_price=#{alipay_total_price},price=#{price},pay_price=#{pay_price},item_num=#{item_num},total_commission_rate=#{total_commission_rate},total_commission_fee=#{total_commission_fee},action_type=#{action_type},seller_shop_title=#{seller_shop_title},item_title=#{item_title},update_time=now(),status=#{status}
+        WHERE trade_id=#{trade_id}
     </update>
 
-    <select id="findOrderFromById" parameterType="long" resultType="long">
-        SELECT trade_id FROM tbk.f_tbk_order WHERE trade_id=#{trade_id}
+    <select id="findOrderFromById" parameterType="long" resultType="com.tpadsz.after.entity.OrderFrom">
+        SELECT * FROM tbk.f_tbk_order WHERE trade_id=#{trade_id}
     </select>
 
-    <select id="findAllOrderFromByUid" parameterType="string" resultType="com.tpadsz.after.entity.OrderFrom">
+    <select id="findAllOrderFromByUid" parameterType="string"
+            resultType="com.tpadsz.after.entity.OrderFrom">
         SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
     </select>
 
-    <select id="findByUidWait" parameterType="string" resultType="com.tpadsz.after.entity.OrderFrom">
-        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and tk_status in(12,14) and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+    <select id="findByUidWait" parameterType="string"
+            resultType="com.tpadsz.after.entity.OrderFrom">
+        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and status =12 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
     </select>
 
-    <select id="findByUidLose" parameterType="string" resultType="com.tpadsz.after.entity.OrderFrom">
-        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and tk_status=13 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+    <select id="findByUidLose" parameterType="string"
+            resultType="com.tpadsz.after.entity.OrderFrom">
+        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and status=13 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
     </select>
 
-    <select id="findByUidDone" parameterType="string" resultType="com.tpadsz.after.entity.OrderFrom">
-        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and tk_status=3 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+    <select id="findByUidDone" parameterType="string"
+                     resultType="com.tpadsz.after.entity.OrderFrom">
+    SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and status=3 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+</select>
+
+    <select id="findByUid" parameterType="string"
+            resultType="com.tpadsz.after.entity.OrderFrom">
+          SELECT
+      	    *
+          FROM
+            tbk.f_tbk_order
+          <where>
+              uid = #{uid} and
+              earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+              <if test="tk_status!=null">
+                  AND tk_status IN
+                  <foreach collection="status" item="statu" open="(" close=")" separator=",">
+                        #{status}
+                  </foreach>
+              </if>
+          </where>
+    </select>
+
+    <!--<select id="findPidAndUidByZdId" parameterType="string" resultType="string">-->
+        <!--SELECT-->
+    	    <!--b.uid-->
+        <!--FROM-->
+        	<!--tbk.f_tbk_pid p,-->
+        	<!--tbk.f_tbk_bind b-->
+        <!--WHERE-->
+        	<!--p.pkey = b.pkey-->
+        	<!--AND p.adzone_id = #{adzone_id};-->
+    <!--</select>-->
+
+    <select id="findShopImageByNumIid" parameterType="string" resultType="ShopInfo">
+          SELECT * FROM tbk.f_tbk_shop WHERE num_iid=#{num_iid}
+    </select>
+
+    <select id="findShareLogByUidAndIid" parameterType="map" resultType="java.util.Date">
+        SELECT
+    	    touch_time
+        FROM
+        	tbk.f_hiprice_log
+        WHERE
+        	uid = #{uid}
+        	AND num_iid = #{num_iid} AND goods_info!=NULL
+        ORDER BY
+        	touch_time DESC
+        	LIMIT 1;
     </select>
 </mapper>
