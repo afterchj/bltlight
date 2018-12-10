@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tpadsz.after.dao80.TbkDao">
+
+    <select id="findIdFromHipriceLog" parameterType="string"  resultType="com.tpadsz.after.entity.ShareLog">
+        SELECT id,result_info as goods_share_message FROM tbk.f_hiprice_log WHERE uid = #{uid} and num_iid= #{num_iid} order by touch_time desc limit 1
+    </select>
+
+    <insert id="saveShareLog" parameterType="com.tpadsz.after.entity.ShareLog">
+        INSERT INTO tbk.f_share_log(num_iid,uid,share_id,goods_share_message,share_time)
+        VALUES
+	      (#{num_iid},#{uid},#{share_id},#{goods_share_message},now())
+    </insert>
+
+    <select id="findEarnByNumiid" parameterType="string" resultType="double">
+        SELECT rate_touid FROM tbk.f_tbk_shop WHERE num_iid = #{num_iid}
+    </select>
+
+    <insert id="insertOrUpdateAccount" parameterType="com.tpadsz.after.entity.Account">
+        INSERT INTO tbk.account(uid,app_id,avail,earn) values(#{uid},#{app_id},#{avail},#{earn}) ON DUPLICATE KEY UPDATE avail=avail+#{avail},earn=earn+#{earn};
+    </insert>
+
+    <insert id="insertDailyAccount" parameterType="com.tpadsz.after.entity.DailyAccount">
+        INSERT INTO tbk.daily_account(uid,app_id,date,trade_type,earn) values(#{uid},#{app_id},#{date},#{trade_type},#{earn});
+    </insert>
+
+    <insert id="insertOrUpdateDailyEstimatedAccount" parameterType="com.tpadsz.after.entity.DailyEstimatedAccount">
+        REPLACE INTO tbk.daily_estimated_account(trade_id,uid,app_id,date,update_time,trade_type,status,price) values(#{trade_id},#{uid},#{app_id},#{date},NOW(),#{trade_type},#{status},#{price});
+    </insert>
+
+    <select id="findAvail" parameterType="string" resultType="int">
+        SELECT IFNULL((SELECT avail FROM tbk.account WHERE uid = #{uid}),0);
+    </select>
+
+    <select id="findTodayEcoins" parameterType="string" resultType="int">
+        SELECT coalesce(SUM(price),0) FROM tbk.daily_estimated_account WHERE uid = #{uid} and status= 12 and DATEDIFF(date,CURDATE()) =0
+    </select>
+
+    <select id="findPresentMonthEcoins" parameterType="string" resultType="int">
+        SELECT coalesce(SUM(price),0) FROM tbk.daily_estimated_account WHERE uid = #{uid} and status= 12 and DATE_FORMAT(date, '%Y%m') = DATE_FORMAT(CURDATE( ) , '%Y%m')
+    </select>
+
+    <select id="findLastMonthEcoins" parameterType="string" resultType="int">
+        SELECT coalesce(SUM(price),0) FROM tbk.daily_estimated_account WHERE uid = #{uid} and status= 12 and PERIOD_DIFF( date_format( now() , '%Y%m' ) , date_format(date, '%Y%m' )) =1
+    </select>
+
+    <select id="findLastMonthCoins" parameterType="string" resultType="int">
+        SELECT coalesce(SUM(earn),0) FROM tbk.daily_account WHERE uid = #{uid} and trade_type= 1001 and PERIOD_DIFF( date_format( now() , '%Y%m' ) , date_format(date, '%Y%m' )) =1
+    </select>
+
+    <select id="findYesterdayEcoins" parameterType="string" resultType="int">
+        SELECT coalesce(SUM(price),0) FROM tbk.daily_estimated_account WHERE uid = #{uid} and status= 12 and DATEDIFF(date,CURDATE()) =- 1
+    </select>
+
+    <select id="findConsumeFromPayOrder" parameterType="string" resultType="int">
+        SELECT coalesce(SUM(price),0) FROM tbk.f_pay_order WHERE uid = #{uid} and trade_type= '2004'
+    </select>
+
+    <select id="findTodayOrders" parameterType="string" resultType="int">
+        SELECT count(*) FROM tbk.f_tbk_order WHERE uid = #{uid} and status= 12 and DATEDIFF(create_time,CURDATE()) =0
+    </select>
+
+    <select id="findYesterdayOrders" parameterType="string" resultType="int">
+        SELECT count(*) FROM tbk.f_tbk_order WHERE uid = #{uid} and status= 12 and DATEDIFF(create_time,CURDATE()) =- 1
+    </select>
+
+    <select id="findLoglistOfIncome"  resultType="com.tpadsz.after.entity.DailyAccount">
+        SELECT uid,trade_type,earn,date FROM tbk.daily_account WHERE uid = #{uid} and trade_type= 1001 order by date desc limit #{startIndex},#{pageSize}
+    </select>
+
+    <select id="findLoglistOfConsume"  resultType="com.tpadsz.after.entity.DailyAccount">
+        SELECT uid,trade_type,price as consume,create_time as date FROM tbk.f_pay_order WHERE uid = #{uid} and trade_type= 2004 order by create_time desc limit #{startIndex},#{pageSize}
+    </select>
+
+</mapper>

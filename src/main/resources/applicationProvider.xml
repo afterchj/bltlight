@@ -43,41 +43,41 @@
     <!-- 业务发布 -->
     <dubbo:monitor protocol="registry"/>
     <!-- 接口的位置 -->
-    <!--<dubbo:service loadbalance="random" version="0.1.0" cluster="failover" retries="2" interface="com.tpadsz.after.api.RecordBillService" ref="recordBillService" timeout="3000"/>-->
-    <!--<dubbo:reference id="coinsEarnerManager" version="0.2.0" interface="com.tpadsz.cic.coin.api.CoinsEarnerManager" validation="true"/>-->
+    <dubbo:service loadbalance="random" version="0.1.0" cluster="failover" retries="2" interface="com.tpadsz.after.api.RecordBillService" ref="recordBillService" timeout="3000"/>
+    <dubbo:reference id="coinsEarnerManager" version="0.2.0" interface="com.tpadsz.cic.coin.api.CoinsEarnerManager" validation="true"/>
 
-    <!--<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">-->
-        <!--<property name="triggers">-->
-            <!--<list>-->
-                <!--&lt;!&ndash;第1个定时任务由bosslocker-store-hq在执行了&ndash;&gt;-->
-                <!--<ref bean="exampleJob1Trigger"/>-->
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <!--第1个定时任务由bosslocker-store-hq在执行了-->
+                <ref bean="exampleJob1Trigger"/>
                 <!--<ref bean="orderFromJobTrigger"/>-->
-            <!--</list>-->
-        <!--</property>-->
-    <!--</bean>-->
+            </list>
+        </property>
+    </bean>
 
-    <!--<bean id="exampleJob1Trigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
-        <!--<property name="jobDetail" ref="exampleJob1Detail"/>-->
-        <!--<property name="cronExpression" value="0 50 23 * * ?"/>-->
-    <!--</bean>-->
+    <bean id="exampleJob1Trigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="exampleJob1Detail"/>
+        <property name="cronExpression" value="0 50 23 * * ?"/>
+    </bean>
 
-    <!--<bean id="exampleJob1Detail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
-        <!--&lt;!&ndash; 指定任务类 &ndash;&gt;-->
-        <!--<property name="targetObject" ref="countCoinJob"/>-->
-        <!--&lt;!&ndash; 指定任务执行的方法 &ndash;&gt;-->
-        <!--<property name="targetMethod" value="giveBill"/>-->
-    <!--</bean>-->
+    <bean id="exampleJob1Detail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 指定任务类 -->
+        <property name="targetObject" ref="countCoinJob"/>
+        <!-- 指定任务执行的方法 -->
+        <property name="targetMethod" value="giveBill"/>
+    </bean>
 
     <!--<bean id="orderFromJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
-    <!--<property name="jobDetail" ref="orderFromJobDetail"/>-->
-    <!--&lt;!&ndash;每一分钟执行一次&ndash;&gt;-->
-    <!--<property name="cronExpression" value="0 0/1 * * * ?"/>-->
+        <!--<property name="jobDetail" ref="orderFromJobDetail"/>-->
+        <!--&lt;!&ndash;每一分钟执行一次&ndash;&gt;-->
+        <!--<property name="cronExpression" value="0 0/1 * * * ?"/>-->
     <!--</bean>-->
     <!--<bean id="orderFromJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
-    <!--&lt;!&ndash; 指定任务类 &ndash;&gt;-->
-    <!--<property name="targetObject" ref="orderFromJob"/>-->
-    <!--&lt;!&ndash; 指定任务执行的方法 &ndash;&gt;-->
-    <!--<property name="targetMethod" value="getUrlParams"/>-->
+        <!--&lt;!&ndash; 指定任务类 &ndash;&gt;-->
+        <!--<property name="targetObject" ref="orderFromJob"/>-->
+        <!--&lt;!&ndash; 指定任务执行的方法 &ndash;&gt;-->
+        <!--<property name="targetMethod" value="getUrlParams"/>-->
     <!--</bean>-->
 
     <!-- 阿里 druid数据库连接池 -->

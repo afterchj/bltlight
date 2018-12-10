@@ -1,16 +1,22 @@
 package com.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import com.tpadsz.after.entity.LightOperation;
 import com.tpadsz.after.entity.OpenApp;
+import com.tpadsz.after.entity.OrderFrom;
 import com.tpadsz.after.service.AppOperateService;
 import com.tpadsz.after.service.LightUserService;
+import com.tpadsz.after.service.OrderFromService;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -23,11 +29,11 @@ public class AppOperateControllerTest {
 
     static ApplicationContext ac = null;
     static {
-        ac = new ClassPathXmlApplicationContext("applicationContext.xml");
+        ac = new ClassPathXmlApplicationContext("applicationProvider.xml");
     }
     AppOperateService appOperateService = ac.getBean("appOperateService",AppOperateService.class);
     LightUserService lightUserService = ac.getBean("lightUserService", LightUserService.class);
-
+    OrderFromService orderFromService = ac.getBean("orderFromService", OrderFromService.class);
 
 
     @Test
@@ -103,5 +109,48 @@ public class AppOperateControllerTest {
         lightOperation.setCreate_date(new Date());
         return lightOperation;
     }
+
+    @Test
+    public void testOrder(){
+        PageInfo pageInfos = orderFromService.findAll("487812dasdasdasdad",1,1);
+        List<OrderFrom> orderFroms = pageInfos.getList();
+        for (OrderFrom orderFrom:orderFroms){
+            System.out.println(orderFrom.toString());
+        }
+    }
+    @Test
+    public void testPidUid() throws ParseException {
+//        String pidAndUidByZdId = orderFromService.findPidAndUidByZdId
+//                ("542987003");
+//        System.out.println(pidAndUidByZdId);
+//        ShopInfo shopImageByNumIid = orderFromService.findShopImageByNumIid
+//                ("580728102184");
+//        System.out.println(shopImageByNumIid.getPict_url()+" "+shopImageByNumIid.getRate_touid());
+        java.util.Date create_time = new SimpleDateFormat("yyyy-MM-DD " +
+                "HH:mm:ss").parse("2018-10-25 19:31:33");
+        java.util.Date earning_time = new SimpleDateFormat("yyyy-MM-DD " +
+                "HH:mm:ss").parse("2018-10-31 20:26:21");
+//        OrderFrom orderFrom = new OrderFrom(111L, 111L, "11", "11", "11", 3, create_time,
+//                earning_time, "11", "11", "11", 1, "11", "11", "11", "11", 3, 22.5,"天猫");
+//        orderFromService.insertOrderFrom(orderFrom);
+    }
+    /**
+     * 获取数据类型
+     * @param object
+     * @return
+     */
+    public static String getType(Object object){
+        String typeName=object.getClass().getName();
+        int length= typeName.lastIndexOf(".");
+        String type =typeName.substring(length+1);
+        return type;
+    }
+
+    @Test
+    public void testSubString() throws ParseException {
+        String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        System.out.println(date);
+    }
+
 
 }
