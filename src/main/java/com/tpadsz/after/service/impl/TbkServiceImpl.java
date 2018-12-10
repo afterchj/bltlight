@@ -1,9 +1,7 @@
 package com.tpadsz.after.service.impl;
 
 import com.tpadsz.after.dao80.TbkDao;
-import com.tpadsz.after.entity.DailyAccount;
-import com.tpadsz.after.entity.OrderFrom;
-import com.tpadsz.after.entity.ShareLog;
+import com.tpadsz.after.entity.*;
 import com.tpadsz.after.service.TbkService;
 import org.springframework.stereotype.Service;
 
@@ -99,5 +97,34 @@ public class TbkServiceImpl implements TbkService {
         return tbkDao.findLoglistOfConsume(uid,var1,var2);
     }
 
+    @Override
+    public void tbkSave(String uid, String searchName) {
+        tbkDao.save(uid,searchName);
+    }
+
+    @Override
+    public void saveHandyRegister(TbkUser firmware) {
+        tbkDao.saveHandyRegister(firmware);
+    }
+
+    @Override
+    public TbkUser findTbkUserById(String id) {
+        return tbkDao.findTbkUserById(id);
+    }
+
+    @Override
+    public TbkUser findTbkUserByMobile(String mobile) {
+        return tbkDao.findTbkUserByMobile(mobile);
+    }
+
+    @Override
+    public void save(TbkUser firmware) {
+        tbkDao.save(firmware);
+    }
+
+    @Override
+    public void saveLoginLog(TbkLoginLog tbkLoginLog) {
+        tbkDao.saveLoginLog(tbkLoginLog);
+    }
 
 }

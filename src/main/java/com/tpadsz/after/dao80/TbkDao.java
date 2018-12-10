@@ -2,6 +2,8 @@ package com.tpadsz.after.dao80;
 
 import com.tpadsz.after.entity.DailyAccount;
 import com.tpadsz.after.entity.ShareLog;
+import com.tpadsz.after.entity.TbkLoginLog;
+import com.tpadsz.after.entity.TbkUser;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import java.util.Date;
@@ -44,4 +46,17 @@ public interface TbkDao {
     List<DailyAccount> findLoglistOfIncome(@Param("uid")String uid, @Param("startIndex")int pageNo, @Param("pageSize")int pageSize);
 
     List<DailyAccount> findLoglistOfConsume(@Param("uid")String uid, @Param("startIndex")int pageNo, @Param("pageSize")int pageSize);
+
+    void save(@Param("uid") String uid,@Param("searchName") String searchName);
+
+    void saveHandyRegister(TbkUser firmware);
+
+    TbkUser findTbkUserById(String id);
+
+    TbkUser findTbkUserByMobile(String mobile);
+
+    void save(TbkUser firmware);
+
+    void saveLoginLog(TbkLoginLog tbkLoginLog);
+
 }

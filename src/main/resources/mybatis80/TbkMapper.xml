@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tpadsz.after.dao80.TbkDao">
+    <resultMap id="getTbkUser" type="TbkUser">
+        <id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+        <result property="appid" column="appid" javaType="String" jdbcType="VARCHAR"/>
+        <result property="create_date" column="create_date" javaType="java.sql.Date" jdbcType="DATE"/>
+        <result property="mobile" column="mobile" javaType="String" jdbcType="VARCHAR"/>
+        <result property="username" column="username" javaType="String" jdbcType="VARCHAR"/>
+        <result property="nickname" column="nickname" javaType="String" jdbcType="VARCHAR"/>
+        <result property="login_name" column="login_name" javaType="String" jdbcType="VARCHAR"/>
+        <result property="icon" column="icon" javaType="String" jdbcType="VARCHAR"/>
+        <result property="imei" column="imei" javaType="String" jdbcType="VARCHAR"/>
+        <result property="imsi" column="imsi" javaType="String" jdbcType="VARCHAR"/>
+        <result property="fm" column="fm" javaType="String" jdbcType="VARCHAR"/>
+        <result property="os" column="os" javaType="String" jdbcType="VARCHAR"/>
+        <result property="model" column="model" javaType="String" jdbcType="VARCHAR"/>
+        <result property="operators" column="operators" javaType="String" jdbcType="VARCHAR"/>
+        <result property="resolution" column="resolution" javaType="String" jdbcType="VARCHAR"/>
+        <result property="pkg" column="pkg" javaType="String" jdbcType="VARCHAR"/>
+        <result property="clientVersion" column="clientVersion" javaType="String" jdbcType="VARCHAR"/>
+        <result property="netEnv" column="netEnv" javaType="String" jdbcType="VARCHAR"/>
+        <result property="other" column="other" javaType="String" jdbcType="VARCHAR"/>
+    </resultMap>
 
     <select id="findIdFromHipriceLog" parameterType="string"  resultType="com.tpadsz.after.entity.ShareLog">
         SELECT id,result_info as goods_share_message FROM tbk.f_hiprice_log WHERE uid = #{uid} and num_iid= #{num_iid} order by touch_time desc limit 1
@@ -71,5 +92,29 @@
     <select id="findLoglistOfConsume"  resultType="com.tpadsz.after.entity.DailyAccount">
         SELECT uid,trade_type,price as consume,create_time as date FROM tbk.f_pay_order WHERE uid = #{uid} and trade_type= 2004 order by create_time desc limit #{startIndex},#{pageSize}
     </select>
+
+    <insert id="saveHandyRegister" parameterType="com.tpadsz.after.entity.TbkUser" >
+        INSERT INTO tbk.f_tbk_user
+        VALUES(#{id},#{appid},#{create_date},#{mobile},#{username},#{nickname},#{login_name},#{icon},#{imei},#{imsi},#{fm},#{os},#{model},#{operators},#{resolution},#{pkg},#{clientVersion},#{netEnv},#{other})
+    </insert>
+
+    <select id="findTbkUserById" parameterType="string" resultMap="getTbkUser">
+        SELECT * FROM tbk.f_tbk_user WHERE id=#{id}
+    </select>
+
+    <select id="findTbkUserByMobile" parameterType="string" resultMap="getTbkUser">
+        SELECT * FROM tbk.f_tbk_user WHERE mobile=#{mobile}
+    </select>
+
+    <insert id="save" parameterType="com.tpadsz.after.entity.TbkUser">
+        INSERT INTO tbk.f_tbk_user
+        VALUES(#{id},#{appid},#{create_date},#{mobile},#{username},#{nickname},#{login_name},#{icon},#{imei},#{imsi},#{fm},#{os},#{model},#{operators},#{resolution},#{pkg},#{clientVersion},#{netEnv},#{other})
+    </insert>
+
+    <insert id="saveLoginLog" parameterType="com.tpadsz.after.entity.TbkLoginLog">
+        INSERT INTO tbk.f_tbk_user_log VALUES(#{id},#{login_date},#{loginout_date},#{behavior},#{uid},#{mobile},#{create_date})
+    </insert>
+
+
 
 </mapper>

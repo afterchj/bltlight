@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/tbk")
@@ -120,6 +118,19 @@ public class TbkController extends BaseDecodedController {
         return null;
     }
 
+
+    @RequestMapping(value="/tbkSave", method=RequestMethod.POST)
+    public String tbksearch(@ModelAttribute("decodedParams")JSONObject params, ModelMap model){
+        try {
+            String uid = params.getString("uid");
+            String searchName = params.getString("searchName");
+            tbkService.tbkSave(uid,searchName);
+            model.put("result", ResultDict.SUCCESS.getCode());
+        } catch (Exception e) {
+            model.put("result", ResultDict.SYSTEM_ERROR.getCode());
+        }
+        return null;
+    }
 
     @Autowired
     public void setTbkService(TbkService tbkService) {

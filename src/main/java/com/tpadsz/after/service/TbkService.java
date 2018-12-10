@@ -1,12 +1,8 @@
 package com.tpadsz.after.service;
 
 
-import com.tpadsz.after.entity.DailyAccount;
-import com.tpadsz.after.entity.OrderFrom;
-import com.tpadsz.after.entity.ShareLog;
-import org.apache.ibatis.annotations.Param;
+import com.tpadsz.after.entity.*;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,9 +10,9 @@ import java.util.List;
  */
 public interface TbkService {
 
-    ShareLog findIdFromHipriceLog(String uid,String num_iid);
+    ShareLog findIdFromHipriceLog(String uid, String num_iid);
 
-    void saveShareLog(String num_iid,String uid,int share_id,String goods_share_message);
+    void saveShareLog(String num_iid, String uid, int share_id, String goods_share_message);
 
     //每月记录结算金额
     void settleCoins(OrderFrom orderFrom);
@@ -45,5 +41,17 @@ public interface TbkService {
     List<DailyAccount> findLoglistOfIncome(String uid, int var1, int var2);
 
     List<DailyAccount> findLoglistOfConsume(String uid, int var1, int var2);
+
+    void tbkSave(String uid, String searchName);
+
+    void saveHandyRegister(TbkUser firmware);
+
+    TbkUser findTbkUserById(String id);
+
+    TbkUser findTbkUserByMobile(String mobile);
+
+    void save(TbkUser firmware);
+
+    void saveLoginLog(TbkLoginLog tbkLoginLog);
 
 }
