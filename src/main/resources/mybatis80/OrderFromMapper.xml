@@ -15,7 +15,7 @@
     <update id="updateOrderFrom"
             parameterType="com.tpadsz.after.entity.OrderFrom">
         UPDATE tbk.f_tbk_order
-        SET num_iid=#{num_iid},adzone_id=#{adzone_id},site_id=#{site_id},tk_status=#{tk_status},create_time=#{create_time},earning_time=#{earning_time},alipay_total_price=#{alipay_total_price},price=#{price},pay_price=#{pay_price},item_num=#{item_num},total_commission_rate=#{total_commission_rate},total_commission_fee=#{total_commission_fee},action_type=#{action_type},seller_shop_title=#{seller_shop_title},item_title=#{item_title},update_time=now(),status=#{status}
+        SET num_iid=#{num_iid},adzone_id=#{adzone_id},site_id=#{site_id},tk_status=#{tk_status},create_time=#{create_time},earning_time=#{earning_time},alipay_total_price=#{alipay_total_price},price=#{price},pay_price=#{pay_price},item_num=#{item_num},total_commission_rate=#{total_commission_rate},total_commission_fee=#{total_commission_fee},seller_shop_title=#{seller_shop_title},item_title=#{item_title},update_time=now(),status=#{status},order_type=#{order_type}
         WHERE trade_id=#{trade_id}
     </update>
 
@@ -23,54 +23,25 @@
         SELECT * FROM tbk.f_tbk_order WHERE trade_id=#{trade_id}
     </select>
 
-    <select id="findAllOrderFromByUid" parameterType="string"
+    <select id="selectAllOrderFromByUid" parameterType="string"
             resultType="com.tpadsz.after.entity.OrderFrom">
-        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH) ORDER BY create_time DESC
     </select>
 
-    <select id="findByUidWait" parameterType="string"
+    <select id="selectByUidWait" parameterType="string"
             resultType="com.tpadsz.after.entity.OrderFrom">
-        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and status =12 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and status =12 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH) ORDER BY create_time DESC
     </select>
 
-    <select id="findByUidLose" parameterType="string"
+    <select id="selectByUidLose" parameterType="string"
             resultType="com.tpadsz.after.entity.OrderFrom">
-        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and status=13 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and status=13 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH) ORDER BY create_time DESC
     </select>
 
-    <select id="findByUidDone" parameterType="string"
+    <select id="selectByUidDone" parameterType="string"
                      resultType="com.tpadsz.after.entity.OrderFrom">
-    SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and status=3 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+    SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and status=3 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH) ORDER BY create_time DESC
 </select>
-
-    <select id="findByUid" parameterType="string"
-            resultType="com.tpadsz.after.entity.OrderFrom">
-          SELECT
-      	    *
-          FROM
-            tbk.f_tbk_order
-          <where>
-              uid = #{uid} and
-              earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
-              <if test="tk_status!=null">
-                  AND tk_status IN
-                  <foreach collection="status" item="statu" open="(" close=")" separator=",">
-                        #{status}
-                  </foreach>
-              </if>
-          </where>
-    </select>
-
-    <!--<select id="findPidAndUidByZdId" parameterType="string" resultType="string">-->
-        <!--SELECT-->
-    	    <!--b.uid-->
-        <!--FROM-->
-        	<!--tbk.f_tbk_pid p,-->
-        	<!--tbk.f_tbk_bind b-->
-        <!--WHERE-->
-        	<!--p.pkey = b.pkey-->
-        	<!--AND p.adzone_id = #{adzone_id};-->
-    <!--</select>-->
 
     <select id="findShopImageByNumIid" parameterType="string" resultType="ShopInfo">
           SELECT * FROM tbk.f_tbk_shop WHERE num_iid=#{num_iid}
@@ -88,4 +59,10 @@
         	touch_time DESC
         	LIMIT 1;
     </select>
+
+    <insert id="insertOrderLog" parameterType="OrderFromLog">
+        INSERT INTO tbk.f_tbk_order_log ( uid, page_num, status, create_time )
+        VALUES
+	        (#{uid},#{pageNum},#{status},now())
+    </insert>
 </mapper>

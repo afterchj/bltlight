@@ -1,8 +1,11 @@
 package com.tpadsz.after.controller;
 
+import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.tpadsz.after.entity.OrderFrom;
+import com.tpadsz.after.entity.OrderFromLog;
 import com.tpadsz.after.entity.ShopInfo;
 import com.tpadsz.after.entity.dd.ResultDict;
 import com.tpadsz.after.service.OrderFromService;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,12 +38,26 @@ public class OrderQueryController extends BaseDecodedController{
         String uid = params.getString("uid");
         Integer pageNum=params.getInteger("pageNum");
         Integer status = params.getInteger("status");
-        PageInfo pageInfos = orderFromService.findAll(uid,pageNum,status);
-        List<OrderFrom> orderFroms = pageInfos.getList();
+        if (StringUtils.isBlank(uid)||pageNum==null||status==null){
+            model.put("result", ResultDict.PARAMS_BLANK.getCode());
+            return;
+        }
+        PageHelper.startPage(pageNum, 2);
+        List<OrderFrom> allOrderFromByUid = orderFromService.selectAll(uid,pageNum,status);
+        PageInfo<OrderFrom> pageInfo = new PageInfo<>(allOrderFromByUid);
+        List<OrderFrom> orderFroms = pageInfo.getList();
+        if (orderFroms.size()==0){
+            model.put("orderFroms",orderFroms);
+            model.put("result", ResultDict.SUCCESS.getCode());
+            return;
+        }
+        List<OrderFrom> orderFromList = new ArrayList<>();
+        Long numId;
+        ShopInfo shopInfo;
         for (OrderFrom orderFrom:orderFroms){
-            Long numId=orderFrom.getNum_iid();
+            numId=orderFrom.getNum_iid();
             //插入图片
-            ShopInfo shopInfo = orderFromService.findShopImageByNumIid
+            shopInfo = orderFromService.findShopImageByNumIid
                     (String.valueOf(numId));
             if (shopInfo!=null){
                 if (shopInfo.getPict_url()!=null){
@@ -50,8 +68,15 @@ public class OrderQueryController extends BaseDecodedController{
                     orderFrom.setPrePrice((orderFrom.getRate_touid())*(orderFrom.getItem_num()));
                 }
             }
+            orderFromList.add(orderFrom);
         }
-        model.put("orderFroms",pageInfos.getList());
+        OrderFromLog orderFromLog = new OrderFromLog();
+        orderFromLog.setStatus(status);
+        orderFromLog.setPageNum(pageNum);
+        orderFromLog.setUid(uid);
+        orderFromService.insertOrderLog(orderFromLog);
+        model.put("orderFroms",orderFromList);
         model.put("result", ResultDict.SUCCESS.getCode());
     }
+
 }

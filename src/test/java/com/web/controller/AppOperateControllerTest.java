@@ -1,10 +1,10 @@
 package com.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.PageInfo;
 import com.tpadsz.after.entity.LightOperation;
 import com.tpadsz.after.entity.OpenApp;
 import com.tpadsz.after.entity.OrderFrom;
+import com.tpadsz.after.entity.OrderFromLog;
 import com.tpadsz.after.service.AppOperateService;
 import com.tpadsz.after.service.LightUserService;
 import com.tpadsz.after.service.OrderFromService;
@@ -112,27 +112,23 @@ public class AppOperateControllerTest {
 
     @Test
     public void testOrder(){
-        PageInfo pageInfos = orderFromService.findAll("487812dasdasdasdad",1,1);
-        List<OrderFrom> orderFroms = pageInfos.getList();
-        for (OrderFrom orderFrom:orderFroms){
-            System.out.println(orderFrom.toString());
-        }
+//        PageInfo pageInfos = orderFromService.findAll("487812dasdasdasdad",1,1);
+//        List<OrderFrom> orderFroms = pageInfos.getList();
+//        for (OrderFrom orderFrom:orderFroms){
+//            System.out.println(orderFrom.toString());
+//        }
     }
     @Test
     public void testPidUid() throws ParseException {
-//        String pidAndUidByZdId = orderFromService.findPidAndUidByZdId
-//                ("542987003");
-//        System.out.println(pidAndUidByZdId);
-//        ShopInfo shopImageByNumIid = orderFromService.findShopImageByNumIid
-//                ("580728102184");
-//        System.out.println(shopImageByNumIid.getPict_url()+" "+shopImageByNumIid.getRate_touid());
-        java.util.Date create_time = new SimpleDateFormat("yyyy-MM-DD " +
-                "HH:mm:ss").parse("2018-10-25 19:31:33");
-        java.util.Date earning_time = new SimpleDateFormat("yyyy-MM-DD " +
-                "HH:mm:ss").parse("2018-10-31 20:26:21");
-//        OrderFrom orderFrom = new OrderFrom(111L, 111L, "11", "11", "11", 3, create_time,
-//                earning_time, "11", "11", "11", 1, "11", "11", "11", "11", 3, 22.5,"天猫");
-//        orderFromService.insertOrderFrom(orderFrom);
+        OrderFrom orderFrom = new OrderFrom();
+        orderFrom.setUid("4b7b143af4f04bb5ac13bdd252e75ff3");
+        orderFrom.setStatus(3);
+//        PageInfo<OrderFrom> orderFromPageInfo = orderFromService.findByUid(orderFrom,1);
+//        List<OrderFrom> orderFromList = orderFromPageInfo.getList();
+//        for (OrderFrom orderFrom1:orderFromList){
+//            System.out.println(orderFrom1.toString());
+//        }
+
     }
     /**
      * 获取数据类型
@@ -152,5 +148,28 @@ public class AppOperateControllerTest {
         System.out.println(date);
     }
 
+    @Test
+    public void test11(){
+        OrderFromLog orderFromLog = new OrderFromLog();
+        orderFromLog.setStatus(1);
+        orderFromLog.setPageNum(1);
+        orderFromLog.setUid("aaa");
+        orderFromService.insertOrderLog(orderFromLog);
+    }
+
+    @Test
+    public void test12(){
+        OrderFrom orderFromById = orderFromService.findOrderFromById
+                (238392046412662715L);
+        System.out.println(orderFromById.getTrade_id());
+    }
+    @Test
+    public void test13(){
+        List<OrderFrom> orderFromList = orderFromService.selectAll("222", 1,
+                12);
+        for (OrderFrom orderFrom:orderFromList){
+            System.out.println(orderFrom.toString());
+        }
+    }
 
 }

@@ -1,11 +1,12 @@
 package com.tpadsz.after.service;
 
 
-import com.github.pagehelper.PageInfo;
 import com.tpadsz.after.entity.OrderFrom;
+import com.tpadsz.after.entity.OrderFromLog;
 import com.tpadsz.after.entity.ShopInfo;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,13 +24,13 @@ public interface OrderFromService {
 
     OrderFrom findOrderFromById(Long id);
 
-    PageInfo<OrderFrom> findAll(String uid,Integer pageNum,Integer status);
+    List<OrderFrom> selectAll(String uid, Integer pageNum, Integer status);
 
 //    String findPidAndUidByZdId(String adzoneId);
 
     ShopInfo findShopImageByNumIid(String numiid);
 
-//    String findTimeById(Integer id);
-
     Date findShareLogByUidAndIid(Map<String, Object> map);
+
+    void insertOrderLog(OrderFromLog orderFromLog);
 }

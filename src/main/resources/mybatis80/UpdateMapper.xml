@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.daoBlack.UpdateDao">
+
+    <resultMap type="NewestFile" id="standardNewestFileMap">
+        <id property="appId" column="app_id" javaType="String" jdbcType="VARCHAR"/>
+        <result property="versionCode" column="version_code" javaType="Integer" jdbcType="INTEGER"/>
+        <result property="updateDate" column="update_date" javaType="Date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap type="FileRecord" id="standardFileRecordMap">
+        <id property="appId" column="app_id" javaType="String" jdbcType="VARCHAR"/>
+        <result property="versionCode" column="version_code" javaType="Integer" jdbcType="INTEGER"/>
+        <result property="versionName" column="version_name" javaType="String" jdbcType="VARCHAR"/>
+        <result property="path" column="path" javaType="String" jdbcType="VARCHAR"/>
+        <result property="md5" column="md5" javaType="String" jdbcType="VARCHAR"/>
+        <result property="size" column="size" javaType="Integer" jdbcType="INTEGER"/>
+        <result property="updateLog" column="update_log" javaType="String" jdbcType="VARCHAR"/>
+        <result property="forceUpdate" column="force_update" javaType="Integer" jdbcType="INTEGER"/>
+        <result property="forceUpdateOp" column="force_update_op" javaType="String" jdbcType="VARCHAR"/>
+        <result property="forceUpdateValue" column="force_update_value" javaType="String" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" javaType="Date" jdbcType="TIMESTAMP"/>
+        <result property="updateDate" column="update_date" javaType="Date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+
+    <select id="getNewestFile" resultMap="standardNewestFileMap" parameterType="string">
+		select app_id,version_code from tbk.file_records where app_id= #{appId} ORDER BY create_date DESC LIMIT 1
+	</select>
+
+    <select id="getFileRecords" resultMap="standardFileRecordMap">
+        select app_id,version_code,version_name,path,md5,size,update_log,force_update from tbk.file_records where app_id= #{appId} and version_code= #{versionCode}
+    </select>
+
+
+</mapper>

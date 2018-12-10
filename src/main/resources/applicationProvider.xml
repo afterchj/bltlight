@@ -55,11 +55,11 @@
                 <!--第1个定时任务由bosslocker-store-hq在执行了-->
                 <ref bean="exampleJob1Trigger"/>
                 <!--每一分钟查询前20分钟的订单-->
-                <ref bean="orderEveryDayJobTrigger"/>
+                <!--<ref bean="orderEveryDayJobTrigger"/>-->
                 <!--第二天查询前一天订单-->
-                <ref bean="orderYesterDayJobTrigger"/>
+                <!--<ref bean="orderYesterDayJobTrigger"/>-->
                 <!--20-25号调用前一月的全部接口-->
-                <ref bean="orderSettleDayJobTrigger"/>
+                <!--<ref bean="orderSettleDayJobTrigger"/>-->
             </list>
         </property>
     </bean>
@@ -187,9 +187,10 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="typeAliasesPackage" value="com.tpadsz.after.entity"></property>
-        <property name="configLocation" value="classpath:mybatisConfig.xml"></property>
         <!-- mapper扫描 -->
         <property name="mapperLocations" value="classpath:mybatis/*.xml"></property>
+        <property name="configLocation" value="classpath:mybatisConfig.xml"></property>
+
     </bean>
 
     <bean id="sqlSessionFactory80" class="org.mybatis.spring.SqlSessionFactoryBean">

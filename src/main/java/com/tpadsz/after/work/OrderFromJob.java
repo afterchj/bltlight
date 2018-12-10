@@ -124,7 +124,7 @@ public class OrderFromJob {
     }
 
     /**
-     * 20-25号调用前一月的全部接口
+     * 21-26号调用前一月的全部接口
      * @param preDateByDate
      */
     public void getSettleOrder(String preDateByDate) {
@@ -142,6 +142,7 @@ public class OrderFromJob {
             settleCount++;
             //时间推进20分钟
             settleTime = OrderFromUtil.setPreDate(settleTime, 1200000L);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             if (settleCount > 72) {
                 //一天接口执行完毕
                 logger.info("----一" + preDateByDate + "的接口执行完毕---");
@@ -153,10 +154,8 @@ public class OrderFromJob {
                 String preDateDate = OrderFromUtil.getAftDateByDate
                         (preFirstDay);
                 preFirstDay = preDateDate;
-                Date firstDay = new SimpleDateFormat("yyyy-MM-dd").parse
-                        (preFirstDay);
-                Date lastDay = new SimpleDateFormat("yyyy-MM-dd").parse
-                        (preLastDay);
+                Date firstDay = sdf.parse(preFirstDay);
+                Date lastDay = sdf.parse(preLastDay);
                 if (firstDay.getTime() > lastDay.getTime()) {
                     //循环执行到一个月的最后一天
                     logger.info("-----一个月的全部接口循环完毕----");
@@ -211,15 +210,17 @@ public class OrderFromJob {
                 return;
             }
             jsonObject = JSONObject.parseObject(result);
-            array = jsonObject.getJSONArray("data");
             newDate = jsonObject.getString("data");
             if (newDate != null) {
-                OrderFrom orderFrom;
-                OrderFrom orderFrom1;
+                array = jsonObject.getJSONArray("data");
+                OrderFrom orderFrom;//阿里订单
+                OrderFrom orderFrom1;//本地订单
                 String adzoneId;
                 Long tradeId;
                 Map<String, Object> map = new HashedMap();
-
+                String uid;
+                String num_iid;
+                int days = 3;
                 for (int i = 0; i < array.size(); i++) {
                     orderFrom = setOrderFrom(array.getJSONObject(i));
                     //根据淘宝订单状态添加本地订单表的订单状态
@@ -227,17 +228,15 @@ public class OrderFromJob {
                     adzoneId = orderFrom.getAdzone_id();
                     tradeId = orderFrom.getTrade_id();
                     //查询本地订单表是否有该笔订单
-                    orderFrom1 = orderFromService
-                            .findOrderFromById(tradeId);
+                    orderFrom1 = orderFromService.findOrderFromById(tradeId);
                     //本地表无数据,需要插入数据
                     if (orderFrom1 == null) {
                         //查询pid-uid绑定关系
-                        String uid = shopService.getUid(adzoneId);
-                        String num_iid = String.valueOf(orderFrom.getNum_iid());
+                        uid = shopService.getUid(adzoneId);
+                        num_iid = String.valueOf(orderFrom.getNum_iid());
                         map.put("uid",uid);
                         map.put("num_iid",num_iid);
                         Date shareTime = orderFromService.findShareLogByUidAndIid(map);
-                        int days = 3;
                         //有分享时间
                         if (shareTime!=null){
                             //分享时间和下单时间日期差
@@ -248,6 +247,7 @@ public class OrderFromJob {
                         if (uid != null&&days<=3) {
                             //插入
                             orderFrom.setUid(uid);
+//                            orderFrom.setUid("aaaa");
                             orderFromService.insertOrderFrom(orderFrom);
                             //修改预估和结算金额
                             setTbCoins(orderFrom,orderFrom1);

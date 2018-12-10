@@ -363,27 +363,27 @@
     </dependencies>
 
     <!--<distributionManagement>-->
-        <!--<snapshotRepository>-->
-            <!--<id>snapshots</id>-->
-            <!--<name>nexus distribution snapshot repository</name>-->
-            <!--<url>http://192.168.200.124:8081/nexus/content/repositories/snapshots/</url>-->
-        <!--</snapshotRepository>-->
-        <!--<repository>-->
-            <!--<id>releases</id>-->
-            <!--<name>nexus distribution repository</name>-->
-            <!--<url>http://192.168.200.124:8081/nexus/content/repositories/releases/</url>-->
-        <!--</repository>-->
+    <!--<snapshotRepository>-->
+    <!--<id>snapshots</id>-->
+    <!--<name>nexus distribution snapshot repository</name>-->
+    <!--<url>http://192.168.200.124:8081/nexus/content/repositories/snapshots/</url>-->
+    <!--</snapshotRepository>-->
+    <!--<repository>-->
+    <!--<id>releases</id>-->
+    <!--<name>nexus distribution repository</name>-->
+    <!--<url>http://192.168.200.124:8081/nexus/content/repositories/releases/</url>-->
+    <!--</repository>-->
     <!--</distributionManagement>-->
 
     <build>
         <finalName>blt_light</finalName>
         <plugins>
             <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-surefire-plugin</artifactId>-->
-                <!--<configuration>-->
-                    <!--<skipTests>true</skipTests>-->
-                <!--</configuration>-->
+            <!--<groupId>org.apache.maven.plugins</groupId>-->
+            <!--<artifactId>maven-surefire-plugin</artifactId>-->
+            <!--<configuration>-->
+            <!--<skipTests>true</skipTests>-->
+            <!--</configuration>-->
             <!--</plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
