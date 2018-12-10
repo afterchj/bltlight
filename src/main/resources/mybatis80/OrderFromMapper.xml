@@ -23,24 +23,24 @@
         SELECT * FROM tbk.f_tbk_order WHERE trade_id=#{trade_id}
     </select>
 
-    <select id="selectAllOrderFromByUid" parameterType="string"
+    <select id="selectAllOrderFromByUid" parameterType="OrderFrom"
             resultType="com.tpadsz.after.entity.OrderFrom">
-        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH) ORDER BY create_time DESC
+        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH) ORDER BY create_time DESC limit #{page}, #{size}
     </select>
 
-    <select id="selectByUidWait" parameterType="string"
+    <select id="selectByUidWait" parameterType="OrderFrom"
             resultType="com.tpadsz.after.entity.OrderFrom">
-        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and status =12 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH) ORDER BY create_time DESC
+        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and status =12 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH) ORDER BY create_time DESC limit #{page}, #{size}
     </select>
 
-    <select id="selectByUidLose" parameterType="string"
+    <select id="selectByUidLose" parameterType="OrderFrom"
             resultType="com.tpadsz.after.entity.OrderFrom">
-        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and status=13 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH) ORDER BY create_time DESC
+        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and status=13 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH) ORDER BY create_time DESC limit #{page}, #{size}
     </select>
 
-    <select id="selectByUidDone" parameterType="string"
+    <select id="selectByUidDone" parameterType="OrderFrom"
                      resultType="com.tpadsz.after.entity.OrderFrom">
-    SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and status=3 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH) ORDER BY create_time DESC
+    SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and status=3 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH) ORDER BY create_time DESC limit #{page}, #{size}
 </select>
 
     <select id="findShopImageByNumIid" parameterType="string" resultType="ShopInfo">

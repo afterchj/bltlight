@@ -41,25 +41,23 @@ public class OrderFromServiceImpl implements OrderFromService {
     }
 
     @Override
-    public List<OrderFrom> selectAll(String uid, Integer pageNum, Integer status) {
-//        PageHelper.startPage(pageNum, 2);
+    public List<OrderFrom> selectAll(OrderFrom orderFrom) {
         List<OrderFrom> allOrderFromByUid = new ArrayList<>();
+        int status = orderFrom.getStatus();
         if (status == 1)
             //全部订单
             allOrderFromByUid = orderFromDao
-                    .selectAllOrderFromByUid(uid);
+                    .selectAllOrderFromByUid(orderFrom);
         else if (status == 3)
             //结算订单
-            allOrderFromByUid = orderFromDao.selectByUidDone(uid);
+            allOrderFromByUid = orderFromDao.selectByUidDone(orderFrom);
         else if (status == 12)
             //订单成功，待返佣
-            allOrderFromByUid = orderFromDao.selectByUidWait(uid);
+            allOrderFromByUid = orderFromDao.selectByUidWait(orderFrom);
         else if (status == 13)
             //订单失效
-            allOrderFromByUid = orderFromDao.selectByUidLose(uid);
+            allOrderFromByUid = orderFromDao.selectByUidLose(orderFrom);
 
-//        PageInfo<OrderFrom> pageInfo = new PageInfo<OrderFrom>
-//                (allOrderFromByUid);
         return allOrderFromByUid;
     }
 

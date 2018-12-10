@@ -16,7 +16,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -165,11 +164,7 @@ public class AppOperateControllerTest {
     }
     @Test
     public void test13(){
-        List<OrderFrom> orderFromList = orderFromService.selectAll("222", 1,
-                12);
-        for (OrderFrom orderFrom:orderFromList){
-            System.out.println(orderFrom.toString());
-        }
+
     }
 
 }

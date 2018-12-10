@@ -2,8 +2,6 @@ package com.tpadsz.after.controller;
 
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.tpadsz.after.entity.OrderFrom;
 import com.tpadsz.after.entity.OrderFromLog;
 import com.tpadsz.after.entity.ShopInfo;
@@ -42,19 +40,23 @@ public class OrderQueryController extends BaseDecodedController{
             model.put("result", ResultDict.PARAMS_BLANK.getCode());
             return;
         }
-        PageHelper.startPage(pageNum, 2);
-        List<OrderFrom> allOrderFromByUid = orderFromService.selectAll(uid,pageNum,status);
-        PageInfo<OrderFrom> pageInfo = new PageInfo<>(allOrderFromByUid);
-        List<OrderFrom> orderFroms = pageInfo.getList();
-        if (orderFroms.size()==0){
-            model.put("orderFroms",orderFroms);
+        int size=100;
+        int page=size*(pageNum-1);
+        OrderFrom orderFrom1 = new OrderFrom();
+        orderFrom1.setPage(page);
+        orderFrom1.setSize(size);
+        orderFrom1.setUid(uid);
+        orderFrom1.setStatus(status);
+        List<OrderFrom> allOrderFromByUid = orderFromService.selectAll(orderFrom1);
+        if (allOrderFromByUid.size()==0){
+            model.put("orderFroms",allOrderFromByUid);
             model.put("result", ResultDict.SUCCESS.getCode());
             return;
         }
         List<OrderFrom> orderFromList = new ArrayList<>();
         Long numId;
         ShopInfo shopInfo;
-        for (OrderFrom orderFrom:orderFroms){
+        for (OrderFrom orderFrom:allOrderFromByUid){
             numId=orderFrom.getNum_iid();
             //插入图片
             shopInfo = orderFromService.findShopImageByNumIid
@@ -70,6 +72,7 @@ public class OrderQueryController extends BaseDecodedController{
             }
             orderFromList.add(orderFrom);
         }
+        //订单日志记录
         OrderFromLog orderFromLog = new OrderFromLog();
         orderFromLog.setStatus(status);
         orderFromLog.setPageNum(pageNum);

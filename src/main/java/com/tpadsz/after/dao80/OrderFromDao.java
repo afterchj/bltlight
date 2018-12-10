@@ -25,13 +25,13 @@ public interface OrderFromDao {
 
     OrderFrom findOrderFromById(Long id);
 
-    List<OrderFrom> selectAllOrderFromByUid(String uid);//查询全部订单
+    List<OrderFrom> selectAllOrderFromByUid(OrderFrom orderFrom);//查询全部订单
 
-    List<OrderFrom> selectByUidWait(String uid);//查询待返佣订单
+    List<OrderFrom> selectByUidWait(OrderFrom orderFrom);//查询待返佣订单
 
-    List<OrderFrom> selectByUidLose(String uid);//查询失效订单
+    List<OrderFrom> selectByUidLose(OrderFrom orderFrom);//查询失效订单
 
-    List<OrderFrom> selectByUidDone(String uid);//查询结算订单
+    List<OrderFrom> selectByUidDone(OrderFrom orderFrom);//查询结算订单
 
     ShopInfo findShopImageByNumIid(String numiid);//根据商品id查询商品图片
 

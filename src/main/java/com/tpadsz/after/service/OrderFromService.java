@@ -24,7 +24,7 @@ public interface OrderFromService {
 
     OrderFrom findOrderFromById(Long id);
 
-    List<OrderFrom> selectAll(String uid, Integer pageNum, Integer status);
+    List<OrderFrom> selectAll(OrderFrom orderFrom);
 
 //    String findPidAndUidByZdId(String adzoneId);
 

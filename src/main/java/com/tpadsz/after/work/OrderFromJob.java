@@ -36,7 +36,7 @@ public class OrderFromJob {
     static final String vekey = "V00000585Y74210916";
     static final String span = "1200";
     static final String url = "http://apiorder.vephp.com/order";
-//    static final String url = "http://47.101.2.136/order";
+    //    static final String url = "http://47.101.2.136/order";
     static final String order_query_type = "settle_time";
     static int yesterCount = 1;
     static int settleCount = 1;
@@ -45,6 +45,7 @@ public class OrderFromJob {
     static String preFirstDay = OrderFromUtil.getPreFirstDay();
     static String preLastDay = OrderFromUtil.getPreLastDay();
     Logger logger = Logger.getLogger(OrderFromJob.class);
+
     public void getEveryDayOrder() {
         getEveryOrder(-20);
     }
@@ -61,6 +62,7 @@ public class OrderFromJob {
 
     /**
      * 每一分钟调用前20分钟的接口
+     *
      * @param num
      */
     public void getEveryOrder(Integer num) {
@@ -73,9 +75,11 @@ public class OrderFromJob {
             start_time = java.net.URLEncoder.encode(date, "utf-8");
 //            start_time = java.net.URLEncoder.encode(start_time, "utf-8");
             setOrderFromResult(url, start_time, "-1");
-            logger.info(date + " 执行了每天接口,"+"当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
-//            System.out.print(date + " 执行了每天接口");
-//            System.out.println("当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
+            logger.info(date + " 执行了每天接口," + "当前时间：" + new SimpleDateFormat
+                    ("yyyy-MM-dd hh:mm:ss").format(new Date()));
+            System.out.print(date + " 执行了每天接口");
+            System.out.println("当前时间：" + new SimpleDateFormat("yyyy-MM-dd " +
+                    "hh:mm:ss").format(new Date()));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (ParseException e) {
@@ -87,6 +91,7 @@ public class OrderFromJob {
 
     /**
      * 第二天0点调用前一天的接口
+     *
      * @param preDateByDate
      */
     public void getYesterOrder(String preDateByDate) {
@@ -96,10 +101,12 @@ public class OrderFromJob {
             start_time = java.net.URLEncoder.encode(yesterTime, "utf-8");
             setOrderFromResult(url, start_time, "-1");
             logger.info(yesterTime + " 执行了 : " + yesterCount +
-                    "次---前一天接口"+"当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
+                    "次---前一天接口" + "当前时间：" + new SimpleDateFormat("yyyy-MM-dd " +
+                    "hh:mm:ss").format(new Date()));
 //            System.out.print(yesterTime + " 执行了 : " + yesterCount +
 //                    "次---前一天接口");
-//            System.out.println("当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
+//            System.out.println("当前时间：" +new SimpleDateFormat("yyyy-MM-dd
+// hh:mm:ss").format(new Date()));
             yesterTime = OrderFromUtil.setPreDate(yesterTime, 1200000L);
             yesterCount++;
             if (yesterCount > 72) {
@@ -125,6 +132,7 @@ public class OrderFromJob {
 
     /**
      * 21-26号调用前一月的全部接口
+     *
      * @param preDateByDate
      */
     public void getSettleOrder(String preDateByDate) {
@@ -135,10 +143,12 @@ public class OrderFromJob {
             start_time = java.net.URLEncoder.encode(settleTime, "utf-8");
             setOrderFromResult(url, start_time, order_query_type);
             logger.info(settleTime + " 执行了 : " + settleCount +
-                    "次-一个月的全部接口"+"当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
+                    "次-一个月的全部接口" + "当前时间：" + new SimpleDateFormat("yyyy-MM-dd" +
+                    " hh:mm:ss").format(new Date()));
 //            System.out.print(settleTime + " 执行了 : " + settleCount +
 //                    "次-一个月的全部接口");
-//            System.out.println("当前时间：" +new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
+//            System.out.println("当前时间：" +new SimpleDateFormat("yyyy-MM-dd
+// hh:mm:ss").format(new Date()));
             settleCount++;
             //时间推进20分钟
             settleTime = OrderFromUtil.setPreDate(settleTime, 1200000L);
@@ -183,6 +193,7 @@ public class OrderFromJob {
 
     /**
      * 更新本地订单表 //
+     *
      * @param url
      * @param order_query_type 判断是getSettleOrder()方法调用 为"-1"是非该方法调用
      * @param start_time
@@ -205,7 +216,7 @@ public class OrderFromJob {
                         "&span=" + span + "&page_no=" + pageNo;
             }
             result = OrderFromUtil.sendGet(url, param);
-            if (result==null){
+            if (result == null) {
                 System.out.println("消息异常!");
                 return;
             }
@@ -224,7 +235,7 @@ public class OrderFromJob {
                 for (int i = 0; i < array.size(); i++) {
                     orderFrom = setOrderFrom(array.getJSONObject(i));
                     //根据淘宝订单状态添加本地订单表的订单状态
-                    setOrderStatus(orderFrom,order_query_type);
+                    setOrderStatus(orderFrom, order_query_type);
                     adzoneId = orderFrom.getAdzone_id();
                     tradeId = orderFrom.getTrade_id();
                     //查询本地订单表是否有该笔订单
@@ -234,44 +245,44 @@ public class OrderFromJob {
                         //查询pid-uid绑定关系
                         uid = shopService.getUid(adzoneId);
                         num_iid = String.valueOf(orderFrom.getNum_iid());
-                        map.put("uid",uid);
-                        map.put("num_iid",num_iid);
-                        Date shareTime = orderFromService.findShareLogByUidAndIid(map);
+                        map.put("uid", uid);
+                        map.put("num_iid", num_iid);
+                        Date shareTime = orderFromService
+                                .findShareLogByUidAndIid(map);
                         //有分享时间
-                        if (shareTime!=null){
+                        if (shareTime != null) {
                             //分享时间和下单时间日期差
-                            days = timeDiff(shareTime,orderFrom);
+                            days = timeDiff(shareTime, orderFrom);
                         }
                         //有绑定关系&&分享时间不超过三天
 //                        if (uid != null) {
-                        if (uid != null&&days<=3) {
-                            //插入
-                            orderFrom.setUid(uid);
-//                            orderFrom.setUid("aaaa");
-                            orderFromService.insertOrderFrom(orderFrom);
-                            //修改预估和结算金额
-                            setTbCoins(orderFrom,orderFrom1);
-                        }
-                    } else {//本地表有数据
-                        //数据需要更新
-                        if (!orderFrom.equals(orderFrom1)) {
-                            //更新
-                            orderFromService.updateOrderFrom(orderFrom);
-                            //修改预估和结算金额
-                            setTbCoins(orderFrom,orderFrom1);
+                            if (uid != null && days <= 3) {
+                                //插入
+                                orderFrom.setUid(uid);
+                                orderFromService.insertOrderFrom(orderFrom);
+                                //修改预估和结算金额
+                                setTbCoins(orderFrom, orderFrom1);
+                            }
+                        } else {//本地表有数据
+                            //数据需要更新
+                            if (!orderFrom.equals(orderFrom1)) {
+                                //更新
+                                orderFromService.updateOrderFrom(orderFrom);
+                                //修改预估和结算金额
+                                setTbCoins(orderFrom, orderFrom1);
+                            }
                         }
                     }
-                }
-                if (array.size() < 100) {
+                    if (array.size() < 100) {
+                        break;
+                    }
+                } else{
+                    //出错或查询为空
                     break;
                 }
-            } else {
-                //出错或查询为空
-                break;
+                pageNo++;
             }
-            pageNo++;
         }
-    }
 
     public OrderFrom setOrderFrom(JSONObject jsonObject) {
         OrderFrom orderFrom = new OrderFrom();
@@ -302,27 +313,28 @@ public class OrderFromJob {
 
     /**
      * 根据淘宝订单状态添加本地订单表的订单状态
+     *
      * @param orderFrom
      * @param order_query_type 判断是getSettleOrder()方法调用 为"-1"是非该方法调用
      */
 
-    public void setOrderStatus(OrderFrom orderFrom,String
-            order_query_type){
+    public void setOrderStatus(OrderFrom orderFrom, String
+            order_query_type) {
         Integer tbStatus = orderFrom.getTk_status();
-        if (order_query_type == "-1"){
+        if (order_query_type == "-1") {
             //当天和隔天需要修改的本地订单表的订单状态
-            if (tbStatus==3||tbStatus==14){
+            if (tbStatus == 3 || tbStatus == 14) {
                 //淘宝订单状态为结算和成功，本地订单状态修改为待返佣
                 orderFrom.setStatus(12);
-            }else {
+            } else {
                 orderFrom.setStatus(orderFrom.getTk_status());
             }
-        }else {
+        } else {
             //结算日需要修改的本地订单表的订单状态
-            if (tbStatus==14){
+            if (tbStatus == 14) {
                 //淘宝订单状态为成功的修改本地订单表的订单状态为待返佣
                 orderFrom.setStatus(12);
-            }else {
+            } else {
                 orderFrom.setStatus(orderFrom.getTk_status());
             }
         }
@@ -330,6 +342,7 @@ public class OrderFromJob {
 
     /**
      * 计算日期差
+     *
      * @param shareTime :商品分享时间
      * @param orderFrom
      * @return
@@ -342,31 +355,32 @@ public class OrderFromJob {
         Date OrderTime = orderFrom.getCreate_time();
         String order = sdf.format(OrderTime);
         OrderTime = sdf.parse(order);
-        return  (int) ((OrderTime.getTime() - shareTime.getTime()) / (1000*3600*24));
+        return (int) ((OrderTime.getTime() - shareTime.getTime()) / (1000 *
+                3600 * 24));
+
     }
 
     /**
-     *
-     * @param orderFrom 淘宝订单数据
+     * @param orderFrom  淘宝订单数据
      * @param orderFrom1 本地订单数据
      */
-    public void setTbCoins(OrderFrom orderFrom,OrderFrom orderFrom1){
+    public void setTbCoins(OrderFrom orderFrom, OrderFrom orderFrom1) {
         if (orderFrom1 == null) {
-            if (orderFrom.getStatus()==12){
+            if (orderFrom.getStatus() == 12) {
                 //待返佣状态下需要在预估表中插入数据
                 tbkService.recordECoins(orderFrom);
-            }else if (orderFrom.getStatus()==3){
+            } else if (orderFrom.getStatus() == 3) {
                 //已结算状态下需要在结算表中插入数据
                 tbkService.recordECoins(orderFrom);
                 tbkService.settleCoins(orderFrom);
             }
-        }else {
-            if (orderFrom1.getStatus()!=orderFrom.getStatus()){
+        } else {
+            if (orderFrom1.getStatus() != orderFrom.getStatus()) {
                 orderFrom.setUid(orderFrom1.getUid());
-                if (orderFrom.getStatus()==12){
+                if (orderFrom.getStatus() == 12) {
                     //待返佣状态下需要在预估表中插入数据
                     tbkService.recordECoins(orderFrom);
-                }else if (orderFrom.getStatus()==3){
+                } else if (orderFrom.getStatus() == 3) {
                     //已结算状态下需要在结算表中插入数据
                     tbkService.settleCoins(orderFrom);
                     tbkService.recordECoins(orderFrom);

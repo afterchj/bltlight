@@ -6,18 +6,19 @@ import com.tpadsz.after.entity.NewestFile;
 import com.tpadsz.after.entity.UpdateInfo;
 import com.tpadsz.after.entity.dd.ResultDict;
 import com.tpadsz.after.service.UpdateService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.annotation.Resource;
+
 @Controller
 @RequestMapping("/tpadsz_update")
 public class UpdateController extends BaseDecodedController {
 
-    @Autowired
+    @Resource
     UpdateService updateService;
 
     @RequestMapping(value = "/update_tbk",method = RequestMethod.POST)

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-@Service
+@Service("updateService")
 public class UpdateServiceImpl implements UpdateService {
 
     @Resource
