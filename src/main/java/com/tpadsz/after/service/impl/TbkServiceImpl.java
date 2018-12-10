@@ -99,7 +99,7 @@ public class TbkServiceImpl implements TbkService {
 
     @Override
     public void tbkSave(String uid, String searchName) {
-        tbkDao.save(uid,searchName);
+        tbkDao.tbkSave(uid,searchName);
     }
 
     @Override

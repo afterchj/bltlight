@@ -59,4 +59,7 @@ public interface TbkDao {
 
     void saveLoginLog(TbkLoginLog tbkLoginLog);
 
+    void tbkSave(@Param("uid") String uid,@Param("searchName") String searchName);
+
+
 }

@@ -115,6 +115,28 @@
         INSERT INTO tbk.f_tbk_user_log VALUES(#{id},#{login_date},#{loginout_date},#{behavior},#{uid},#{mobile},#{create_date})
     </insert>
 
+    <insert id="tbkSave" parameterType="String">
+        <selectKey keyProperty="count" resultType="int" order="BEFORE">
+            SELECT count(*) FROM tbk.f_tbk_user_search s WHERE s.uid=#{uid} and s.name=#{searchName}
+        </selectKey>
+        <if test="count > 0">
+            UPDATE tbk.f_tbk_user_search s
+            SET s.times = times + 1
+            WHERE
+            s.uid=#{uid} and s.name = #{searchName}
+        </if>
+        <if test="count==0">
+            INSERT INTO tbk.f_tbk_user_search (
+            uid,
+            name,
+            times,
+            update_time
+            )
+            VALUES
+            (#{uid},#{searchName},1,NOW());
+        </if>
+    </insert>
+
 
 
 </mapper>
