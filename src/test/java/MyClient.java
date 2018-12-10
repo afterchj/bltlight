@@ -1,17 +1,20 @@
 import com.alibaba.dubbo.common.json.JSON;
 import com.tpadsz.after.api.RecordBillService;
+import com.tpadsz.after.activemq.ConsumerService;
+import com.tpadsz.after.activemq.ProducerService;
 import com.tpadsz.cic.coin.api.CoinsEarnerManager;
 import com.tpadsz.cic.coin.vo.CoinsEarnedType;
 import com.tpadsz.cic.coin.vo.CoinsEarnerOffer;
 import com.tpadsz.exception.CheckNotAllowedException;
 import com.tpadsz.exception.SystemAlgorithmException;
-import com.tpadsz.uic.user.api.InfoManager;
-import com.tpadsz.uic.user.api.vo.AppUserExtra;
-import com.tpadsz.uic.user.api.vo.LoginedOffer;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.jms.core.JmsTemplate;
 
+import javax.jms.JMSException;
+import javax.jms.TextMessage;
+import javax.jms.Destination;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,5 +62,16 @@ public class MyClient {
         billService.insetBill(map1);
     }
 
-
+    @Test
+    public void testAmq() throws JMSException {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:applicationContext-ActiveMQ.xml");
+        //获取服务器那边的bean
+        ConsumerService consumerService = (ConsumerService) ctx.getBean("consumerService");
+        ProducerService producerService = (ProducerService) ctx.getBean("producerService");
+        Destination destination = (Destination) ctx.getBean("demoQueueDestination");
+        producerService.sendMessage(destination, "这是测试");
+        producerService.sendMessage("Test is ok");
+        consumerService.receiveByName("com.tpadsz.uic.queue.email");
+        consumerService.receive(destination);
+    }
 }
