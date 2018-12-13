@@ -25,22 +25,22 @@
 
     <select id="selectAllOrderFromByUid" parameterType="OrderFrom"
             resultType="com.tpadsz.after.entity.OrderFrom">
-        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH) ORDER BY create_time DESC limit #{page}, #{size}
+        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and create_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH) ORDER BY create_time DESC limit #{page}, #{size}
     </select>
 
     <select id="selectByUidWait" parameterType="OrderFrom"
             resultType="com.tpadsz.after.entity.OrderFrom">
-        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and status =12 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH) ORDER BY create_time DESC limit #{page}, #{size}
+        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and status =12 and create_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH) ORDER BY create_time DESC limit #{page}, #{size}
     </select>
 
     <select id="selectByUidLose" parameterType="OrderFrom"
             resultType="com.tpadsz.after.entity.OrderFrom">
-        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and status=13 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH) ORDER BY create_time DESC limit #{page}, #{size}
+        SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and status=13 and create_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH) ORDER BY create_time DESC limit #{page}, #{size}
     </select>
 
     <select id="selectByUidDone" parameterType="OrderFrom"
                      resultType="com.tpadsz.after.entity.OrderFrom">
-    SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and status=3 and earning_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH) ORDER BY create_time DESC limit #{page}, #{size}
+    SELECT * FROM tbk.f_tbk_order WHERE uid=#{uid} and status=3 and create_time>=DATE_SUB(CURDATE(), INTERVAL 3 MONTH) ORDER BY create_time DESC limit #{page}, #{size}
 </select>
 
     <select id="findShopImageByNumIid" parameterType="string" resultType="ShopInfo">

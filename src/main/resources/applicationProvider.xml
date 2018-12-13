@@ -45,7 +45,7 @@
     <!-- 接口的位置 -->
     <dubbo:service loadbalance="random" version="0.1.0" cluster="failover" retries="2" interface="com.tpadsz.after.api.RecordBillService" ref="recordBillService" timeout="3000"/>
     <dubbo:reference id="coinsEarnerManager" version="0.2.0" interface="com.tpadsz.cic.coin.api.CoinsEarnerManager" validation="true"/>
-
+    <dubbo:reference id="validationManager" version="0.3.0" interface="com.tpadsz.uic.user.api.ValidationManager" validation="true"/>
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>

@@ -62,6 +62,7 @@ public class OrderQueryController extends BaseDecodedController{
             shopInfo = orderFromService.findShopImageByNumIid
                     (String.valueOf(numId));
             if (shopInfo!=null){
+                orderFrom.setPrice(String.valueOf(shopInfo.getZk_final_price()));
                 if (shopInfo.getPict_url()!=null){
                     orderFrom.setImage(shopInfo.getPict_url());
                 }
