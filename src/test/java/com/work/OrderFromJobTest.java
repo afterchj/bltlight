@@ -348,8 +348,7 @@ public class OrderFromJobTest {
 
     @Test
     public void test2() {
-        System.out.println(redisTemplate.opsForValue()
-                .get(String.format("pid_%s", "29274312")));
+        System.out.println(redisTemplate.opsForValue().get(String.format("pid_%s", "54302800218")));
     }
 
     @Test

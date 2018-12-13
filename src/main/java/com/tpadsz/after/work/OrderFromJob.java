@@ -69,7 +69,7 @@ public class OrderFromJob {
 
         String date;
         String start_time;
-//      String start_time = "2018-10-25 19:31:33";
+//      String start_time = "2018-12-13 15:25:11";
         try {
             date = OrderFromUtil.getTimeByMinute(num);
             start_time = java.net.URLEncoder.encode(date, "utf-8");
@@ -77,9 +77,9 @@ public class OrderFromJob {
             setOrderFromResult(url, start_time, "-1");
             logger.info(date + " 执行了每天接口," + "当前时间：" + new SimpleDateFormat
                     ("yyyy-MM-dd hh:mm:ss").format(new Date()));
-            System.out.print(date + " 执行了每天接口");
-            System.out.println("当前时间：" + new SimpleDateFormat("yyyy-MM-dd " +
-                    "hh:mm:ss").format(new Date()));
+//            System.out.print(date + " 执行了每天接口");
+//            System.out.println("当前时间：" + new SimpleDateFormat("yyyy-MM-dd " +
+//                    "hh:mm:ss").format(new Date()));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (ParseException e) {

@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 
+/**
+ * 淘宝客升级接口
+ */
 @Controller
 @RequestMapping("/tpadsz_update")
 public class UpdateController extends BaseDecodedController {

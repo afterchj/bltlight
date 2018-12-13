@@ -12,10 +12,9 @@
     <typeAliases>
 
     </typeAliases>
-    <plugins>
-        <plugin interceptor="com.github.pagehelper.PageInterceptor">
-            <!--<property name="helperDialect" value="mysql"/>-->
-
-        </plugin>
-    </plugins>
+    <!--<plugins>-->
+    <!--<plugin interceptor="com.github.pagehelper.PageInterceptor">-->
+        <!--&lt;!&ndash;<property name="helperDialect" value="mysql"/>&ndash;&gt;-->
+    <!--</plugin>-->
+<!--</plugins>-->
 </configuration>
