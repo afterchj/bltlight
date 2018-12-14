@@ -34,7 +34,7 @@
     </insert>
 
     <select id="findEarnByNumiid" parameterType="string" resultType="double">
-        SELECT rate_touid FROM tbk.f_tbk_shop WHERE num_iid = #{num_iid}
+        SELECT IFNULL((SELECT rate_touid FROM tbk.f_tbk_shop WHERE num_iid = #{num_iid}),0.0)
     </select>
 
     <insert id="insertOrUpdateAccount" parameterType="com.tpadsz.after.entity.Account">
