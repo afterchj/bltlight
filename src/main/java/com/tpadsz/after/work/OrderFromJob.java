@@ -69,7 +69,7 @@ public class OrderFromJob {
 
         String date;
         String start_time;
-//      String start_time = "2018-12-13 15:25:11";
+//      String start_time = "2018-12-13 17:51:37";
         try {
             date = OrderFromUtil.getTimeByMinute(num);
             start_time = java.net.URLEncoder.encode(date, "utf-8");
@@ -244,6 +244,10 @@ public class OrderFromJob {
                     if (orderFrom1 == null) {
                         //查询pid-uid绑定关系
                         uid = shopService.getUid(adzoneId);
+                        if (uid == null) {
+                            //uid为空
+                            continue;
+                        }
                         num_iid = String.valueOf(orderFrom.getNum_iid());
                         map.put("uid", uid);
                         map.put("num_iid", num_iid);
@@ -254,35 +258,39 @@ public class OrderFromJob {
                             //分享时间和下单时间日期差
                             days = timeDiff(shareTime, orderFrom);
                         }
+                        if (days > 3) {
+                            //分享时间超过三天
+                            continue;
+                        }
                         //有绑定关系&&分享时间不超过三天
 //                        if (uid != null) {
-                            if (uid != null && days <= 3) {
-                                //插入
-                                orderFrom.setUid(uid);
-                                orderFromService.insertOrderFrom(orderFrom);
-                                //修改预估和结算金额
-                                setTbCoins(orderFrom, orderFrom1);
-                            }
-                        } else {//本地表有数据
-                            //数据需要更新
-                            if (!orderFrom.equals(orderFrom1)) {
-                                //更新
-                                orderFromService.updateOrderFrom(orderFrom);
-                                //修改预估和结算金额
-                                setTbCoins(orderFrom, orderFrom1);
-                            }
+//                            if (uid != null && days <= 3) {
+                        //插入
+                        orderFrom.setUid(uid);
+                        orderFromService.insertOrderFrom(orderFrom);
+                        //修改预估和结算金额
+                        setTbCoins(orderFrom, orderFrom1);
+//                            }
+                    } else {//本地表有数据
+                        //数据需要更新
+                        if (!orderFrom.equals(orderFrom1)) {
+                            //更新
+                            orderFromService.updateOrderFrom(orderFrom);
+                            //修改预估和结算金额
+                            setTbCoins(orderFrom, orderFrom1);
                         }
                     }
-                    if (array.size() < 100) {
-                        break;
-                    }
-                } else{
-                    //出错或查询为空
+                }
+                if (array.size() < 100) {
                     break;
                 }
-                pageNo++;
+            } else {
+                //出错或查询为空
+                break;
             }
+            pageNo++;
         }
+    }
 
     public OrderFrom setOrderFrom(JSONObject jsonObject) {
         OrderFrom orderFrom = new OrderFrom();
@@ -330,13 +338,13 @@ public class OrderFromJob {
                 orderFrom.setStatus(orderFrom.getTk_status());
             }
         } else {
-            //结算日需要修改的本地订单表的订单状态
-            if (tbStatus == 14) {
-                //淘宝订单状态为成功的修改本地订单表的订单状态为待返佣
-                orderFrom.setStatus(12);
-            } else {
-                orderFrom.setStatus(orderFrom.getTk_status());
-            }
+            //结算日修改淘宝订单状态为结算的本地订单状态
+//            if (tbStatus == 14) {
+            //淘宝订单状态为成功的修改本地订单表的订单状态为待返佣
+//                orderFrom.setStatus(12);
+//            } else {
+            orderFrom.setStatus(orderFrom.getTk_status());
+//            }
         }
     }
 
@@ -361,29 +369,32 @@ public class OrderFromJob {
     }
 
     /**
+     * 收入记录
+     *
      * @param orderFrom  淘宝订单数据
      * @param orderFrom1 本地订单数据
      */
     public void setTbCoins(OrderFrom orderFrom, OrderFrom orderFrom1) {
         if (orderFrom1 == null) {
-            if (orderFrom.getStatus() == 12) {
-                //待返佣状态下需要在预估表中插入数据
-                tbkService.recordECoins(orderFrom);
-            } else if (orderFrom.getStatus() == 3) {
+            //本地无此订单
+//            if (orderFrom.getStatus() == 12) {
+            //待返佣状态下需要在预估表中插入数据
+            tbkService.recordECoins(orderFrom);
+            if (orderFrom.getStatus() == 3) {
                 //已结算状态下需要在结算表中插入数据
-                tbkService.recordECoins(orderFrom);
+//                tbkService.recordECoins(orderFrom);
                 tbkService.settleCoins(orderFrom);
             }
         } else {
             if (orderFrom1.getStatus() != orderFrom.getStatus()) {
                 orderFrom.setUid(orderFrom1.getUid());
-                if (orderFrom.getStatus() == 12) {
-                    //待返佣状态下需要在预估表中插入数据
-                    tbkService.recordECoins(orderFrom);
-                } else if (orderFrom.getStatus() == 3) {
+//                if (orderFrom.getStatus() == 12) {
+                //待返佣状态下需要在预估表中插入数据
+                tbkService.recordECoins(orderFrom);
+                if (orderFrom.getStatus() == 3) {
                     //已结算状态下需要在结算表中插入数据
                     tbkService.settleCoins(orderFrom);
-                    tbkService.recordECoins(orderFrom);
+//                    tbkService.recordECoins(orderFrom);
                 }
             }
         }
