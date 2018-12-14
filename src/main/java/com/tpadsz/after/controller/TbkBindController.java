@@ -38,7 +38,9 @@ public class TbkBindController extends BaseDecodedController {
         String msg = ResultDict.SUCCESS.getValue();
         String para = params.getString("num_iid");
         String uid = params.getString("uid");
-        Pid pid = bindService.getPidInfo();
+        Pid info = bindService.getPidInfo();
+        Pid pud = bindService.getPid(uid);
+        Pid pid = pud == null ? info : pud;
         shopService.setKey(pid.getAdzone_id(), uid);
         int pkey = pid.getPkey();
         ShopInfo shop = new ShopInfo();

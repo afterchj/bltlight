@@ -12,7 +12,7 @@
         INNER JOIN tbk.f_tbk_bind b ON p.pkey = b.pkey
         AND last_bind_uid = #{uid}
         ORDER BY
-            bind_date DESC LIMIT 1;
+            bind_date DESC LIMIT 1
     </select>
 
     <insert id="bindPid" parameterType="map">
