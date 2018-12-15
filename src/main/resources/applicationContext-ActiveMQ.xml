@@ -33,7 +33,7 @@
     <bean id="demoQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
         <!-- 设置消息队列的名字 -->
         <constructor-arg>
-            <value>queue://com.tpadsz.uic.queue.myEmail</value>
+            <value>com.tpadsz.uic.queue.myEmail</value>
         </constructor-arg>
     </bean>
 

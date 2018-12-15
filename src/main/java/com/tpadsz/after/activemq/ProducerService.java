@@ -30,8 +30,8 @@ public class ProducerService {
 
     public void sendMessage(final String msg) {
         String destination = jmsTemplate.getDefaultDestinationName();
-        System.out.println(Thread.currentThread().getName() + " 向队列" + destination + "发送消息---------------------->" + msg);
-        jmsTemplate.convertAndSend("测试内容");
+        System.out.println(Thread.currentThread().getName() + " 向队列queue://com.tpadsz.uic.queue.myEmail发送消息---------------------->" + msg);
+        jmsTemplate.convertAndSend(msg);
 //        jmsTemplate.send(new MessageCreator() {
 //            public Message createMessage(Session session) throws JMSException {
 //                return session.createTextMessage(msg);

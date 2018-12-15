@@ -63,15 +63,16 @@ public class MyClient {
     }
 
     @Test
-    public void testAmq() throws JMSException {
+    public void testAmq() throws JMSException, InterruptedException {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:applicationContext-ActiveMQ.xml");
         //获取服务器那边的bean
         ConsumerService consumerService = (ConsumerService) ctx.getBean("consumerService");
         ProducerService producerService = (ProducerService) ctx.getBean("producerService");
         Destination destination = (Destination) ctx.getBean("demoQueueDestination");
         producerService.sendMessage(destination, "这是测试");
-        consumerService.receive(destination);
         producerService.sendMessage("Test is ok");
-        consumerService.receiveByName("queue://com.tpadsz.uic.queue.email");
+        Thread.sleep(3000);
+        consumerService.receive(destination);
+        consumerService.receiveByName("com.tpadsz.uic.queue.email");
     }
 }
