@@ -95,7 +95,7 @@ public class ConfigurationTest {
     public void set() {
 //		  redisTemplate.opsForValue().set("mykey","test is ok");
 //        redisTemplate.opsForValue().set("mykey", "LogTest is ok!", 10, TimeUnit.SECONDS);
-        System.out.println(redisTemplate.opsForValue().get(formatKey("54298700349")));
+        System.out.println(redisTemplate.opsForValue().get(formatKey("54307050006")));
 
 //            new Thread().sleep(10000);
         System.out.println(redisTemplate.opsForValue().get(formatKey("54300050120")));

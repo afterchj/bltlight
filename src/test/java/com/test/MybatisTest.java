@@ -8,6 +8,7 @@ import com.tpadsz.after.dao80.OrderFromDao;
 import com.tpadsz.after.dao80.TbkBindDao;
 import com.tpadsz.after.entity.Pid;
 import com.tpadsz.after.service.ShopService;
+import com.tpadsz.after.work.CountCoinJob;
 import com.util.ExcelTool;
 import jxl.read.biff.BiffException;
 import jxl.write.WriteException;
@@ -38,7 +39,7 @@ public class MybatisTest {
 
 
     public static SqlSession getSession() {
-        SqlSessionFactory factory = (SqlSessionFactory) atx.getBean("sqlSessionFactory80");
+        SqlSessionFactory factory = (SqlSessionFactory) atx.getBean("sqlSessionFactory");
         return factory.openSession();
     }
 
@@ -90,8 +91,9 @@ public class MybatisTest {
     @Test
     public void testUpdate() {
         Map map = new HashMap();
-        map.put("uid", "a02e46e0f3404d59b7c21a742bffc38a");
+        map.put("uid", "9de2725281b44136b04e474d85061151");
         map.put("status", "1");
+        map.put("logTime", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         getSession().getMapper(RecordBillDao.class).saveStatus(map);
     }
 
@@ -135,6 +137,9 @@ public class MybatisTest {
 
     @Test
     public void test30(){
+        CountCoinJob countCoinJob= (CountCoinJob) atx.getBean("countCoinJob");
+        System.out.println(countCoinJob);
+        countCoinJob.giveBill();
 
     }
 }
